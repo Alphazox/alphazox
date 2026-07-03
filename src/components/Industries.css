@@ -1,0 +1,113 @@
+.industries-section {
+  position: relative;
+  background: var(--bg-main);
+}
+
+.industries-grid {
+  margin-top: 2rem;
+}
+
+.industry-card {
+  position: relative;
+  overflow: hidden;
+  height: 380px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.industry-icon-wrapper {
+  background: rgba(6, 182, 212, 0.1);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  color: var(--color-secondary);
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.1);
+}
+
+.industry-card:hover .industry-icon-wrapper {
+  background: var(--gradient-brand);
+  color: var(--text-white);
+  border-color: transparent;
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+}
+
+.industry-card h3 {
+  font-size: 1.35rem;
+  margin-bottom: 0.75rem;
+  transition: color var(--transition-fast);
+}
+
+.industry-card:hover h3 {
+  color: var(--color-secondary);
+}
+
+.industry-card p {
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  transition: opacity var(--transition-fast);
+}
+
+.industry-hover-details {
+  margin-top: auto;
+  width: 100%;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all var(--transition-normal);
+}
+
+.industry-card:hover .industry-hover-details {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.industry-hover-details h4 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.industry-bullet-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.industry-bullet-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-main);
+}
+
+.bullet-dash {
+  width: 6px;
+  height: 2px;
+  background: var(--color-secondary);
+  border-radius: 1px;
+}
+
+@media (max-width: 1024px) {
+  .industry-card {
+    height: auto;
+    min-height: 300px;
+  }
+  
+  .industry-hover-details {
+    transform: translateY(0);
+    opacity: 1;
+    margin-top: 1.5rem;
+  }
+}
