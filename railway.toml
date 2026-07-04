@@ -8,7 +8,7 @@
   restartPolicyMaxRetries = 10
 
 [[services]]
-  name = "astikos-website"
+  name = "alphazox-website"
 
 [variables]
   PORT = "5000"

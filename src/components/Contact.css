@@ -68,6 +68,76 @@
   color: var(--color-secondary);
 }
 
+/* Office image with caption below */
+.office-image-box {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* Inner crop wrapper — clips the scaled image without affecting caption */
+.office-image-crop {
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.office-photo {
+  width: 100%;
+  display: block;
+  height: 200px;
+  object-fit: cover;
+  filter: brightness(1.1) contrast(0.95) saturate(1.1);
+  transition: filter 0.3s ease;
+}
+
+.office-photo:hover {
+  filter: brightness(1.2) contrast(0.95) saturate(1.15);
+}
+
+/* Vizag photo has decorative dot border — zoom to crop it out */
+.office-photo-vizag {
+  transform: scale(1.18);
+  transform-origin: center center;
+  object-position: center;
+}
+
+.office-photo-vizag:hover {
+  filter: brightness(1.2) contrast(0.95) saturate(1.15);
+}
+
+.office-caption {
+  background: rgba(3, 86, 204, 0.05);
+  border-top: 1px solid var(--border-color);
+  padding: 0.65rem 0.85rem;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--text-main);
+}
+
+.office-caption-link {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.office-caption-link:hover {
+  color: var(--color-secondary);
+  text-decoration: underline;
+}
+
+/* Caption placed outside image-box (standalone, with gap) */
+.office-caption-standalone {
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  margin-top: 0.6rem;
+  border-top: 1px solid var(--border-color);
+}
+
 /* Service tags */
 .contact-tags {
   display: flex;

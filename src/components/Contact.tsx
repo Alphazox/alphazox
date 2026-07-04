@@ -55,7 +55,7 @@ export const Contact: React.FC = () => {
           {/* Contact Info Panel */}
           <div className="contact-info">
             <div style={{ borderRadius: '12px', overflow: 'hidden', marginBottom: '2rem', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-md)' }}>
-              <img src="/images/contact_office.png" alt="Astikos Office" style={{ width: '100%', display: 'block', objectFit: 'cover', height: '220px' }} />
+              <img src="/images/contact_office.png" alt="ALPHAZOX Office" style={{ width: '100%', display: 'block', objectFit: 'cover', height: '220px' }} />
             </div>
             <div className="contact-offices">
               {/* US Office */}
@@ -69,32 +69,72 @@ export const Contact: React.FC = () => {
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.6 19.79 19.79 0 0 1 1.64 5.11 2 2 0 0 1 3.62 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                       +1-732-947-4608
                     </a>
-                    <a href="mailto:info@astikos.com" className="contact-link">
+                    <a href="mailto:info@alphazox.com" className="contact-link">
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                      info@astikos.com
+                      info@alphazox.com
                     </a>
                   </div>
                 </div>
               </div>
 
-              {/* India Office */}
+              {/* Visakhapatnam Office */}
               <div className="office-card card">
                 <div className="office-flag">🇮🇳</div>
                 <div className="office-details">
-                  <h3>India Operations</h3>
-                  <p className="office-city">Hyderabad & Visakhapatnam</p>
+                  <h3>Visakhapatnam</h3>
+                  {/* Image box — photo cropped + caption integrated */}
+                  <div className="office-image-box">
+                    <div className="office-image-crop">
+                      <img
+                        src="/images/vizag-office.jpg"
+                        alt="Visakhapatnam AU Hub"
+                        className="office-photo office-photo-vizag"
+                      />
+                    </div>
+                    <div className="office-caption">
+                      <span>📍 Alphazox: Near Andhra University, North Campus</span><br/>
+                      <span>Visakhapatnam, Andhra Pradesh – 530003, India</span>
+                    </div>
+                  </div>
                   <div className="office-contacts">
-                    <a href="tel:+919919918458" className="contact-link">
+                    <a href="tel:+919550250099" className="contact-link">
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.6 19.79 19.79 0 0 1 1.64 5.11 2 2 0 0 1 3.62 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                      +91-991-991-8458
+                      +91-955-025-0099
                     </a>
-                    <a href="tel:+918688888458" className="contact-link">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.6 19.79 19.79 0 0 1 1.64 5.11 2 2 0 0 1 3.62 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                      +91-868-888-8458
-                    </a>
-                    <a href="mailto:hello@inspiredgeit.com" className="contact-link">
+                    <a href="mailto:support@alphazox.com" className="contact-link">
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                      hello@inspiredgeit.com
+                      support@alphazox.com
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Hyderabad Office */}
+              <div className="office-card card">
+                <div className="office-flag">🇮🇳</div>
+                <div className="office-details">
+                  <h3>Hyderabad</h3>
+                  {/* Image with address caption */}
+                  <div className="office-image-box">
+                    <img
+                      src="/images/hyd-office.jpg"
+                      alt="Hyderabad T-Hub"
+                      className="office-photo"
+                    />
+                    <div className="office-caption">
+                      <span>📍 Alphazox, Near Hyderabad Knowledge City</span><br/>
+                      <span>Raidurgam, Serilingampally, Hyderabad, Telangana – 500081, India</span><br/>
+                      <a href="https://www.t-hub.co/contact-us" target="_blank" rel="noreferrer" className="office-caption-link">t-hub.co</a>
+                    </div>
+                  </div>
+                  <div className="office-contacts">
+                    <a href="tel:+919550250099" className="contact-link">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.6 19.79 19.79 0 0 1 1.64 5.11 2 2 0 0 1 3.62 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                      +91-955-025-0099
+                    </a>
+                    <a href="mailto:support@alphazox.com" className="contact-link">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                      support@alphazox.com
                     </a>
                   </div>
                 </div>

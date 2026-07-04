@@ -67,18 +67,16 @@ export const Navbar: React.FC = () => {
         {/* Brand Logo */}
         <Link to="/" className="navbar-brand">
           <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="brand-logo">
-            <rect width="100" height="100" rx="20" fill="url(#brand-grad)" />
-            <path d="M50 20L80 75H20L50 20Z" fill="#ffffff" opacity="0.9" />
-            <path d="M50 45L70 75H30L50 45Z" fill="#06b6d4" />
+            <path d="M 50 12 L 83 78 L 67 78 L 50 44 L 33 78 L 17 78 Z" fill="var(--logo-chevron)" />
+            <path d="M 50 51 L 61 74 L 39 74 Z" fill="url(#brand-grad)" />
             <defs>
-              <linearGradient id="brand-grad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#6366f1" />
-                <stop offset="0.5" stopColor="#06b6d4" />
-                <stop offset="1" stopColor="#a855f7" />
+              <linearGradient id="brand-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#0356CC" />
+                <stop offset="100%" stopColor="#4B8FFF" />
               </linearGradient>
             </defs>
           </svg>
-          <span className="brand-name">ASTIKOS</span>
+          <span className="brand-name">ALPHAZO<span className="brand-x">X</span></span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -160,7 +158,7 @@ export const Navbar: React.FC = () => {
           ))}
           
           {/* Mobile Language Selector */}
-          <li className="navbar-mobile-item" style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.05)', padding: '0.75rem 0' }}>
+          <li className="navbar-mobile-item" style={{ borderBottom: '1px solid var(--border-color)', padding: '0.75rem 0' }}>
             <span style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-main)' }}>Language</span>
             <div className="mobile-lang-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginTop: '0.75rem' }}>
               {['🇺🇸 American', '🇬🇧 British', '🇦🇺 Australian', '🇨🇦 Canadian'].map((l, i) => {
@@ -180,7 +178,7 @@ export const Navbar: React.FC = () => {
             </div>
           </li>
 
-          <li className="navbar-mobile-item" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem 0', borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>
+          <li className="navbar-mobile-item" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem 0', borderBottom: '1px solid var(--border-color)' }}>
             <span style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-main)' }}>Switch Theme</span>
             <button 
               onClick={toggleTheme} 

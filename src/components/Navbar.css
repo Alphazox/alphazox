@@ -35,11 +35,7 @@
 }
 
 .brand-logo {
-  transition: transform var(--transition-normal);
-}
-
-.navbar-brand:hover .brand-logo {
-  transform: rotate(15deg) scale(1.05);
+  /* No transform on hover */
 }
 
 .brand-name {
@@ -47,9 +43,7 @@
   font-size: 1.5rem;
   font-weight: 800;
   letter-spacing: 1px;
-  background: linear-gradient(to right, #ffffff, #6366f1, #06b6d4);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--brand-text);
 }
 
 .navbar-menu {
@@ -136,7 +130,7 @@
   left: 0;
   width: 100%;
   height: calc(100vh - 80px);
-  background: rgba(6, 8, 19, 0.98);
+  background: rgba(16, 32, 47, 0.98);
   backdrop-filter: blur(16px);
   z-index: 999;
   transform: translateX(-100%);

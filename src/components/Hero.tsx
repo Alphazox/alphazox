@@ -136,7 +136,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreServices, onContactUs }) =>
           </h1>
 
           <p className="hero-description">
-            Astikos IT Solutions is your trusted global partner across modern technology capabilities — from custom software development and intelligent RPA automation to cloud engineering, data science, SAP services, financial management, and establishing world-class Global Capability Centers (GCCs). We combine design thinking with a cloud-first approach to accelerate your digital journey.
+            ALPHAZOX is your trusted global partner across modern technology capabilities — from custom software development and intelligent RPA automation to cloud engineering, data science, SAP services, financial management, and establishing world-class Global Capability Centers (GCCs). We combine design thinking with a cloud-first approach to accelerate your digital journey.
           </p>
 
           <div className="hero-actions">

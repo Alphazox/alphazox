@@ -32,7 +32,7 @@ const BlogPage: React.FC = () => {
       readTime: '6 min read',
       summary: 'Learn how enterprises can leverage custom LLMs, semantic searches, and corporate virtual assistants to scale developer productivity and automate document intelligence.',
       image: '/images/blog_genai.png',
-      content: `The emergence of Generative Artificial Intelligence (GenAI) has transitioned from experimental curiosity to a foundational pillar of enterprise efficiency. At Astikos, our Innovation Labs have studied how corporate entities can securely deploy large language models (LLMs) without exposing proprietary IP.
+      content: `The emergence of Generative Artificial Intelligence (GenAI) has transitioned from experimental curiosity to a foundational pillar of enterprise efficiency. At ALPHAZOX, our Innovation Labs have studied how corporate entities can securely deploy large language models (LLMs) without exposing proprietary IP.
 
 Our flagship Rapid60 program has demonstrated that custom corporate virtual AI assistants, fine-tuned on company policies and knowledge bases, reduce operational lookup times by up to 72%. 
 
@@ -72,7 +72,7 @@ Low-code platforms allow hybrid squads to quickly assemble front-end user portal
 - Empowerment of citizen developers under IT-governed environments.
 - Direct API integration with CRM platforms (Salesforce) and ERP servers.
 
-At Astikos, we guide clients through building centralized Centers of Excellence (COEs) to govern low-code deployments, ensuring that quick builds still comply with enterprise security standards.`,
+At ALPHAZOX, we guide clients through building centralized Centers of Excellence (COEs) to govern low-code deployments, ensuring that quick builds still comply with enterprise security standards.`,
       author: { name: 'Sarah Jenkins', role: 'Solutions Architect' }
     }
   ];
@@ -104,7 +104,7 @@ At Astikos, we guide clients through building centralized Centers of Excellence 
       // Fallback for offline mode / dev server
       setSubscribeStatus({ 
         success: true, 
-        msg: `Welcome, ${subscriberData.name}! You have successfully subscribed to the Astikos newsletter.` 
+        msg: `Welcome, ${subscriberData.name}! You have successfully subscribed to the ALPHAZOX newsletter.` 
       });
       setSubscriberData({ name: '', email: '', industryRole: '' });
     } finally {
@@ -118,7 +118,7 @@ At Astikos, we guide clients through building centralized Centers of Excellence 
       <div className="page-hero-banner">
         <div className="container">
           <span className="page-label">Industry Insights</span>
-          <h1 style={{ color: 'var(--text-white)' }}>Astikos Blog</h1>
+          <h1 style={{ color: 'var(--text-white)' }}>ALPHAZOX Blog</h1>
           <p>Thought leadership, technology deep-dives, and structural trends shaping global enterprise software.</p>
         </div>
       </div>

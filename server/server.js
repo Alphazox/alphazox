@@ -51,7 +51,7 @@ function writeDB(filePath, data) {
 
 // ─── MongoDB Configuration ──────────────────────────────────────────────────
 
-const MONGO_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/astikos';
+const MONGO_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/alphazox';
 
 mongoose.connect(MONGO_URI)
   .then(() => console.log(`[MongoDB Connected]: ${MONGO_URI}`))
@@ -128,7 +128,7 @@ const RECIPIENT_EMAIL = 'prasanthibolla29@gmail.com';
 // Function to dispatch email
 async function sendEmail(subject, htmlContent, data) {
   const mailOptions = {
-    from: '"Astikos Web Inquiries" <no-reply@astikos.com>',
+    from: '"ALPHAZOX Web Inquiries" <no-reply@alphazox.com>',
     to: RECIPIENT_EMAIL,
     subject,
     html: htmlContent,
@@ -167,9 +167,9 @@ async function sendQueryEmail(contactData) {
   const subject = `New Inquiry from ${contactData.name} - ${contactData.orgName}`;
   const html = `
       <div style="font-family: sans-serif; line-height: 1.6; max-width: 600px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
-        <div style="background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%); color: white; padding: 20px; text-align: center;">
+        <div style="background: linear-gradient(135deg, #0052FF 0%, #00C2FF 100%); color: white; padding: 20px; text-align: center;">
           <h2 style="margin: 0; font-size: 22px;">New Contact Submission</h2>
-          <p style="margin: 5px 0 0 0; opacity: 0.9;">Astikos IT Solutions Portal</p>
+          <p style="margin: 5px 0 0 0; opacity: 0.9;">ALPHAZOX Portal</p>
         </div>
         <div style="padding: 24px; background-color: #ffffff; color: #334155;">
           <h3 style="margin-top: 0; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px; color: #1e293b;">Client Contact Details</h3>
@@ -226,9 +226,9 @@ async function sendCareerEmail(careerData) {
   const subject = `New Job Application from ${careerData.name} - ${careerData.position}`;
   const html = `
       <div style="font-family: sans-serif; line-height: 1.6; max-width: 600px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
-        <div style="background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%); color: white; padding: 20px; text-align: center;">
+        <div style="background: linear-gradient(135deg, #0052FF 0%, #00C2FF 100%); color: white; padding: 20px; text-align: center;">
           <h2 style="margin: 0; font-size: 22px;">New Career Application</h2>
-          <p style="margin: 5px 0 0 0; opacity: 0.9;">Astikos IT Solutions Portal</p>
+          <p style="margin: 5px 0 0 0; opacity: 0.9;">ALPHAZOX Portal</p>
         </div>
         <div style="padding: 24px; background-color: #ffffff; color: #334155;">
           <h3 style="margin-top: 0; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px; color: #1e293b;">Applicant Details</h3>
@@ -290,9 +290,9 @@ async function sendSubscribeEmail(subscriberData) {
   const subject = `New Newsletter Subscription from ${subscriberData.name}`;
   const html = `
       <div style="font-family: sans-serif; line-height: 1.6; max-width: 600px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
-        <div style="background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%); color: white; padding: 20px; text-align: center;">
+        <div style="background: linear-gradient(135deg, #0052FF 0%, #00C2FF 100%); color: white; padding: 20px; text-align: center;">
           <h2 style="margin: 0; font-size: 22px;">New Newsletter Subscription</h2>
-          <p style="margin: 5px 0 0 0; opacity: 0.9;">Astikos IT Solutions Portal</p>
+          <p style="margin: 5px 0 0 0; opacity: 0.9;">ALPHAZOX Portal</p>
         </div>
         <div style="padding: 24px; background-color: #ffffff; color: #334155;">
           <table style="width: 100%; border-collapse: collapse;">
@@ -486,7 +486,7 @@ app.post('/api/subscribe', async (req, res) => {
 
   return res.status(200).json({
     success: true,
-    message: `Welcome, ${name}! You have successfully subscribed to the Astikos newsletter.`
+    message: `Welcome, ${name}! You have successfully subscribed to the ALPHAZOX newsletter.`
   });
 });
 
@@ -500,9 +500,9 @@ app.post('/api/chatbot', (req, res) => {
   let reply = '';
 
   if (query.includes('hello') || query.includes('hi') || query.includes('hey')) {
-    reply = "Hello! I am Astikos' virtual assistant. How can I help you transform your business today? You can ask me about our 45 services, industries we serve, careers, global capability centers (GCC), or how to contact us.";
+    reply = "Hello! I am ALPHAZOX's virtual assistant. How can I help you transform your business today? You can ask me about our 45 services, industries we serve, careers, global capability centers (GCC), or how to contact us.";
   } else if (query.includes('service') || query.includes('what do you do') || query.includes('offerings') || query.includes('45')) {
-    reply = "Astikos IT Solutions offers 45 comprehensive services across 9 practice areas:\n\n" +
+    reply = "ALPHAZOX offers 45 comprehensive services across 9 practice areas:\n\n" +
       "1. **Core IT Services** (7): Custom App Dev, Maintenance, Digital Transformation, QA, DevOps, Cloud/Salesforce, Data Science.\n" +
       "2. **Enterprise Solutions** (2): SAP Services, Microsoft Services.\n" +
       "3. **Professional Services** (6): Talent Augmentation, Software Procurement, Agile Squads, On-Demand Support, RIPS, Managed Services.\n" +
@@ -513,29 +513,29 @@ app.post('/api/chatbot', (req, res) => {
       "8. **Digital Marketing** (4): Digital Marketing, Web Services, Solution Consulting, QA Compliance.\n" +
       "9. **Low-Code & AI** (5): Low-Code, Generative AI, Intelligent Automation, Advanced Analytics, Cloud Engineering.";
   } else if (query.includes('rpa') || query.includes('automation') || query.includes('uipath')) {
-    reply = "At Astikos, we drive efficiency through Robotic Process Automation (RPA) and Intelligent Document Processing (IDP). We support **UiPath, Power Automate, Blue Prism, and Automation Anywhere**. Our services range from Bot Development and Process Mining to building Centers of Excellence (COE).";
+    reply = "At ALPHAZOX, we drive efficiency through Robotic Process Automation (RPA) and Intelligent Document Processing (IDP). We support **UiPath, Power Automate, Blue Prism, and Automation Anywhere**. Our services range from Bot Development and Process Mining to building Centers of Excellence (COE).";
   } else if (query.includes('gcc') || query.includes('global capability') || query.includes('india')) {
-    reply = "Astikos is a premier partner for establishing **Global Capability Centers (GCCs)**. We offer 'GCC-as-a-Service', helping global companies set up and manage high-performance centers in India. We handle regulatory compliance, legal entity establishment, office setup (access to 2M+ sq. ft. of Tier 1 workspace), talent acquisition, and operational excellence using our 'Zero Surprise Framework'.";
+    reply = "ALPHAZOX is a premier partner for establishing **Global Capability Centers (GCCs)**. We offer 'GCC-as-a-Service', helping global companies set up and manage high-performance centers in India. We handle regulatory compliance, legal entity establishment, office setup (access to 2M+ sq. ft. of Tier 1 workspace), talent acquisition, and operational excellence using our 'Zero Surprise Framework'.";
   } else if (query.includes('cloud') || query.includes('devops') || query.includes('azure') || query.includes('aws')) {
     reply = "Our Cloud & DevOps services empower enterprises with cloud-native scalability. We provide cloud strategy, architecture advisory, and migration services in partnership with AWS, Microsoft Azure, and Google Cloud. We also configure automated CI/CD pipelines, container orchestration (Docker/Kubernetes), and 24/7 SLA-driven operations.";
   } else if (query.includes('data science') || query.includes('ai') || query.includes('generative ai') || query.includes('ml')) {
-    reply = "Astikos unlocks the value of data through Advanced Analytics, Machine Learning, and Generative AI. Through **Astikos Innovation Labs**, we offer the **Rapid60 program** to help organizations kickstart their Generative AI journey within 60 days, including custom virtual assistants, semantic search, and document intelligence.";
+    reply = "ALPHAZOX unlocks the value of data through Advanced Analytics, Machine Learning, and Generative AI. Through **ALPHAZOX Innovation Labs**, we offer the **Rapid60 program** to help organizations kickstart their Generative AI journey within 60 days, including custom virtual assistants, semantic search, and document intelligence.";
   } else if (query.includes('sap')) {
     reply = "Our SAP Services team provides end-to-end intelligent enterprise solutions including SAP S/4HANA consulting, implementation, cloud transformation, advanced analytics, and process automation. Our SAP-certified team delivers within timeline and budget.";
   } else if (query.includes('financial') || query.includes('bookkeeping') || query.includes('accounting') || query.includes('payroll') || query.includes('tax')) {
-    reply = "Astikos provides comprehensive Financial Management services: **Bookkeeping** (50+ certified professionals, 40-50% cost savings), **Payroll Processing** (multi-state & international), **Financial & MIS Reporting**, **Controller Services**, **Tax Services** (with IRS audit defense), and **E-Commerce Integrations**.";
+    reply = "ALPHAZOX provides comprehensive Financial Management services: **Bookkeeping** (50+ certified professionals, 40-50% cost savings), **Payroll Processing** (multi-state & international), **Financial & MIS Reporting**, **Controller Services**, **Tax Services** (with IRS audit defense), and **E-Commerce Integrations**.";
   } else if (query.includes('contact') || query.includes('phone') || query.includes('email') || query.includes('office')) {
-    reply = "You can reach Astikos IT Solutions at:\n\n" +
+    reply = "You can reach ALPHAZOX at:\n\n" +
       "• **US Office**: Charlotte, NC | Phone: +1-732-947-4608\n" +
       "• **India Offices**: Hyderabad & Visakhapatnam | Phone: +91-991-991-8458 or +91-868-888-8458\n" +
-      "• **Email**: info@astikos.com\n\n" +
+      "• **Email**: info@alphazox.com\n\n" +
       "Feel free to submit a query through our Contact section!";
   } else if (query.includes('career') || query.includes('job') || query.includes('apply') || query.includes('work')) {
-    reply = "We are always looking for talented minds to join our team at Astikos! We foster a performance-driven culture with equal growth opportunities. Please visit our **Careers** section to view open positions and submit your CV.";
+    reply = "We are always looking for talented minds to join our team at ALPHAZOX! We foster a performance-driven culture with equal growth opportunities. Please visit our **Careers** section to view open positions and submit your CV.";
   } else if (query.includes('monitoring') || query.includes('surveillance') || query.includes('security')) {
     reply = "Our Remote Video Monitoring & e-Surveillance solutions are powered by **VDO Intel**, using AI computer vision to automate safety. We offer 24/7 live video monitoring, solar-powered surveillance for remote sites, and service lane monitoring to eliminate false claims.";
   } else {
-    reply = "Thank you for asking! Astikos is a trusted digital transformation partner with 45 services across 9 practice areas. We specialize in custom software development, cloud engineering, RPA automation, data science, financial management, and global operations. Please specify if you'd like details on any area, or visit our Services page to explore all 45 capabilities!";
+    reply = "Thank you for asking! ALPHAZOX is a trusted digital transformation partner with 45 services across 9 practice areas. We specialize in custom software development, cloud engineering, RPA automation, data science, financial management, and global operations. Please specify if you'd like details on any area, or visit our Services page to explore all 45 capabilities!";
   }
 
   return res.status(200).json({ success: true, reply });
@@ -582,7 +582,7 @@ if (fs.existsSync(frontendBuildPath)) {
 // ─── Start Server ─────────────────────────────────────────────────────────────
 
 app.listen(PORT, () => {
-  console.log(`\n🚀 [Astikos Backend] Running on http://localhost:${PORT}`);
+  console.log(`\n🚀 [ALPHAZOX Backend] Running on http://localhost:${PORT}`);
   console.log(`📁 Data directory: ${DATA_DIR}`);
   console.log(`   • contacts.json  → ${readDB(DB_FILES.contacts).length} records`);
   console.log(`   • careers.json   → ${readDB(DB_FILES.careers).length} records`);

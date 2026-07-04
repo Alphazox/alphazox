@@ -130,14 +130,14 @@ export const Careers: React.FC = () => {
               <div style={{ width: '100%', height: '240px', overflow: 'hidden' }}>
                 <img 
                   src="/images/careers_culture.png" 
-                  alt="Astikos Team Culture" 
+                  alt="ALPHAZOX Team Culture" 
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                 />
               </div>
               <div style={{ padding: '2rem' }}>
                 <h3 style={{ fontSize: '1.4rem', color: 'var(--color-secondary)', marginBottom: '0.75rem' }}>Our Work Culture</h3>
                 <p style={{ margin: 0, fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  At Astikos, we foster a performance-driven culture where every individual is empowered to achieve 
+                  At ALPHAZOX, we foster a performance-driven culture where every individual is empowered to achieve 
                   their full potential. We champion equal opportunities for growth and success, ensuring that every 
                   team member thrives in an environment that values excellence, collaboration, and continuous learning.
                 </p>
@@ -313,7 +313,7 @@ export const Careers: React.FC = () => {
                   onChange={handleInputChange}
                   rows={4}
                   className="form-control"
-                  placeholder="Introduce yourself and explain why you'd be a great fit for Astikos..."
+                  placeholder="Introduce yourself and explain why you'd be a great fit for ALPHAZOX..."
                   required
                 ></textarea>
               </div>

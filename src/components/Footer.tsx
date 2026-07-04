@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Footer.css';
 
@@ -18,6 +18,7 @@ const serviceLinks = [
 
 export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <footer className="footer">
@@ -27,31 +28,29 @@ export const Footer: React.FC = () => {
         <div className="footer-cta-banner">
           <div className="cta-content">
             <h2>Ready to Transform Your Business?</h2>
-            <p>Partner with Astikos IT Solutions for end-to-end digital transformation, automation, and global growth.</p>
+            <p>Partner with ALPHAZOX for end-to-end digital transformation, automation, and global growth.</p>
           </div>
           <Link to="/contact" className="btn btn-primary footer-cta-btn">
             Start Your Journey →
           </Link>
         </div>
 
-        {/* Footer Main Grid */}
+        {/* Always Visible Footer Main */}
         <div className="footer-main grid-4">
           {/* Brand Column */}
           <div className="footer-brand-col">
             <Link to="/" className="footer-logo">
               <svg width="28" height="28" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="100" height="100" rx="20" fill="url(#footer-grad)" />
-                <path d="M50 20L80 75H20L50 20Z" fill="#ffffff" opacity="0.9" />
-                <path d="M50 45L70 75H30L50 45Z" fill="#06b6d4" />
+                <path d="M 50 12 L 83 78 L 67 78 L 50 44 L 33 78 L 17 78 Z" fill="var(--logo-chevron)" />
+                <path d="M 50 51 L 61 74 L 39 74 Z" fill="url(#footer-grad)" />
                 <defs>
-                  <linearGradient id="footer-grad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#6366f1" />
-                    <stop offset="0.5" stopColor="#06b6d4" />
-                    <stop offset="1" stopColor="#a855f7" />
+                  <linearGradient id="footer-grad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#0356CC" />
+                    <stop offset="100%" stopColor="#4B8FFF" />
                   </linearGradient>
                 </defs>
               </svg>
-              <span className="footer-brand-name">ASTIKOS</span>
+              <span className="footer-brand-name">ALPHAZO<span className="brand-x">X</span></span>
             </Link>
             <p className="footer-tagline">
               Delivering next-generation IT solutions, automation, and global capability centers.
@@ -66,7 +65,7 @@ export const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Quick Links - always visible */}
           <div className="footer-col">
             <h4>Quick Links</h4>
             <ul>
@@ -78,19 +77,7 @@ export const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Services */}
-          <div className="footer-col">
-            <h4>Services</h4>
-            <ul>
-              {serviceLinks.map(svc => (
-                <li key={svc}>
-                  <Link to="/services" className="footer-link">{svc}</Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact */}
+          {/* Contact Summary - always visible */}
           <div className="footer-col">
             <h4>Contact</h4>
             <div className="footer-contact-list">
@@ -100,20 +87,50 @@ export const Footer: React.FC = () => {
               </div>
               <div className="footer-contact-item">
                 <span className="contact-flag">🇮🇳</span>
-                <span>Hyderabad & Vizag · +91-991-991-8458</span>
+                <span>Visakhapatnam &amp; Hyderabad · +91-955-025-0099</span>
               </div>
               <div className="footer-contact-item">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                <a href="mailto:info@astikos.com" className="footer-email-link">info@astikos.com</a>
+                <a href="mailto:support@alphazox.com" className="footer-email-link">support@alphazox.com</a>
               </div>
             </div>
+          </div>
+
+          {/* Services - always visible */}
+          <div className="footer-col">
+            <h4>Services</h4>
+            <ul>
+              {serviceLinks.slice(0, 4).map(svc => (
+                <li key={svc}>
+                  <Link to="/services" className="footer-link">{svc}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Expand Arrow Toggle */}
+        <div className="footer-toggle" onClick={() => setIsOpen(!isOpen)}>
+          <span className="footer-toggle-text">{isOpen ? 'Show Less' : 'More Services'}</span>
+          <span className={`footer-toggle-arrow ${isOpen ? 'open' : ''}`}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </div>
+
+        {/* Collapsible extra services */}
+        <div className={`footer-collapsible ${isOpen ? 'expanded' : ''}`}>
+          <div className="footer-extra-services">
+            {serviceLinks.slice(4).map(svc => (
+              <Link to="/services" key={svc} className="footer-link footer-extra-service-item">{svc}</Link>
+            ))}
           </div>
         </div>
 
         {/* Bottom Bar */}
         <div className="footer-bottom">
-          <p>© {currentYear} Astikos IT Solutions. All rights reserved.</p>
-          <p className="footer-sub">Inspired Global Enterprise IT Solutions (Astikos IT Solutions)</p>
+          <p>© {currentYear} ALPHAZOX. All rights reserved.</p>
         </div>
       </div>
     </footer>

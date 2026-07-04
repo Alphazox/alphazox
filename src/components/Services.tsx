@@ -214,7 +214,7 @@ const servicesData: ServiceDetail[] = [
     benefits: ['Validate concepts in 4-6 weeks before full investment', 'Reduce innovation risk with a structured fail-fast approach', 'Hands-on prototype stakeholders can click through and test', 'Clear go/no-go decision framework based on real data'],
     useCases: ['Prototyping an AI-driven inventory system to present to the board', 'Building a click-through IoT dashboard MVP for investor demos'],
     technologies: ['Figma', 'React', 'Python Flask', 'Firebase', 'AWS Lambda', 'OpenAI API'],
-    whyChoose: 'Astikos Innovation Labs has run 200+ RIPS engagements with an 85% conversion rate to full product development.',
+    whyChoose: 'ALPHAZOX Innovation Labs has run 200+ RIPS engagements with an 85% conversion rate to full product development.',
     process: ['Ideation Workshop', 'Rapid Prototyping', 'User Testing & Feedback', 'Decision Framework Report'],
   },
   {
@@ -402,7 +402,7 @@ const servicesData: ServiceDetail[] = [
     benefits: ['Access to 2M+ sq. ft. of Tier 1 workspace in India', 'End-to-end legal entity and compliance setup in 60 days', 'Pre-screened talent pool of 50,000+ technology professionals', 'Cost savings of 40-60% vs. equivalent US/UK operations'],
     useCases: ['Setting up a 500-seat GCC in Hyderabad for a US Fortune 500 company', 'Expanding a GCC from Bangalore to Pune with 200 additional technology specialists'],
     technologies: ['Legal Entity Setup', 'HRMS', 'IT Infrastructure', 'Compliance Frameworks', 'Process Automation'],
-    whyChoose: 'Astikos has established 30+ GCCs in India using our proven Zero Surprise Framework, delivering within timeline and budget.',
+    whyChoose: 'ALPHAZOX has established 30+ GCCs in India using our proven Zero Surprise Framework, delivering within timeline and budget.',
     process: ['Location Strategy', 'Legal & Compliance Setup', 'Infrastructure & Talent', 'Operations Handover'],
   },
   {
@@ -572,12 +572,12 @@ const servicesData: ServiceDetail[] = [
     category: 'innovation',
     title: 'Generative AI Services',
     shortDesc: 'Transform business with AI: foundation models, conversational experiences, document intelligence, and intelligent digital products.',
-    desc: 'Transform business operations with AI including foundation models, conversational experiences, document intelligence, and intelligent digital products. Astikos Innovation Labs runs the Rapid60 program delivering AI proof-of-concepts within 60 days.',
+    desc: 'Transform business operations with AI including foundation models, conversational experiences, document intelligence, and intelligent digital products. ALPHAZOX Innovation Labs runs the Rapid60 program delivering AI proof-of-concepts within 60 days.',
     icon: '🧠',
     benefits: ['Automated customer query handling with human-like accuracy', 'Instant natural-language queries across corporate PDF libraries', 'Secure sandbox environments keeping business data private', 'Custom LLM agents trained on your proprietary knowledge'],
     useCases: ['A secure corporate assistant trained on internal HR and tech guidelines', 'Document intelligence pipelines automating mortgage contract classifications'],
     technologies: ['OpenAI API', 'LangChain', 'LlamaIndex', 'Python', 'Pinecone', 'HuggingFace'],
-    whyChoose: 'Astikos Innovation Labs runs the Rapid60 Generative AI program, delivering proof-of-concepts within 60 days.',
+    whyChoose: 'ALPHAZOX Innovation Labs runs the Rapid60 Generative AI program, delivering proof-of-concepts within 60 days.',
     process: ['Use Case Discovery', 'Vectorizing & RAG Setup', 'Model Fine-Tuning', 'Deployment & Safety Guardrails'],
   },
   {
@@ -694,7 +694,7 @@ export const Services: React.FC = () => {
                   <h2>{selectedService.title}</h2>
                   <p className="modal-subtitle">
                     <span className="service-cat-tag">{getCategoryLabel(selectedService.category)}</span>
-                    &nbsp;· Astikos IT Solutions
+                    &nbsp;· ALPHAZOX
                   </p>
                 </div>
               </div>
@@ -741,7 +741,7 @@ export const Services: React.FC = () => {
                 </div>
 
                 <div className="modal-section why-astikos-box">
-                  <h4>Why Choose Astikos?</h4>
+                  <h4>Why Choose ALPHAZOX?</h4>
                   <p>💬 {selectedService.whyChoose}</p>
                 </div>
               </div>

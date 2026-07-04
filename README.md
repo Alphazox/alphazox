@@ -1,6 +1,6 @@
-# Astikos IT Solutions Website
+# ALPHAZOX IT Solutions Website
 
-A professional, fully responsive corporate website for **Astikos IT Solutions** — a global digital transformation partner. Built with **React 18 + TypeScript** (Vite) on the frontend and **Node.js + Express** on the backend.
+A professional, fully responsive corporate website for **ALPHAZOX** — a global digital transformation partner. Built with **React 18 + TypeScript** (Vite) on the frontend and **Node.js + Express** on the backend.
 
 ---
 
@@ -19,7 +19,7 @@ A professional, fully responsive corporate website for **Astikos IT Solutions** 
 ## 📁 Project Structure
 
 ```
-astikos-website/
+alphazox-website/
 ├── server/
 │   └── server.js          # Express backend server
 ├── src/

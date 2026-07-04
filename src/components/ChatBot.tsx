@@ -18,7 +18,7 @@ const QUICK_QUESTIONS = [
 export const ChatBot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { from: 'bot', text: "👋 Hi there! I'm **Astia**, Astikos' virtual assistant.\n\nHow can I help you today? You can ask me about our services, GCCs, careers, or anything else about Astikos IT Solutions!" }
+    { from: 'bot', text: "👋 Hi there! I'm **Alpha**, ALPHAZOX's virtual assistant.\n\nHow can I help you today? You can ask me about our services, GCCs, careers, or anything else about ALPHAZOX IT Solutions!" }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -80,7 +80,7 @@ export const ChatBot: React.FC = () => {
       <button
         className={`chatbot-trigger ${isOpen ? 'open' : ''}`}
         onClick={() => setIsOpen(!isOpen)}
-        aria-label="Open Astikos Chat Assistant"
+        aria-label="Open ALPHAZOX Chat Assistant"
         id="chatbot-trigger-btn"
       >
         {isOpen ? (
@@ -99,7 +99,7 @@ export const ChatBot: React.FC = () => {
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
           </div>
           <div className="bot-info">
-            <h4>Astia</h4>
+            <h4>Alpha</h4>
             <span className="bot-status">● Online</span>
           </div>
           <button className="chatbot-close-btn" onClick={() => setIsOpen(false)} aria-label="Close chat">

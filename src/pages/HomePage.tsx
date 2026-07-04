@@ -12,7 +12,7 @@ const HomePage: React.FC = () => {
 
   const testimonials = [
     {
-      quote: "Astikos automated our medical records indexing using custom NLP models, reducing lookup times by 80% and ensuring ISO compliance.",
+      quote: "ALPHAZOX automated our medical records indexing using custom NLP models, reducing lookup times by 80% and ensuring ISO compliance.",
       author: "Sarah Montgomery",
       role: "VP of Digital Operations",
       company: "CareGrid Healthcare Systems",
@@ -78,7 +78,7 @@ const HomePage: React.FC = () => {
             <span style={{ color: 'var(--color-secondary)', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '0.5rem' }}>Global IT Solutions Partner</span>
             <h2 style={{ fontSize: '2.25rem', marginBottom: '1.25rem', color: 'var(--text-white)' }}>Pioneering Enterprise Growth & Intelligence</h2>
             <p style={{ marginBottom: '1.5rem', fontSize: '1.05rem', lineHeight: '1.7' }}>
-              Astikos IT Solutions engineers and delivers cutting-edge technology frameworks for the world's most demanding enterprises. From custom database optimizations to Generative AI implementations, we provide the skills and scale to accelerate your digital future.
+              ALPHAZOX engineers and delivers cutting-edge technology frameworks for the world's most demanding enterprises. From custom database optimizations to Generative AI implementations, we provide the skills and scale to accelerate your digital future.
             </p>
             <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
               <Link to="/about" className="btn btn-primary">Learn About Our History</Link>
@@ -116,7 +116,7 @@ const HomePage: React.FC = () => {
             }}>
               <img 
                 src="/images/enterprise_overview.png" 
-                alt="Astikos Enterprise Technology Overview" 
+                alt="ALPHAZOX Enterprise Technology Overview" 
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
               />
               <div style={{

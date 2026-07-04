@@ -4,30 +4,34 @@
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-heading: 'Outfit', sans-serif;
 
-  /* Premium Corporate Midnight Navy Theme (Dark) */
-  --bg-main: #0b0f19;         /* Midnight Navy base */
-  --bg-card: #151b2d;         /* Clean slate card */
-  --bg-card-hover: #1e263e;   /* Brighter card hover */
-  --bg-nav: rgba(11, 15, 25, 0.9);
+  /* Theme colors derived directly from ALPHAZOX Logo (Dark Mode - Default) */
+  --bg-main: #10202F;         
+  --bg-card: #162C40;         
+  --bg-card-hover: #1F3E5A;   
+  --bg-nav: rgba(16, 32, 47, 0.9); 
   --border-color: rgba(255, 255, 255, 0.08);
-  --border-glow: rgba(59, 130, 246, 0.3); /* Dynamic corporate blue */
+  --border-glow: rgba(3, 86, 204, 0.3); 
   
-  --text-main: #d1d5db;       /* Clear slate grey for body copy */
-  --text-muted: #9ca3af;      /* Medium grey for subtexts */
-  --text-white: #ffffff;      /* Pure white headings */
+  --text-main: #D9E4EC;       
+  --text-muted: #94A3B8;      
+  --text-white: #ffffff;      
   
-  --color-primary: #3b82f6;   /* Royal Blue */
-  --color-secondary: #0ea5e9; /* Light Blue */
-  --color-accent: #6366f1;    /* Corporate Indigo */
+  --color-primary: #0356CC;   
+  --color-secondary: #4B8FFF; 
+  --color-accent: #0356CC;    
+  
+  /* Logo adaptive colors */
+  --logo-chevron: #ffffff;    
+  --brand-text: #ffffff;      
   
   --gradient-brand: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
-  --gradient-text: linear-gradient(to right, #3b82f6 0%, #0ea5e9 100%);
-  --gradient-dark: linear-gradient(to bottom, #0b0f19 0%, #060911 100%);
+  --gradient-text: linear-gradient(to right, #D9E4EC 0%, #4B8FFF 100%);
+  --gradient-dark: linear-gradient(to bottom, #10202F 0%, #081018 100%);
   
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
-  --shadow-glow: 0 0 15px rgba(59, 130, 246, 0.15);
+  --shadow-glow: 0 0 15px rgba(3, 86, 204, 0.15);
   
   --transition-fast: 0.2s ease;
   --transition-normal: 0.3s ease;
@@ -35,36 +39,39 @@
   --max-width: 1280px;
 
   /* Form & Section Variables */
-  --bg-control: #151b2d;
-  --bg-control-focus: #1e263e;
+  --bg-control: #162C40;
+  --bg-control-focus: #1F3E5A;
   --text-control: #ffffff;
-  --bg-section-alt: #0f1422;
+  --bg-section-alt: #0D1B28;
 }
 
 body.light-theme {
-  /* Crisp Corporate Professional Theme (Light) */
-  --bg-main: #ffffff;         /* Pure white background */
-  --bg-card: #f8fafc;         /* Soft grey cards */
-  --bg-card-hover: #f1f5f9;   /* Clean card hover */
-  --bg-nav: rgba(255, 255, 255, 0.95);
-  --border-color: #e2e8f0;    /* Solid clean grey borders */
-  --border-glow: rgba(59, 130, 246, 0.2);
+  /* Theme colors derived directly from ALPHAZOX Logo (Light Mode) */
+  --bg-main: #FFFFFF;         
+  --bg-card: #FFFFFF;         
+  --bg-card-hover: #F8FAFC;   
+  --bg-nav: #FFFFFF; 
+  --border-color: rgba(16, 32, 47, 0.12);
+  --border-glow: rgba(3, 86, 204, 0.2);
   
-  --text-main: #334155;       /* Slate-700 (Very rich contrast for body text) */
-  --text-muted: #64748b;      /* Slate-500 for descriptive texts */
-  --text-white: #0f172a;      /* Slate-900 (High contrast headings) */
+  --text-main: #10202F;       
+  --text-muted: #4B5563;      
+  --text-white: #10202F; /* Headings use this, making them Deep Navy */
   
-  --color-primary: #2563eb;   /* Rich royal blue for accents */
-  --color-secondary: #0284c7;
-  --color-accent: #4f46e5;
+  --color-primary: #0356CC;   /* Electric Blue */
+  --color-secondary: #4B8FFF; /* Soft Blue */
+  --color-accent: #10202F;    
   
-  --gradient-dark: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
-  --shadow-glow: 0 0 15px rgba(37, 99, 235, 0.08);
+  /* Logo fixed colors - visible on light background */
+  --logo-chevron: #10202F;    
+  --brand-text: #10202F;      
+  
+  --gradient-dark: linear-gradient(180deg, #FFFFFF 0%, #D9E4EC 100%);
   
   --bg-control: #ffffff;
-  --bg-control-focus: #f8fafc;
-  --text-control: #0f172a;
-  --bg-section-alt: #f1f5f9;  /* Perfect contrast section background */
+  --bg-control-focus: #F1F5F9;
+  --text-control: #10202F;
+  --bg-section-alt: #D9E4EC;  /* Surface/Card Background */
 }
 
 /* Global Reset */
@@ -86,6 +93,7 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   background: var(--gradient-dark);
+  color: var(--text-main);
 }
 
 /* Custom Scrollbar */
@@ -96,11 +104,11 @@ body {
   background: #060813;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(99, 102, 241, 0.3);
+  background: rgba(0, 82, 255, 0.3);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(6, 182, 212, 0.6);
+  background: rgba(0, 163, 255, 0.6);
 }
 
 /* Typography */
@@ -158,12 +166,12 @@ a {
 .btn-primary {
   background: var(--gradient-brand);
   color: var(--text-white);
-  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 4px 14px rgba(0, 82, 255, 0.4);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(6, 182, 212, 0.6);
+  box-shadow: 0 6px 20px rgba(0, 163, 255, 0.6);
 }
 
 .btn-secondary {
@@ -185,8 +193,8 @@ a {
 }
 
 .btn-outline:hover {
-  background: rgba(6, 182, 212, 0.1);
-  box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+  background: rgba(0, 163, 255, 0.1);
+  box-shadow: 0 0 15px rgba(0, 163, 255, 0.3);
   transform: translateY(-2px);
 }
 
@@ -438,3 +446,115 @@ body.light-theme .section-title h2 {
     font-size: 1.75rem;
   }
 }
+
+/* Brand Logo & Name — no rectangle/pill, adaptive to theme */
+.navbar-brand, .footer-logo {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  text-decoration: none !important;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  height: auto !important;
+}
+
+.navbar-brand:hover, .footer-logo:hover {
+  opacity: 0.85;
+}
+
+.brand-name, .footer-brand-name {
+  font-family: var(--font-heading) !important;
+  font-size: 1.4rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 1px !important;
+  color: var(--brand-text) !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: var(--brand-text) !important;
+}
+
+.brand-x {
+  background: linear-gradient(180deg, #0356CC 0%, #4B8FFF 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+}
+
+/* ==========================================
+   LIGHT MODE CUSTOM OVERRIDES
+   ========================================== */
+
+/* Hero Badge */
+body.light-theme .hero-badge {
+  background: rgba(3, 86, 204, 0.08) !important;
+  border-color: rgba(3, 86, 204, 0.25) !important;
+  color: #0356CC !important;
+}
+
+/* Stat Cards & Counters */
+body.light-theme .stat-card {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border-color: rgba(16, 32, 47, 0.1) !important;
+  box-shadow: 0 10px 30px rgba(16, 32, 47, 0.05) !important;
+}
+
+body.light-theme .stat-card::before {
+  background: linear-gradient(90deg, transparent, rgba(3, 86, 204, 0.4), rgba(75, 143, 255, 0.4), transparent) !important;
+}
+
+body.light-theme .stat-card:hover {
+  border-color: rgba(3, 86, 204, 0.3) !important;
+  box-shadow: 0 20px 40px rgba(16, 32, 47, 0.08), 0 0 20px rgba(3, 86, 204, 0.06) !important;
+}
+
+body.light-theme .stat-value {
+  background: linear-gradient(135deg, #10202F, #0356CC) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+/* Hero Chips */
+body.light-theme .hero-chip {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(3, 86, 204, 0.2) !important;
+  color: #0356CC !important;
+  box-shadow: 0 5px 15px rgba(3, 86, 204, 0.08) !important;
+}
+
+/* Mobile Navigation Drawer */
+body.light-theme .navbar-mobile-drawer {
+  background: rgba(255, 255, 255, 0.98) !important;
+  border-top-color: rgba(16, 32, 47, 0.08) !important;
+  box-shadow: 0 10px 30px rgba(16, 32, 47, 0.08) !important;
+}
+
+body.light-theme .navbar-mobile-link {
+  color: #10202F !important;
+  border-bottom-color: rgba(16, 32, 47, 0.08) !important;
+}
+
+body.light-theme .navbar-mobile-link:hover,
+body.light-theme .navbar-mobile-link.active {
+  color: #0356CC !important;
+}
+
+body.light-theme .navbar-mobile-item span {
+  color: #10202F !important;
+}
+
+/* Secondary Button Custom Style for Light Theme */
+body.light-theme .btn-secondary {
+  background: rgba(16, 32, 47, 0.04) !important;
+  color: #10202F !important;
+  border-color: rgba(16, 32, 47, 0.1) !important;
+}
+
+body.light-theme .btn-secondary:hover {
+  background: rgba(16, 32, 47, 0.08) !important;
+  border-color: var(--color-primary) !important;
+}
+
+

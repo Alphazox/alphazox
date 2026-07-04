@@ -21,25 +21,25 @@ const AboutPage: React.FC = () => {
       city: 'Charlotte, NC',
       address: 'Corporate Headquarters, Charlotte, North Carolina',
       phone: '+1-732-947-4608',
-      email: 'info@astikos.com',
+      email: 'info@alphazox.com',
       coordinates: { x: 25, y: 42 } // Normalized SVG coordinates
     },
     {
       country: 'India (Hyd)',
       flag: '🇮🇳',
       city: 'Hyderabad, TS',
-      address: 'Development Center, HITEC City, Hyderabad, Telangana',
-      phone: '+91-991-991-8458',
-      email: 'hello@inspiredgeit.com',
+      address: 'Alphazox, Near Hyderabad Knowledge City, Raidurgam, Serilingampally, Hyderabad, Telangana – 500081, India',
+      phone: '+91-955-025-0099',
+      email: 'support@alphazox.com',
       coordinates: { x: 72, y: 55 }
     },
     {
       country: 'India (Vizag)',
       flag: '🇮🇳',
       city: 'Visakhapatnam, AP',
-      address: 'Operations Hub, Tech Hill, Visakhapatnam, Andhra Pradesh',
-      phone: '+91-868-888-8458',
-      email: 'hello@inspiredgeit.com',
+      address: 'Alphazox: Near Andhra University, North Campus, Visakhapatnam, Andhra Pradesh – 530003, India',
+      phone: '+91-955-025-0099',
+      email: 'support@alphazox.com',
       coordinates: { x: 75, y: 57 }
     }
   ];
@@ -57,7 +57,7 @@ const AboutPage: React.FC = () => {
       <div className="page-hero-banner">
         <div className="container">
           <span className="page-label">Who We Are</span>
-          <h1>About Astikos IT Solutions</h1>
+          <h1>About ALPHAZOX</h1>
           <p>A trusted global digital transformation partner delivering pioneering next-generation technology solutions.</p>
         </div>
       </div>
@@ -68,7 +68,7 @@ const AboutPage: React.FC = () => {
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <h2 style={{ fontSize: '2.25rem', marginBottom: '1.5rem', color: 'var(--text-white)' }}>Pioneering Enterprise Innovation</h2>
             <p style={{ marginBottom: '1.25rem', fontSize: '1.05rem', lineHeight: '1.7' }}>
-              Astikos IT Solutions stands at the intersection of business strategy and cutting-edge technology. As a modern, agile IT service partner, we empower enterprises, mid-market companies, and scaling startups to accelerate their digital evolutionary journeys.
+              ALPHAZOX stands at the intersection of business strategy and cutting-edge technology. As a modern, agile IT service partner, we empower enterprises, mid-market companies, and scaling startups to accelerate their digital evolutionary journeys.
             </p>
             <p style={{ marginBottom: '2rem', fontSize: '1.05rem', lineHeight: '1.7' }}>
               Through our specialized delivery models, robust engineering frameworks, and strategic partnerships, we provide end-to-end solutions that stabilize backend operations, automate administrative friction, and inject artificial intelligence into modern enterprise workflows.
@@ -101,7 +101,7 @@ const AboutPage: React.FC = () => {
             }}>
               <img 
                 src="/images/about_overview.png" 
-                alt="About Astikos Innovation & Systems" 
+                alt="About ALPHAZOX Innovation & Systems" 
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
               />
               <div style={{
