@@ -437,13 +437,44 @@ body.light-theme .section-title h2 {
     grid-template-columns: 1fr;
   }
   .section {
-    padding: 4rem 0;
+    padding: 3rem 0;
+  }
+  .section-title {
+    margin-bottom: 2.5rem;
+    padding: 0 0.5rem;
+  }
+  .section-title h2 {
+    font-size: 1.75rem;
+  }
+  .section-title p {
+    font-size: 0.95rem;
   }
   h1 {
-    font-size: 2rem;
+    font-size: 1.9rem;
+    letter-spacing: -0.02em;
   }
   h2 {
-    font-size: 1.75rem;
+    font-size: 1.6rem;
+  }
+  h3 {
+    font-size: 1.25rem;
+  }
+  .container {
+    padding: 0 1rem;
+  }
+  .card {
+    padding: 1.25rem;
+  }
+  .btn {
+    padding: 0.65rem 1.2rem;
+    font-size: 0.9rem;
+  }
+  .form-grid-2 {
+    grid-template-columns: 1fr !important;
+  }
+  /* Prevent horizontal scroll */
+  section, div {
+    max-width: 100%;
   }
 }
 

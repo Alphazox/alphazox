@@ -423,16 +423,62 @@
 }
 
 @media (max-width: 768px) {
-  .hero-section { padding: 120px 0 60px; }
-  .hero-title { font-size: 2rem; }
-  .hero-description { font-size: 0.97rem; }
+  .hero-section {
+    padding: 100px 0 50px;
+    min-height: auto;
+  }
+  .hero-container {
+    gap: 2.5rem;
+    padding: 0 1rem;
+  }
+  .hero-title {
+    font-size: 1.85rem;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+  .hero-description {
+    font-size: 0.93rem;
+    margin-bottom: 1.5rem;
+    padding: 0 0.25rem;
+  }
+  .hero-badge {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.85rem;
+    margin-bottom: 1.2rem;
+  }
   .hero-actions {
     flex-direction: column;
     width: 100%;
-    max-width: 320px;
+    gap: 0.75rem;
   }
-  .hero-trust-badges { gap: 0.5rem; }
-  .trust-badge { font-size: 0.72rem; }
+  .hero-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .hero-trust-badges {
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .trust-badge {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.6rem;
+  }
   .hero-ring-1, .hero-ring-2 { display: none; }
-  .stat-value { font-size: 2.2rem; }
+  .hero-stats {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1rem;
+  }
+  .stat-card {
+    padding: 1.25rem 1rem;
+  }
+  .stat-value { font-size: 2rem; }
+  .stat-label { font-size: 0.75rem; }
+}
+
+@media (max-width: 400px) {
+  .hero-title { font-size: 1.6rem; }
+  .hero-stats {
+    grid-template-columns: 1fr 1fr !important;
+  }
 }
