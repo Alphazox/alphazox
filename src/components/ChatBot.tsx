@@ -54,7 +54,7 @@ function getBotReply(message: string): string {
   }
   if (q.includes('contact') || q.includes('phone') || q.includes('email') || q.includes('office') || q.includes('address')) {
     return "Reach **ALPHAZOX** at:\n\n" +
-      "📍 **US**: Charlotte, North Carolina | +1-732-947-4608\n" +
+      "📍 **US**: Austin, Texas | +1 (716) 939-6514 (Meet by Appointment Only)\n" +
       "📍 **Visakhapatnam**: Near Andhra University, AP – 530003\n" +
       "📍 **Hyderabad**: Near Knowledge City, Telangana – 500081\n" +
       "📧 **Email**: support@alphazox.com\n\n" +

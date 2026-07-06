@@ -83,7 +83,7 @@ export const Footer: React.FC = () => {
             <div className="footer-contact-list">
               <div className="footer-contact-item">
                 <span className="contact-flag">🇺🇸</span>
-                <span>Charlotte, NC · +1-732-947-4608</span>
+                <span>Austin, TX · +1 (716) 939-6514</span>
               </div>
               <div className="footer-contact-item">
                 <span className="contact-flag">🇮🇳</span>

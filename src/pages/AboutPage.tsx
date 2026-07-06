@@ -18,9 +18,9 @@ const AboutPage: React.FC = () => {
     {
       country: 'United States',
       flag: '🇺🇸',
-      city: 'Charlotte, NC',
-      address: 'Corporate Headquarters, Charlotte, North Carolina',
-      phone: '+1-732-947-4608',
+      city: 'Austin, TX',
+      address: 'USA Advisory Office, Alphazox, Austin, Texas, USA (Meet the Advisor by Appointment Only)',
+      phone: '+1 (716) 939-6514',
       email: 'info@alphazox.com',
       coordinates: { x: 25, y: 42 } // Normalized SVG coordinates
     },

@@ -123,43 +123,68 @@ if (!fs.existsSync(OUTBOX_FILE)) {
   fs.writeFileSync(OUTBOX_FILE, JSON.stringify([], null, 2), 'utf-8');
 }
 
+// ─── Recipient: all form submissions notify this address ─────────────────────
+// NOTE: support@alphazox.com has no mail server (no MX records), so emails
+// sent there are silently dropped by Gmail. Use the real Gmail inbox instead.
 const RECIPIENT_EMAIL = 'prasanthibolla29@gmail.com';
 
 // Function to dispatch email
 async function sendEmail(subject, htmlContent, data) {
+  // NOTE: Gmail SMTP requires the 'from' address to exactly match the
+  // authenticated SMTP_USER account. Using any other domain (e.g. alphazox.com)
+  // will cause DMARC/SPF failures and silent delivery drops.
+  const senderEmail = process.env.SMTP_USER;
+  const appPassword = (process.env.SMTP_PASS || '').replace(/\s/g, ''); // strip spaces
+
   const mailOptions = {
-    from: '"ALPHAZOX Web Inquiries" <no-reply@alphazox.com>',
+    from: `"ALPHAZOX Web Inquiries" <${senderEmail}>`,
     to: RECIPIENT_EMAIL,
+    replyTo: data.email || senderEmail,
     subject,
     html: htmlContent,
   };
 
-  // Write copy to local outbox
+  // Always save a local copy to outbox for backup / audit
   try {
     const outbox = JSON.parse(fs.readFileSync(OUTBOX_FILE, 'utf-8') || '[]');
     outbox.push({
       id: data.id,
       to: RECIPIENT_EMAIL,
+      from: mailOptions.from,
+      replyTo: mailOptions.replyTo,
       subject: mailOptions.subject,
       html: mailOptions.html,
       timestamp: new Date().toISOString()
     });
     fs.writeFileSync(OUTBOX_FILE, JSON.stringify(outbox, null, 2), 'utf-8');
-    console.log(`[Email Mock Outbox]: Saved copy of outgoing email to ${OUTBOX_FILE}`);
+    console.log(`[Outbox]: Saved copy → ${OUTBOX_FILE}`);
   } catch (err) {
-    console.error('[Email Outbox Save Error]:', err.message);
+    console.error('[Outbox Save Error]:', err.message);
   }
 
-  // Dispatch using transporter (if SMTP user/pass configured)
-  if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+  // Send via Gmail SMTP
+  if (senderEmail && appPassword) {
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST || 'smtp.gmail.com',
+      port: parseInt(process.env.SMTP_PORT || '587'),
+      secure: false,
+      auth: {
+        user: senderEmail,
+        pass: appPassword,   // Gmail App Password (spaces stripped)
+      },
+      tls: { rejectUnauthorized: false },
+    });
+
     try {
-      await emailTransporter.sendMail(mailOptions);
-      console.log(`[Nodemailer Dispatch SUCCESS]: Email sent to ${RECIPIENT_EMAIL}`);
+      const info = await transporter.sendMail(mailOptions);
+      console.log(`[Email SUCCESS]: Sent to ${RECIPIENT_EMAIL} | MessageID: ${info.messageId}`);
     } catch (err) {
-      console.error(`[Nodemailer Dispatch FAIL]:`, err.message);
+      console.error(`[Email FAIL]: Could not send to ${RECIPIENT_EMAIL}`);
+      console.error(`  → Code: ${err.code} | Response: ${err.response || err.message}`);
+      console.error(`  → SMTP User: ${senderEmail} | Host: ${process.env.SMTP_HOST || 'smtp.gmail.com'}`);
     }
   } else {
-    console.log(`[Email SMTP Idle]: No SMTP credentials found. Outgoing email copy stored in outbox_emails.json.`);
+    console.warn(`[Email SKIP]: No SMTP credentials in .env — email saved to outbox only.`);
   }
 }
 
@@ -526,7 +551,7 @@ app.post('/api/chatbot', (req, res) => {
     reply = "ALPHAZOX provides comprehensive Financial Management services: **Bookkeeping** (50+ certified professionals, 40-50% cost savings), **Payroll Processing** (multi-state & international), **Financial & MIS Reporting**, **Controller Services**, **Tax Services** (with IRS audit defense), and **E-Commerce Integrations**.";
   } else if (query.includes('contact') || query.includes('phone') || query.includes('email') || query.includes('office')) {
     reply = "You can reach ALPHAZOX at:\n\n" +
-      "• **US Office**: Charlotte, NC | Phone: +1-732-947-4608\n" +
+      "• **US Office**: Austin, TX | Phone: +1 (716) 939-6514 (Meet by Appointment Only)\n" +
       "• **India Offices**: Hyderabad & Visakhapatnam | Phone: +91-991-991-8458 or +91-868-888-8458\n" +
       "• **Email**: info@alphazox.com\n\n" +
       "Feel free to submit a query through our Contact section!";

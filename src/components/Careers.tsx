@@ -26,7 +26,7 @@ export const Careers: React.FC = () => {
 
   const openPositions: JobRole[] = [
     { title: 'React Full Stack Developer', department: 'Web Application Development', location: 'Hyderabad / Remote', type: 'Full-Time' },
-    { title: 'DevOps & Cloud Engineer', department: 'Cloud Infrastructure', location: 'Charlotte / Remote', type: 'Full-Time' },
+    { title: 'DevOps & Cloud Engineer', department: 'Cloud Infrastructure', location: 'Austin / Remote', type: 'Full-Time' },
     { title: 'Salesforce CRM Consultant', department: 'Salesforce Solutions', location: 'Hyderabad', type: 'Full-Time' },
     { title: 'Certified Accounting Specialist', department: 'Bookkeeping Services', location: 'Visakhapatnam', type: 'Full-Time' },
     { title: 'Computer Vision AI Engineer', department: 'Data Science & VDO Intel', location: 'Remote', type: 'Contract' }

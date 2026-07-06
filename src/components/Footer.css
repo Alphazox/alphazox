@@ -7,6 +7,18 @@
   color: #FFFFFF;
 }
 
+/* Ensure footer text remains visible and readable in light theme since footer stays dark navy */
+body.light-theme .footer {
+  --text-main: #D9E4EC;
+  --text-muted: #94A3B8;
+  --text-white: #FFFFFF;
+  --brand-text: #FFFFFF;
+  --logo-chevron: #FFFFFF;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --color-primary: #4B8FFF;
+  --color-secondary: #00E5FF;
+}
+
 .footer-glow {
   position: absolute;
   top: -100px;
@@ -36,12 +48,6 @@
   font-size: 2rem;
   margin-bottom: 0.5rem;
   background: linear-gradient(to right, var(--text-white), var(--color-secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-body.light-theme .cta-content h2 {
-  background: linear-gradient(to right, #0f172a, var(--color-primary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -289,10 +295,16 @@ body.light-theme .cta-content h2 {
   .footer-main {
     grid-template-columns: 1fr 1fr;
   }
+  .footer-extra-services {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 @media (max-width: 480px) {
   .footer-main {
+    grid-template-columns: 1fr;
+  }
+  .footer-extra-services {
     grid-template-columns: 1fr;
   }
 }

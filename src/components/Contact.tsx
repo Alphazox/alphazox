@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Contact.css';
 
 export const Contact: React.FC = () => {
@@ -59,20 +60,40 @@ export const Contact: React.FC = () => {
             </div>
             <div className="contact-offices">
               {/* US Office */}
-              <div className="office-card card">
-                <div className="office-flag">🇺🇸</div>
-                <div className="office-details">
-                  <h3>United States HQ</h3>
-                  <p className="office-city">Charlotte, North Carolina</p>
-                  <div className="office-contacts">
-                    <a href="tel:+17329474608" className="contact-link">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.6 19.79 19.79 0 0 1 1.64 5.11 2 2 0 0 1 3.62 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                      +1-732-947-4608
-                    </a>
-                    <a href="mailto:info@alphazox.com" className="contact-link">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                      info@alphazox.com
-                    </a>
+              <div className="office-card card" style={{ flexDirection: 'column', gap: '0' }}>
+                {/* Advisory Meeting Image */}
+                <div className="office-image-box" style={{ marginBottom: '1.25rem', borderRadius: '10px', overflow: 'hidden', border: '1px solid var(--border-color)' }}>
+                  <img
+                    src="/images/us-advisory-meeting.png"
+                    alt="USA Advisory Office – Alphazox"
+                    style={{ width: '100%', display: 'block', height: '200px', objectFit: 'cover', filter: 'brightness(1.05) contrast(0.97) saturate(1.05)' }}
+                  />
+                  <div className="office-caption">
+                    <span>📍 Alphazox – USA Advisory Office</span><br/>
+                    <span>Austin, Texas, USA</span>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'flex-start' }}>
+                  <div className="office-flag">🇺🇸</div>
+                  <div className="office-details" style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                    <h3>USA Advisory Office</h3>
+                    <p className="office-city" style={{ color: 'var(--color-secondary)', fontWeight: 700, margin: '0.25rem 0 0.5rem 0' }}>Alphazox</p>
+                    <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Austin, Texas, USA</p>
+
+                    <div className="office-contacts" style={{ gap: '0.5rem', marginBottom: '0.75rem' }}>
+                      <a href="tel:+17169396514" className="contact-link" style={{ fontWeight: 'bold' }}>
+                        📞 +1 (716) 939-6514
+                      </a>
+                    </div>
+
+                    <p style={{ fontSize: '0.95rem', color: 'var(--color-primary)', fontWeight: 'bold', marginBottom: '1.25rem' }}>
+                      Meet the Advisor by Appointment Only
+                    </p>
+
+                    <Link to="/quote" className="btn btn-primary" style={{ fontSize: '0.85rem', padding: '0.5rem 1.25rem', alignSelf: 'flex-start', width: 'fit-content' }}>
+                      Book an Appointment
+                    </Link>
                   </div>
                 </div>
               </div>
