@@ -55,9 +55,6 @@ export const Contact: React.FC = () => {
         <div className="contact-grid">
           {/* Contact Info Panel */}
           <div className="contact-info">
-            <div style={{ borderRadius: '12px', overflow: 'hidden', marginBottom: '2rem', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-md)' }}>
-              <img src="/images/contact_office.png" alt="ALPHAZOX Office" style={{ width: '100%', display: 'block', objectFit: 'cover', height: '220px' }} />
-            </div>
             <div className="contact-offices">
               {/* US Office */}
               <div className="office-card card" style={{ flexDirection: 'column', gap: '0' }}>
