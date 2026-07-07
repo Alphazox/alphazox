@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Contact.css'; // Reusing existing form styles
+import { sendQuoteEmail } from '../services/emailService';
 
 export const Quote: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -27,17 +28,10 @@ export const Quote: React.FC = () => {
     setStatus(null);
 
     try {
-      const response = await fetch('/api/quote', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-      const result = await response.json();
+      const result = await sendQuoteEmail(formData);
+      setStatus({ success: result.success, msg: result.message });
       if (result.success) {
-        setStatus({ success: true, msg: result.message });
         setFormData({ name: '', orgName: '', orgIndustry: '', email: '', phone: '', serviceInterest: '', projectScope: '', budgetRange: '', timeline: '' });
-      } else {
-        setStatus({ success: false, msg: result.error || 'Failed to submit quote.' });
       }
     } catch {
       setStatus({ success: true, msg: 'Thank you! Your quote request has been submitted. Our enterprise solutions team will contact you shortly.' });

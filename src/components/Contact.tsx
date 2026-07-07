@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Contact.css';
+import { sendContactEmail } from '../services/emailService';
 
 export const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -24,17 +25,10 @@ export const Contact: React.FC = () => {
     setStatus(null);
 
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-      const result = await response.json();
+      const result = await sendContactEmail(formData);
+      setStatus({ success: result.success, msg: result.message });
       if (result.success) {
-        setStatus({ success: true, msg: result.message });
         setFormData({ name: '', email: '', phone: '', orgName: '', message: '' });
-      } else {
-        setStatus({ success: false, msg: result.error || 'Failed to send message.' });
       }
     } catch {
       setStatus({ success: true, msg: 'Thank you! Your message has been submitted. Our team will contact you shortly.' });

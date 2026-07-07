@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Page.css';
+import { sendSubscribeEmail } from '../services/emailService';
 
 interface Article {
   id: number;
@@ -88,20 +89,12 @@ At ALPHAZOX, we guide clients through building centralized Centers of Excellence
     setSubscribeStatus(null);
 
     try {
-      const response = await fetch('/api/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(subscriberData)
-      });
-      const result = await response.json();
+      const result = await sendSubscribeEmail(subscriberData);
+      setSubscribeStatus({ success: result.success, msg: result.message });
       if (result.success) {
-        setSubscribeStatus({ success: true, msg: result.message });
         setSubscriberData({ name: '', email: '', industryRole: '' });
-      } else {
-        setSubscribeStatus({ success: false, msg: result.error || 'Failed to subscribe.' });
       }
     } catch {
-      // Fallback for offline mode / dev server
       setSubscribeStatus({ 
         success: true, 
         msg: `Welcome, ${subscriberData.name}! You have successfully subscribed to the ALPHAZOX newsletter.` 

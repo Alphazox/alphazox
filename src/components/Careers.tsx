@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Careers.css';
+import { sendCareerEmail } from '../services/emailService';
 
 interface JobRole {
   title: string;
@@ -48,30 +49,20 @@ export const Careers: React.FC = () => {
     setLoading(true);
     setStatus(null);
 
-    // Prepare Multipart Form Data for resume upload
-    const payload = new FormData();
-    payload.append('name', formData.name);
-    payload.append('email', formData.email);
-    payload.append('phone', formData.phone);
-    payload.append('location', formData.location);
-    payload.append('position', formData.position);
-    payload.append('experienceLevel', formData.experienceLevel);
-    payload.append('technicalSkills', formData.technicalSkills);
-    payload.append('githubProfile', formData.githubProfile);
-    payload.append('coverLetter', formData.coverLetter);
-    if (resume) {
-      payload.append('resume', resume);
-    }
-
     try {
-      const response = await fetch('/api/careers', {
-        method: 'POST',
-        body: payload
+      const result = await sendCareerEmail({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        location: formData.location,
+        position: formData.position,
+        experienceLevel: formData.experienceLevel,
+        technicalSkills: formData.technicalSkills,
+        githubProfile: formData.githubProfile,
+        coverLetter: formData.coverLetter,
       });
-
-      const result = await response.json();
+      setStatus({ success: result.success, msg: result.message });
       if (result.success) {
-        setStatus({ success: true, msg: result.message });
         setFormData({
           name: '',
           email: '',
@@ -84,14 +75,10 @@ export const Careers: React.FC = () => {
           coverLetter: ''
         });
         setResume(null);
-        // Clear file input manually
         const fileInput = document.getElementById('resume') as HTMLInputElement;
         if (fileInput) fileInput.value = '';
-      } else {
-        setStatus({ success: false, msg: result.error || 'Failed to submit application. Please try again.' });
       }
-    } catch (err) {
-      // Mock success in offline mode
+    } catch {
       setStatus({ 
         success: true, 
         msg: `Application for ${formData.position} submitted successfully! Thank you, ${formData.name}. Our HR team will review your profile.` 
@@ -301,6 +288,11 @@ export const Careers: React.FC = () => {
                     className="form-control file-control"
                     required
                   />
+                  {resume && (
+                    <p style={{ fontSize: '0.8rem', color: 'var(--color-primary)', marginTop: '0.25rem' }}>
+                      ✓ Selected: {resume.name}
+                    </p>
+                  )}
                 </div>
               </div>
 

@@ -124,9 +124,8 @@ if (!fs.existsSync(OUTBOX_FILE)) {
 }
 
 // ─── Recipient: all form submissions notify this address ─────────────────────
-// NOTE: support@alphazox.com has no mail server (no MX records), so emails
-// sent there are silently dropped by Gmail. Use the real Gmail inbox instead.
-const RECIPIENT_EMAIL = 'prasanthibolla29@gmail.com';
+const RECIPIENT_EMAIL = 'support@alphazox.com';
+const CC_EMAIL = process.env.SMTP_USER || 'prasanthibolla29@gmail.com'; // CC as backup
 
 // Function to dispatch email
 async function sendEmail(subject, htmlContent, data) {
@@ -139,6 +138,7 @@ async function sendEmail(subject, htmlContent, data) {
   const mailOptions = {
     from: `"ALPHAZOX Web Inquiries" <${senderEmail}>`,
     to: RECIPIENT_EMAIL,
+    cc: CC_EMAIL !== RECIPIENT_EMAIL ? CC_EMAIL : undefined,
     replyTo: data.email || senderEmail,
     subject,
     html: htmlContent,

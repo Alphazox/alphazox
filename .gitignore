@@ -12,6 +12,12 @@ dist
 dist-ssr
 *.local
 server/uploads
+server/data
+
+# Environment variables (never commit secrets)
+.env
+.env.local
+.env.production
 
 # Editor directories and files
 .vscode/*

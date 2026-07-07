@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Contact.css';
+import { sendContactEmail, sendQuoteEmail } from '../services/emailService';
 
 interface FormModalProps {
   isOpen: boolean;
@@ -36,15 +37,31 @@ export const FormModal: React.FC<FormModalProps> = ({ isOpen, onClose, formType 
     setStatus(null);
 
     try {
-      const endpoint = formType === 'consultation' ? '/api/quote' : '/api/contact';
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-      const result = await response.json();
+      let result;
+      if (formType === 'consultation') {
+        result = await sendQuoteEmail({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          orgName: formData.orgName,
+          orgIndustry: formData.orgIndustry,
+          serviceInterest: formData.serviceInterest,
+          projectScope: formData.projectScope,
+          budgetRange: formData.budgetRange,
+          timeline: formData.timeline,
+          dateTimePreference: formData.dateTimePreference,
+        });
+      } else {
+        result = await sendContactEmail({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          orgName: formData.orgName,
+          message: formData.message,
+        });
+      }
+      setStatus({ success: result.success, msg: result.message });
       if (result.success) {
-        setStatus({ success: true, msg: result.message });
         setFormData({
           name: '',
           orgName: '',
@@ -59,8 +76,6 @@ export const FormModal: React.FC<FormModalProps> = ({ isOpen, onClose, formType 
           message: '',
           formType: formType,
         });
-      } else {
-        setStatus({ success: false, msg: result.error || 'Failed to send message.' });
       }
     } catch {
       setStatus({ 
