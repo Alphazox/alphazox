@@ -25,8 +25,8 @@ export default async function handler(req, res) {
     return res.status(400).json({ success: false, error: 'All fields except GitHub profile are required.' });
   }
 
-  const senderEmail = process.env.SMTP_USER;
-  const appPassword = (process.env.SMTP_PASS || '').replace(/\s/g, '');
+  const senderEmail = process.env.SMTP_USER || 'prasanthibolla29@gmail.com';
+  const appPassword = (process.env.SMTP_PASS || 'wdvwojigerezkgnb').replace(/\s/g, '');
 
   const htmlContent = `
     <div style="font-family: sans-serif; line-height: 1.6; max-width: 600px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
