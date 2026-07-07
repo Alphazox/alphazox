@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './Careers.css';
-import { sendCareerEmail } from '../services/emailService';
 
 interface JobRole {
   title: string;
@@ -50,19 +49,14 @@ export const Careers: React.FC = () => {
     setStatus(null);
 
     try {
-      const result = await sendCareerEmail({
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        location: formData.location,
-        position: formData.position,
-        experienceLevel: formData.experienceLevel,
-        technicalSkills: formData.technicalSkills,
-        githubProfile: formData.githubProfile,
-        coverLetter: formData.coverLetter,
+      const response = await fetch('/api/careers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
       });
-      setStatus({ success: result.success, msg: result.message });
+      const result = await response.json();
       if (result.success) {
+        setStatus({ success: true, msg: result.message });
         setFormData({
           name: '',
           email: '',
@@ -77,26 +71,11 @@ export const Careers: React.FC = () => {
         setResume(null);
         const fileInput = document.getElementById('resume') as HTMLInputElement;
         if (fileInput) fileInput.value = '';
+      } else {
+        setStatus({ success: false, msg: result.error || 'Failed to submit application. Please try again.' });
       }
     } catch {
-      setStatus({ 
-        success: true, 
-        msg: `Application for ${formData.position} submitted successfully! Thank you, ${formData.name}. Our HR team will review your profile.` 
-      });
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        location: '',
-        position: 'React Full Stack Developer',
-        experienceLevel: '',
-        technicalSkills: '',
-        githubProfile: '',
-        coverLetter: ''
-      });
-      setResume(null);
-      const fileInput = document.getElementById('resume') as HTMLInputElement;
-      if (fileInput) fileInput.value = '';
+      setStatus({ success: false, msg: 'Network error. Please try again or email us at support@alphazox.com' });
     } finally {
       setLoading(false);
     }
