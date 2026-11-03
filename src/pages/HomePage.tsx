@@ -84,7 +84,7 @@ const HomePage: React.FC = () => {
           </div>
           {/* The 3D core from the background sits in this column; the chips orbit it. */}
           <Reveal delay={0.4} className="hero-visual" aria-hidden="true">
-            <div className="hero-photo"><img src={photo('solutions')} alt="" /></div>
+            <div className="hero-photo"><img src={photo('home-hero')} alt="" /></div>
             <div className="agent-chip chip-a"><span className="dot" /> Claim #4821 triaged</div>
             <div className="agent-chip chip-b"><span className="dot violet" /> Approval routed to manager</div>
             <div className="agent-chip chip-c"><span className="dot green" /> Policy check passed</div>
