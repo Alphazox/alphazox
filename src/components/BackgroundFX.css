@@ -90,7 +90,7 @@
 .bgfx-globe-img {
   position: absolute;
   inset: 0;
-  background: url('/images/agentic-bg.jpg?v=3') center / 100% 100% no-repeat;
+  background: url('/images/agentic-bg.jpg?v=4') center / 100% 100% no-repeat;
 }
 /* The image's buildings and water, cut along the skyline, drawn over the globe */
 .bgfx-fore {

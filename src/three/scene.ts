@@ -32,24 +32,39 @@ export function createScene(canvas: HTMLCanvasElement): () => void {
     vertexShader: `varying vec3 vN; void main(){ vN = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
     fragmentShader: `varying vec3 vN;
       void main(){
-        float rim = pow(1.0 - clamp(vN.z, 0.0, 1.0), 2.2);
+        float rim = pow(1.0 - clamp(vN.z, 0.0, 1.0), 1.6);
         float light = clamp(dot(vN, normalize(vec3(-0.35, 0.55, 0.75))), 0.0, 1.0);
-        vec3 col = mix(vec3(0.02, 0.05, 0.15), vec3(0.08, 0.17, 0.40), light * 0.55);
-        col = mix(col, vec3(0.10, 0.20, 0.42), rim * 0.35); // soft edge, no bright border
-        gl_FragColor = vec4(col, 1.0);
+        vec3 col = mix(vec3(0.03, 0.08, 0.20), vec3(0.08, 0.16, 0.36), light * 0.5);
+        // towards the rim the ocean becomes the sky's own colour, so the edge disappears into it
+        col = mix(col, vec3(0.01, 0.12, 0.24), rim);
+        gl_FragColor = vec4(col, smoothstep(0.0, 0.12, vN.z));
       }`,
+    transparent: true,
   }))));
 
+  // Continents and city lights share the same soft fade at the rim as the ocean, so the globe has no outline.
+  const feathered = (texture: THREE.Texture, fragment: string, additive: boolean) => track(new THREE.ShaderMaterial({
+    uniforms: { tex: { value: texture } },
+    vertexShader: `varying vec2 vUv; varying vec3 vN;
+      void main(){ vUv = uv; vN = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
+    fragmentShader: `uniform sampler2D tex; varying vec2 vUv; varying vec3 vN;
+      void main(){ float edge = smoothstep(0.0, 0.45, vN.z); vec4 t = texture2D(tex, vUv); ${fragment} }`,
+    transparent: true,
+    depthWrite: false,
+    // Additive layers only add light: they must not write alpha, or empty edge pixels turn into a black ring.
+    ...(additive
+      ? { blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneFactor, blendSrcAlpha: THREE.ZeroFactor, blendDstAlpha: THREE.OneFactor }
+      : { blending: THREE.NormalBlending }),
+  }));
   const loader = new THREE.TextureLoader();
   // Continents as soft blue-grey shapes
   const landTex = track(loader.load('/textures/earth-land.png'));
   globe.add(new THREE.Mesh(track(new THREE.SphereGeometry(R * 1.002, 96, 96)),
-    track(new THREE.MeshBasicMaterial({ color: 0x5a7bbd, alphaMap: landTex, transparent: true, opacity: 0.42, depthWrite: false }))));
+    feathered(landTex, 'gl_FragColor = vec4(0.36, 0.48, 0.74, t.g * 0.42 * edge);', false)));
   // City lights (NASA "Earth at night")
   const lightsTex = track(loader.load('/textures/earth-lights.png'));
-  lightsTex.colorSpace = THREE.SRGBColorSpace;
   globe.add(new THREE.Mesh(track(new THREE.SphereGeometry(R * 1.004, 96, 96)),
-    track(new THREE.MeshBasicMaterial({ map: lightsTex, color: 0xffd9a0, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }))));
+    feathered(lightsTex, 'gl_FragColor = vec4(t.rgb * vec3(1.0, 0.86, 0.63) * edge, 1.0);', true)));
 
   const resize = () => {
     renderer.setSize(canvas.clientWidth || window.innerWidth, canvas.clientHeight || window.innerHeight, false);
