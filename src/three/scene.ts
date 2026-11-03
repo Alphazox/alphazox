@@ -51,7 +51,7 @@ export function createScene(canvas: HTMLCanvasElement): () => void {
         float rim = pow(1.0 - clamp(vN.z, 0.0, 1.0), 2.2);
         float light = clamp(dot(vN, normalize(vec3(-0.35, 0.55, 0.75))), 0.0, 1.0);
         vec3 col = mix(vec3(0.02, 0.05, 0.15), vec3(0.08, 0.17, 0.40), light * 0.55);
-        col = mix(col, vec3(0.30, 0.52, 0.95), rim * 0.55);
+        col = mix(col, vec3(0.10, 0.20, 0.42), rim * 0.35); // soft edge, no bright border
         gl_FragColor = vec4(col, 1.0);
       }`,
   }))));
@@ -66,13 +66,6 @@ export function createScene(canvas: HTMLCanvasElement): () => void {
   lightsTex.colorSpace = THREE.SRGBColorSpace;
   globe.add(new THREE.Mesh(track(new THREE.SphereGeometry(R * 1.004, 96, 96)),
     track(new THREE.MeshBasicMaterial({ map: lightsTex, color: 0xffd9a0, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }))));
-
-  // Atmosphere glow around the edge
-  world.add(new THREE.Mesh(track(new THREE.SphereGeometry(R * 1.07, 96, 96)), track(new THREE.ShaderMaterial({
-    vertexShader: `varying vec3 vN; void main(){ vN = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
-    fragmentShader: `varying vec3 vN; void main(){ float f = pow(1.0 - abs(vN.z), 3.0); gl_FragColor = vec4(0.45, 0.7, 1.0, f * 0.9); }`,
-    transparent: true, blending: THREE.AdditiveBlending, side: THREE.BackSide, depthWrite: false,
-  }))));
 
   // Network: glowing hubs linked by arcs, with light pulses travelling along them
   const toVec = (lat: number, lon: number, r = R) => {
