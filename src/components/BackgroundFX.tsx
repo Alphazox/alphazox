@@ -68,10 +68,12 @@ export const BackgroundFX: React.FC = () => {
     <div className="bgfx" aria-hidden="true">
       {is3d ? (
         <>
-          {/* Night sky → turning 3D globe → real skyline photo in front (its sky fades out) */}
-          <div className="bgfx-sky" />
-          <canvas ref={canvasRef} className="bgfx-canvas" />
-          <div className="bgfx-skyline" />
+          {/* Background image → rotating 3D globe drawn over its globe → skyline cut-out in front */}
+          <div className="bgfx-stage">
+            <div className="bgfx-globe-img" />
+            <canvas ref={canvasRef} className="bgfx-canvas" />
+            <div className="bgfx-globe-img bgfx-fore" />
+          </div>
           <div className="bgfx-vignette" />
           <div className="bgfx-shade" />
         </>
