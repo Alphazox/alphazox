@@ -72,8 +72,9 @@
 .hero-visual {
   position: relative;
   min-height: 520px;
-  /* Sits the photo (and its status badges) a little higher, level with the headline */
-  translate: 0 -60px;
+  /* Lines the photo (and its status badges) up with the top of the "Build the" headline */
+  align-self: start;
+  margin-top: -10px;
 }
 .hero-photo {
   /* Matches the photo's 3:2 shape so nobody's head gets cropped */
