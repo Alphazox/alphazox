@@ -125,10 +125,10 @@ if (!fs.existsSync(OUTBOX_FILE)) {
 
 // ─── Recipient: all form submissions notify this address ─────────────────────
 const RECIPIENT_EMAIL = 'support@alphazox.com';
-const CC_EMAIL = process.env.SMTP_USER || 'prasanthibolla29@gmail.com'; // CC as backup
+const CC_EMAIL = process.env.SMTP_USER || ''; // CC as backup
 
 // Function to dispatch email
-async function sendEmail(subject, htmlContent, data) {
+async function sendEmail(subject, htmlContent, data, attachments = []) {
   // NOTE: Gmail SMTP requires the 'from' address to exactly match the
   // authenticated SMTP_USER account. Using any other domain (e.g. alphazox.com)
   // will cause DMARC/SPF failures and silent delivery drops.
@@ -138,10 +138,11 @@ async function sendEmail(subject, htmlContent, data) {
   const mailOptions = {
     from: `"ALPHAZOX Web Inquiries" <${senderEmail}>`,
     to: RECIPIENT_EMAIL,
-    cc: CC_EMAIL !== RECIPIENT_EMAIL ? CC_EMAIL : undefined,
+    cc: CC_EMAIL && CC_EMAIL !== RECIPIENT_EMAIL ? CC_EMAIL : undefined,
     replyTo: data.email || senderEmail,
     subject,
     html: htmlContent,
+    ...(attachments.length > 0 ? { attachments } : {}),
   };
 
   // Always save a local copy to outbox for backup / audit
@@ -154,6 +155,7 @@ async function sendEmail(subject, htmlContent, data) {
       replyTo: mailOptions.replyTo,
       subject: mailOptions.subject,
       html: mailOptions.html,
+      attachments: attachments.map(({ filename }) => ({ filename })),
       timestamp: new Date().toISOString()
     });
     fs.writeFileSync(OUTBOX_FILE, JSON.stringify(outbox, null, 2), 'utf-8');
@@ -308,7 +310,11 @@ async function sendCareerEmail(careerData) {
         </div>
       </div>
     `;
-  await sendEmail(subject, html, careerData);
+  const attachments = careerData.resumeFile ? [{
+    filename: careerData.resumeOriginalName || path.basename(careerData.resumeFile),
+    path: path.join(uploadDir, path.basename(careerData.resumeFile)),
+  }] : [];
+  await sendEmail(subject, html, careerData, attachments);
 }
 
 async function sendSubscribeEmail(subscriberData) {
@@ -358,8 +364,27 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage,
-  limits: { fileSize: 10 * 1024 * 1024 } // 10MB
+  limits: { fileSize: 10 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    const extension = path.extname(file.originalname).toLowerCase();
+    if (['.pdf', '.doc', '.docx'].includes(extension)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Please upload a PDF or Word document.'));
+    }
+  },
 });
+
+const parseCareerResume = (req, res, next) => {
+  upload.single('resume')(req, res, (error) => {
+    if (!error) return next();
+    const status = error.code === 'LIMIT_FILE_SIZE' ? 413 : 400;
+    const message = error.code === 'LIMIT_FILE_SIZE'
+      ? 'Resume must be 10 MB or smaller.'
+      : error.message;
+    return res.status(status).json({ success: false, error: message });
+  });
+};
 
 // ─── API: Contact Submission (General) ───────────────────────────────────────
 
@@ -430,9 +455,13 @@ app.post('/api/quote', async (req, res) => {
 
 // ─── API: Careers Submission ─────────────────────────────────────────────────
 
-app.post('/api/careers', upload.single('resume'), async (req, res) => {
+app.post('/api/careers', parseCareerResume, async (req, res) => {
   const { name, email, phone, location, position, experienceLevel, technicalSkills, githubProfile, coverLetter } = req.body;
   const file = req.file;
+
+  if (!file) {
+    return res.status(400).json({ success: false, error: 'Please attach your resume.' });
+  }
 
   if (!name || !email || !phone || !location || !position || !experienceLevel || !technicalSkills || !coverLetter) {
     return res.status(400).json({ success: false, error: 'All fields except GitHub profile are required.' });
@@ -524,7 +553,21 @@ app.post('/api/chatbot', (req, res) => {
   const query = message.toLowerCase();
   let reply = '';
 
-  if (query.includes('hello') || query.includes('hi') || query.includes('hey')) {
+  if (query.includes('platform') || query.includes('technolog') || query.includes('stack')) {
+    reply = "We build on the platform that fits your problem: **.NET** (ASP.NET Core, C#, Azure), **Java** (Spring Boot, microservices, Kafka), **Low-Code** (OutSystems, Mendix, Power Apps) and **Cloud & Data** (AWS, Azure, Google Cloud). See our Platforms page for details.";
+  } else if (query.includes('low-code') || query.includes('low code') || query.includes('lowcode') || query.includes('outsystems') || query.includes('mendix')) {
+    reply = "Our low-code teams deliver portals, workflows and internal apps fast on **OutSystems, Mendix and Microsoft Power Apps**, with a working prototype in weeks. Platform fit is confirmed during discovery.";
+  } else if (query.includes('.net') || query.includes('dotnet') || query.includes('java')) {
+    reply = "We build enterprise applications and APIs on **.NET** (ASP.NET Core, C#, Azure) and **Java** (Spring Boot, microservices, Kafka), including modernizing older .NET Framework and Java applications.";
+  } else if (query.includes('moderniz') || query.includes('modernis') || query.includes('legacy') || query.includes('migrat')) {
+    reply = "Our Legacy Modernization service re-platforms, re-architects or wraps ageing systems with new APIs and interfaces, migrating data in phases so operations never stop.";
+  } else if (query.includes('integration') || query.includes('api')) {
+    reply = "We connect ERP, CRM, core and third-party systems with secure, documented APIs and integration flows, monitored after go-live.";
+  } else if (query.includes('testing') || query.includes('qa') || query.includes('quality')) {
+    reply = "Our Testing & QA covers functional, automation, performance and security testing, built into your CI/CD pipeline so every release is verified.";
+  } else if (query.includes('training')) {
+    reply = "We offer Training & Support after go-live: end-user and developer training, SLA-based application support and continuous improvement.";
+  } else if (query.includes('hello') || query.includes('hi') || query.includes('hey')) {
     reply = "Hello! I am ALPHAZOX's virtual assistant. How can I help you transform your business today? You can ask me about our 45 services, industries we serve, careers, global capability centers (GCC), or how to contact us.";
   } else if (query.includes('service') || query.includes('what do you do') || query.includes('offerings') || query.includes('45')) {
     reply = "ALPHAZOX offers 45 comprehensive services across 9 practice areas:\n\n" +
@@ -552,8 +595,8 @@ app.post('/api/chatbot', (req, res) => {
   } else if (query.includes('contact') || query.includes('phone') || query.includes('email') || query.includes('office')) {
     reply = "You can reach ALPHAZOX at:\n\n" +
       "• **US Office**: Austin, TX | Phone: +1 (716) 939-6514 (Meet by Appointment Only)\n" +
-      "• **India Offices**: Hyderabad & Visakhapatnam | Phone: +91-991-991-8458 or +91-868-888-8458\n" +
-      "• **Email**: info@alphazox.com\n\n" +
+      "• **India Offices**: Hyderabad & Visakhapatnam | Phone: +91 81259 50099\n" +
+      "• **Email**: support@alphazox.com\n\n" +
       "Feel free to submit a query through our Contact section!";
   } else if (query.includes('career') || query.includes('job') || query.includes('apply') || query.includes('work')) {
     reply = "We are always looking for talented minds to join our team at ALPHAZOX! We foster a performance-driven culture with equal growth opportunities. Please visit our **Careers** section to view open positions and submit your CV.";

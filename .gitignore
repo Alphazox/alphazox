@@ -29,3 +29,6 @@ server/data
 *.njsproj
 *.sln
 *.sw?
+
+# Local backup of the previous frontend
+_legacy/

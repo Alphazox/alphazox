@@ -1,0 +1,63 @@
+.bgfx {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: radial-gradient(1200px 800px at 50% -10%, #0b1430 0%, var(--bg) 60%);
+}
+
+.bgfx-parallax {
+  position: absolute;
+  inset: -6% 0;
+  transform: translate3d(0, calc(var(--scroll, 0) * -0.04px), 0);
+  will-change: transform;
+}
+
+/* The page's photo: fades in on navigation and drifts slowly (Ken Burns) */
+.bgfx-photo {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  animation: photoIn 1.2s ease both, photoDrift 30s ease-in-out infinite alternate;
+}
+@keyframes photoIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes photoDrift { from { transform: scale(1.08); } to { transform: scale(1); } }
+
+/* Brand tint: keeps the photo visible behind the hero while text stays readable */
+.bgfx-tint {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(4, 6, 13, 0.55) 0%, rgba(4, 6, 13, 0.72) 55%, rgba(4, 6, 13, 0.9) 100%),
+    linear-gradient(120deg, rgba(34, 211, 238, 0.14), rgba(139, 92, 246, 0.16) 60%, rgba(236, 72, 153, 0.08));
+}
+
+/* Deepens after the hero so long content sits on a calm, dark backdrop */
+.bgfx-shade {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 6, 13, 0.82);
+  opacity: min(calc(var(--scroll, 0) / 700), 1);
+}
+
+.bgfx-noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  z-index: 2000;
+  background: var(--grad);
+  transform-origin: left;
+  transform: scaleX(var(--progress, 0));
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.7);
+}

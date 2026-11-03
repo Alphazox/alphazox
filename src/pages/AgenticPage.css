@@ -1,0 +1,183 @@
+/* ── What is an agent ───────────────────────────────────── */
+.agent-what { display: grid; grid-template-columns: 1fr 1.1fr; gap: 56px; align-items: center; }
+.agent-what-copy h2 { font-size: clamp(1.9rem, 3.6vw, 3rem); margin-bottom: 20px; }
+.agent-what-copy p { color: var(--muted); font-size: 1.06rem; margin-bottom: 16px; }
+
+.compare { padding: 10px; overflow-x: auto; }
+.compare table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+.compare th, .compare td { padding: 14px 16px; text-align: center; border-bottom: 1px solid var(--border); }
+.compare th { font-family: var(--font-head); font-weight: 600; color: var(--white); font-size: 0.9rem; }
+.compare td:first-child { text-align: left; color: var(--text); }
+.compare tr:last-child td { border-bottom: none; }
+.compare .hl { background: rgba(59, 130, 246, 0.1); }
+.compare th.hl { border-radius: 12px 12px 0 0; color: var(--cyan); }
+.compare .yes { color: var(--green); font-weight: 700; font-size: 1.1rem; }
+.compare .no { color: var(--muted); opacity: 0.6; }
+
+/* ── Lifecycle stepper ──────────────────────────────────── */
+.lifecycle { max-width: 1040px; margin: 0 auto; }
+.lifecycle-track {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 36px;
+}
+.lifecycle-track::before {
+  content: '';
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  right: 22px;
+  height: 2px;
+  background: var(--border-strong);
+}
+.lifecycle-bar {
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  height: 2px;
+  width: calc((100% - 44px) * var(--p, 0));
+  background: var(--grad);
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.8);
+  transition: width 0.6s var(--ease);
+}
+.lifecycle-node {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  color: var(--muted);
+}
+.lc-dot {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-weight: 700;
+  background: var(--bg-2);
+  border: 1px solid var(--border-strong);
+  transition: all 0.4s var(--ease);
+}
+.lc-label { font-size: 0.88rem; font-weight: 600; }
+.lifecycle-node.done .lc-dot { border-color: var(--cyan); color: var(--cyan); }
+.lifecycle-node.active { color: var(--white); }
+.lifecycle-node.active .lc-dot {
+  color: #fff;
+  background: var(--grad);
+  border-color: transparent;
+  transform: scale(1.12);
+  box-shadow: 0 0 30px -4px rgba(34, 211, 238, 0.9);
+}
+.lifecycle-panel {
+  padding: 36px 40px;
+  text-align: center;
+  animation: cardIn 0.5s var(--ease);
+}
+.lc-step { font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cyan); }
+.lifecycle-panel h3 { font-size: 2rem; margin: 8px 0 12px; }
+.lifecycle-panel p { color: var(--muted); font-size: 1.08rem; max-width: 640px; margin: 0 auto; }
+
+/* ── Capability explorer ────────────────────────────────── */
+.cap-explorer { display: grid; grid-template-columns: 0.9fr 1.3fr; gap: 28px; align-items: stretch; }
+.cap-list { display: grid; gap: 10px; align-content: start; }
+.cap-tab {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  font-family: var(--font-head);
+  font-size: 1.08rem;
+  font-weight: 600;
+  text-align: left;
+  transition: all 0.35s var(--ease);
+}
+.cap-tab:hover { color: var(--white); border-color: var(--border-strong); }
+.cap-tab.active {
+  color: var(--white);
+  border-color: rgba(59, 130, 246, 0.55);
+  background: linear-gradient(90deg, rgba(34, 211, 238, 0.12), rgba(139, 92, 246, 0.12));
+}
+.cap-tab-icon { font-size: 1.3rem; }
+.cap-tab-arrow { margin-left: auto; opacity: 0; transform: translateX(-6px); transition: all 0.3s var(--ease); color: var(--cyan); }
+.cap-tab.active .cap-tab-arrow { opacity: 1; transform: none; }
+
+.cap-detail { padding: 40px; }
+.cap-detail-inner { animation: cardIn 0.5s var(--ease); }
+.cap-detail h3 { font-size: 2rem; margin: 20px 0 12px; }
+.cap-summary { color: var(--muted); font-size: 1.08rem; margin-bottom: 8px; }
+.cap-detail .checklist { gap: 12px; margin-top: 22px; }
+.cap-detail .checklist li { font-size: 1rem; }
+
+/* ── Agents ─────────────────────────────────────────────── */
+.agent-card-icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  font-size: 1.6rem;
+  border-radius: 16px;
+  background: var(--grad-soft);
+  border: 1px solid rgba(34, 211, 238, 0.3);
+}
+.agent-card h3 { font-size: 1.15rem; }
+.agent-card p { font-size: 0.92rem; }
+
+/* ── Assessment ─────────────────────────────────────────── */
+.assessment {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 48px;
+  align-items: center;
+  padding: 56px;
+  border-color: var(--border-strong);
+  background:
+    radial-gradient(600px circle at 0% 0%, rgba(34, 211, 238, 0.14), transparent 60%),
+    radial-gradient(600px circle at 100% 100%, rgba(139, 92, 246, 0.2), transparent 60%),
+    var(--surface);
+}
+.assessment h2 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); margin-bottom: 16px; }
+.assessment p { color: var(--muted); margin-bottom: 28px; font-size: 1.05rem; }
+.assessment-steps { list-style: none; display: grid; gap: 14px; }
+.assessment-steps li {
+  display: flex;
+  gap: 16px;
+  padding: 18px 20px;
+  border-radius: var(--radius);
+  background: rgba(4, 6, 13, 0.5);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.assessment-steps strong { display: block; color: var(--white); font-family: var(--font-head); font-size: 1.1rem; }
+.assessment-steps span {
+  width: 36px; height: 36px;
+  flex-shrink: 0;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: var(--grad);
+  color: #fff;
+  font-weight: 700;
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .agent-what, .cap-explorer, .assessment { grid-template-columns: 1fr; }
+  .assessment { padding: 36px 24px; }
+}
+@media (max-width: 720px) {
+  .lifecycle-track { overflow-x: auto; gap: 18px; padding-bottom: 8px; justify-content: flex-start; }
+  .lifecycle-track::before, .lifecycle-bar { display: none; }
+  .lc-dot { width: 40px; height: 40px; }
+  .lifecycle-panel { padding: 28px 20px; }
+  .cap-detail { padding: 28px 20px; }
+  .compare th, .compare td { padding: 10px 8px; font-size: 0.8rem; }
+}

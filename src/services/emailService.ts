@@ -24,7 +24,6 @@ const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '';
 const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || '';
 const CONTACT_TEMPLATE  = import.meta.env.VITE_EMAILJS_CONTACT_TEMPLATE_ID || '';
 const QUOTE_TEMPLATE    = import.meta.env.VITE_EMAILJS_QUOTE_TEMPLATE_ID || '';
-const CAREER_TEMPLATE   = import.meta.env.VITE_EMAILJS_CAREER_TEMPLATE_ID || '';
 const SUBSCRIBE_TEMPLATE = import.meta.env.VITE_EMAILJS_SUBSCRIBE_TEMPLATE_ID || '';
 
 // Recipient email that will receive all form submissions
@@ -67,6 +66,7 @@ export interface CareerFormData {
   technicalSkills: string;
   githubProfile?: string;
   coverLetter: string;
+  resume: File;
 }
 
 export interface SubscribeFormData {
@@ -163,41 +163,26 @@ export async function sendQuoteEmail(data: QuoteFormData): Promise<{ success: bo
 // ─── Career Application Email ─────────────────────────────────────────────────
 export async function sendCareerEmail(data: CareerFormData): Promise<{ success: boolean; message: string }> {
   try {
+    const submission = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      if (value !== undefined) submission.append(key, value);
+    });
+
     const response = await fetch('/api/careers', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      body: submission,
     });
-    const result = await response.json();
-    if (result.success) {
-      return { success: true, message: result.message || `Application for ${data.position} submitted! Our HR team will review your profile.` };
+    const result = await response.json().catch(() => null);
+    if (!response.ok || !result?.success) {
+      return { success: false, message: result?.error || 'Failed to submit application. Please try again.' };
     }
+    return {
+      success: true,
+      message: result.message || `Application for ${data.position} submitted! Our HR team will review your profile.`,
+    };
   } catch {
-    // Backend unavailable
+    return { success: false, message: 'Could not submit your application. Please check your connection and try again.' };
   }
-
-  if (!isEmailJSConfigured()) {
-    return { success: true, message: `Application for ${data.position} submitted! Thank you, ${data.name}. Our HR team will review your profile.` };
-  }
-
-  const templateParams = {
-    to_email: RECIPIENT_EMAIL,
-    form_type: 'Career Application',
-    from_name: data.name,
-    from_email: data.email,
-    phone: data.phone,
-    location: data.location,
-    position: data.position,
-    experience_level: data.experienceLevel,
-    technical_skills: data.technicalSkills,
-    github_profile: data.githubProfile || 'N/A',
-    message: data.coverLetter,
-    submitted_at: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
-  };
-
-  const template = CAREER_TEMPLATE || CONTACT_TEMPLATE || SERVICE_ID;
-  await emailjs.send(SERVICE_ID, template, templateParams);
-  return { success: true, message: `Application for ${data.position} submitted successfully! Thank you, ${data.name}. Our HR team will review your profile.` };
 }
 
 // ─── Newsletter Subscription Email ───────────────────────────────────────────

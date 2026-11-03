@@ -1,202 +1,161 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
+import { NAV } from '../data/content';
+import { MEGA_MENUS, type MegaMenu } from '../data/menus';
+import { useDemo } from '../context/demo';
+import { Logo } from './Logo';
 import './Navbar.css';
 
-const navLinks = [
-  { label: 'Home', path: '/' },
-  { label: 'About Us', path: '/about' },
-  { label: 'Services', path: '/services' },
-  { label: 'Careers', path: '/careers' },
-  { label: 'Blog', path: '/blog' },
-  { label: 'Contact', path: '/contact' },
-];
-
 export const Navbar: React.FC = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLangOpen, setIsLangOpen] = useState(false);
-  const [lang, setLang] = useState('🇺🇸 American English');
-  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
-    const saved = localStorage.getItem('theme');
-    return (saved as 'dark' | 'light') || 'dark';
-  });
-  
-  const location = useLocation();
-  const langRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false);
+  const [mega, setMega] = useState<string | null>(null);
+  const [drawerSub, setDrawerSub] = useState<string | null>(null);
+  const { openDemo } = useDemo();
+  const { pathname } = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Toggle the class directly: no re-render on every scroll event. It lives on .nav-inner,
+    // whose className React never rewrites.
+    const onScroll = () => innerRef.current?.classList.toggle('is-scrolled', window.scrollY > 24);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Close mobile menu on route change
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [location.pathname]);
+  const close = () => { setOpen(false); setMega(null); };
+  // A mega item stays highlighted on any of its sub-pages.
+  const isActive = (path: string) => pathname === path || pathname.startsWith(`${path}/`);
 
-  // Handle Theme Toggle
-  useEffect(() => {
-    if (theme === 'light') {
-      document.body.classList.add('light-theme');
-    } else {
-      document.body.classList.remove('light-theme');
-    }
-    localStorage.setItem('theme', theme);
-  }, [theme]);
-
-  // Click outside language selector dropdown handler
-  useEffect(() => {
-    const handleOutsideClick = (e: MouseEvent) => {
-      if (langRef.current && !langRef.current.contains(e.target as Node)) {
-        setIsLangOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleOutsideClick);
-    return () => document.removeEventListener('mousedown', handleOutsideClick);
-  }, []);
-
-  const toggleTheme = () => {
-    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
-  };
+  const renderPanel = (menu: MegaMenu) => (
+    <div className={`mega cols-${menu.columns.length}`} role="menu">
+      {menu.columns.map(col => (
+        <div key={col.title} className="mega-col">
+          <h4>{col.title}</h4>
+          <ul className={col.grid ? 'mega-grid' : ''}>
+            {col.links.map(l => (
+              <li key={l.to + l.label}>
+                <Link to={l.to} onClick={close} className={l.desc ? 'mega-rich' : ''}>
+                  {l.icon && <span className="mega-link-icon">{l.icon}</span>}
+                  <span>
+                    {l.label}
+                    {l.desc && <small>{l.desc}</small>}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+          {col.more && <Link to={col.more.to} className="mega-more" onClick={close}>{col.more.label} <span>→</span></Link>}
+        </div>
+      ))}
+      <div className="mega-cards">
+        {menu.cards.map(c => {
+          const inner = (<><span className="mega-card-icon">{c.icon}</span><span>{c.label} <span className="arrow">→</span></span></>);
+          return c.to
+            ? <Link key={c.label} to={c.to} className="mega-card" onClick={close}>{inner}</Link>
+            : <button key={c.label} className="mega-card" onClick={() => { close(); openDemo(); }}>{inner}</button>;
+        })}
+      </div>
+    </div>
+  );
 
   return (
-    <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
-      <div className="navbar-container container">
-        {/* Brand Logo */}
-        <Link to="/" className="navbar-brand">
-          <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="brand-logo">
-            <path d="M 50 12 L 83 78 L 67 78 L 50 44 L 33 78 L 17 78 Z" fill="var(--logo-chevron)" />
-            <path d="M 50 51 L 61 74 L 39 74 Z" fill="url(#brand-grad)" />
-            <defs>
-              <linearGradient id="brand-grad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#0356CC" />
-                <stop offset="100%" stopColor="#4B8FFF" />
-              </linearGradient>
-            </defs>
-          </svg>
-          <span className="brand-name">ALPHAZO<span className="brand-x">X</span></span>
+    <header className={`nav ${open ? 'nav-open' : ''}`}>
+      <div ref={innerRef} className="nav-inner">
+        <Link to="/" className="nav-brand" onClick={close} aria-label="ALPHAZOX home">
+          <Logo />
         </Link>
 
-        {/* Desktop Navigation */}
-        <ul className="navbar-menu">
-          {navLinks.map(link => (
-            <li key={link.path} className="navbar-item">
-              <Link
-                to={link.path}
-                className={`navbar-link ${location.pathname === link.path ? 'active' : ''}`}
+        <nav className="nav-links" aria-label="Main">
+          {NAV.map(item => {
+            const menu = MEGA_MENUS[item.path];
+            if (!menu) {
+              return (
+                <NavLink key={item.path} to={item.path} className={({ isActive: a }) => `nav-link ${a ? 'active' : ''}`}>
+                  {item.label}
+                </NavLink>
+              );
+            }
+            const isOpen = mega === item.path;
+            return (
+              <div
+                key={item.path}
+                className={`nav-item ${isOpen ? 'mega-open' : ''}`}
+                onMouseEnter={() => setMega(item.path)}
+                onMouseLeave={() => setMega(null)}
               >
-                {link.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
+                <button
+                  className={`nav-link nav-mega-btn ${isActive(item.path) ? 'active' : ''}`}
+                  aria-expanded={isOpen}
+                  aria-haspopup="true"
+                  onClick={() => setMega(isOpen ? null : item.path)}
+                >
+                  {item.label} <span className="nav-caret" aria-hidden="true" />
+                </button>
+                {renderPanel(menu)}
+              </div>
+            );
+          })}
+        </nav>
 
-        <div className="navbar-actions">
-          {/* Language Selector Dropdown */}
-          <div className="lang-selector" ref={langRef}>
-            <button className="lang-btn" onClick={() => setIsLangOpen(!isLangOpen)} aria-label="Select Language">
-              <span className="lang-flag">{lang.split(' ')[0]}</span>
-              <span className="lang-text">{lang.split(' ')[1]}</span>
-              <span className="lang-arrow">{isLangOpen ? '▲' : '▼'}</span>
-            </button>
-            {isLangOpen && (
-              <ul className="lang-dropdown">
-                {['🇺🇸 American English', '🇬🇧 British English', '🇦🇺 Australian English', '🇨🇦 Canadian English'].map(l => (
-                  <li 
-                    key={l} 
-                    className={lang === l ? 'active' : ''} 
-                    onClick={() => { setLang(l); setIsLangOpen(false); }}
-                  >
-                    <span className="lang-flag">{l.split(' ')[0]}</span>
-                    <span>{l.split(' ').slice(1).join(' ')}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          {/* Theme Toggle Button */}
-          <button 
-            onClick={toggleTheme} 
-            className="theme-toggle-btn" 
-            aria-label="Toggle Theme"
-          >
-            {theme === 'dark' ? '☀️' : '🌙'}
+        <div className="nav-actions">
+          <button className="btn btn-primary btn-sm nav-cta" onClick={openDemo}>
+            Book a demo <span className="arrow">→</span>
           </button>
-
-          <Link to="/quote" className="btn btn-primary btn-sm nav-cta">
-            Get A Quote
-          </Link>
-
-          {/* Mobile Hamburger */}
-          <button
-            className={`mobile-menu-toggle ${isMobileMenuOpen ? 'open' : ''}`}
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle Navigation"
-          >
-            <span></span>
-            <span></span>
-            <span></span>
+          <button className="nav-burger" onClick={() => setOpen(!open)} aria-label="Toggle menu" aria-expanded={open}>
+            <span /><span />
           </button>
         </div>
       </div>
 
-      {/* Mobile Drawer */}
-      <div className={`navbar-mobile-drawer ${isMobileMenuOpen ? 'open' : ''}`}>
-        <ul className="navbar-mobile-menu">
-          {navLinks.map(link => (
-            <li key={link.path} className="navbar-mobile-item">
-              <Link
-                to={link.path}
-                className={`navbar-mobile-link ${location.pathname === link.path ? 'active' : ''}`}
+      <div className="nav-drawer">
+        {NAV.map((item, i) => {
+          const menu = MEGA_MENUS[item.path];
+          const style = { '--i': i } as React.CSSProperties;
+          if (!menu) {
+            return (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                onClick={close}
+                className={({ isActive: a }) => `drawer-link ${a ? 'active' : ''}`}
+                style={style}
               >
-                {link.label}
-              </Link>
-            </li>
-          ))}
-          
-          {/* Mobile Language Selector */}
-          <li className="navbar-mobile-item" style={{ borderBottom: '1px solid var(--border-color)', padding: '0.75rem 0' }}>
-            <span style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-main)' }}>Language</span>
-            <div className="mobile-lang-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginTop: '0.75rem' }}>
-              {['🇺🇸 American', '🇬🇧 British', '🇦🇺 Australian', '🇨🇦 Canadian'].map((l, i) => {
-                const fullNames = ['🇺🇸 American English', '🇬🇧 British English', '🇦🇺 Australian English', '🇨🇦 Canadian English'];
-                const fullName = fullNames[i];
-                return (
-                  <button 
-                    key={fullName} 
-                    className={`btn ${lang === fullName ? 'btn-primary' : 'btn-secondary'} btn-sm`}
-                    style={{ padding: '0.4rem', fontSize: '0.75rem', justifyContent: 'center' }}
-                    onClick={() => setLang(fullName)}
-                  >
-                    {l}
-                  </button>
-                );
-              })}
+                <span className="drawer-num">0{i + 1}</span>
+                {item.label}
+              </NavLink>
+            );
+          }
+          const subOpen = drawerSub === item.path;
+          return (
+            <div key={item.path} className="drawer-group" style={style}>
+              <button
+                className={`drawer-link ${isActive(item.path) ? 'active' : ''}`}
+                onClick={() => setDrawerSub(subOpen ? null : item.path)}
+                aria-expanded={subOpen}
+              >
+                <span className="drawer-num">0{i + 1}</span>
+                {item.label}
+                <span className={`drawer-plus ${subOpen ? 'on' : ''}`} aria-hidden="true">+</span>
+              </button>
+              {subOpen && (
+                <div className="drawer-sub">
+                  {menu.columns.map(col => (
+                    <div key={col.title}>
+                      <h4>{col.title}</h4>
+                      {col.links.map(l => <Link key={l.to + l.label} to={l.to} onClick={close}>{l.label}</Link>)}
+                      {col.more && <Link to={col.more.to} onClick={close}>{col.more.label} →</Link>}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
-          </li>
-
-          <li className="navbar-mobile-item" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem 0', borderBottom: '1px solid var(--border-color)' }}>
-            <span style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-main)' }}>Switch Theme</span>
-            <button 
-              onClick={toggleTheme} 
-              className="theme-toggle-btn" 
-              style={{ fontSize: '1.5rem', background: 'transparent', border: 'none', cursor: 'pointer' }}
-            >
-              {theme === 'dark' ? '☀️' : '🌙'}
-            </button>
-          </li>
-          <li className="navbar-mobile-item">
-            <Link to="/quote" className="btn btn-primary w-full">
-              Get A Quote
-            </Link>
-          </li>
-        </ul>
+          );
+        })}
+        <button className="btn btn-primary drawer-cta" onClick={() => { close(); openDemo(); }}>
+          Book a demo <span className="arrow">→</span>
+        </button>
       </div>
-    </nav>
+    </header>
   );
 };
-
-export default Navbar;
