@@ -1,6 +1,11 @@
 .bgfx {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* Largest viewport height: the layer doesn't resize (and "zoom") when a phone's address bar hides */
+  height: 100vh;
+  height: 100lvh;
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
@@ -18,6 +23,7 @@
 .bgfx-photo {
   position: absolute;
   inset: 0;
+  background-image: var(--bg);
   background-size: cover;
   background-position: center;
   animation: photoIn 1.2s ease both, photoDrift 30s ease-in-out infinite alternate;
@@ -40,6 +46,12 @@
   inset: 0;
   background: rgba(4, 6, 13, 0.82);
   opacity: min(calc(var(--scroll, 0) / 700), 1);
+}
+
+/* Phones: portrait photo that fits the screen, no drift zoom and no parallax */
+@media (max-width: 768px) {
+  .bgfx-parallax { inset: 0; transform: none; }
+  .bgfx-photo { background-image: var(--bg-m); animation: photoIn 1.2s ease both; }
 }
 
 .bgfx-noise {

@@ -119,6 +119,13 @@
 .sd-more-link:hover { border-color: rgba(34, 211, 238, 0.5); color: var(--white); transform: translateY(-2px); }
 .sd-more-link:hover span { transform: translateX(4px); }
 
+@media (max-width: 600px) {
+  .sd-stack { padding: 24px; }
+  .sd-photo { margin: -24px -24px 22px; height: 190px; }
+  .sd-stack-cloud { gap: 8px; margin: 16px 0; }
+  .sd-stack-cloud span { padding: 7px 13px; font-size: 0.85rem; }
+}
+
 @media (max-width: 1024px) {
   .sd-outcomes, .sd-start { grid-template-columns: 1fr; gap: 32px; }
   .sd-outcomes-head { position: static; }

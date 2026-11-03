@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { photo, photoForPath } from '../data/photos';
+import { photo, photoForPath, photoMobile } from '../data/photos';
 import './BackgroundFX.css';
 
 // Fixed, full-screen backdrop: a real photograph chosen per page, darkened by a brand tint that
@@ -8,7 +8,8 @@ import './BackgroundFX.css';
 // and drives card spotlights.
 export const BackgroundFX: React.FC = () => {
   const { pathname } = useLocation();
-  const src = photo(photoForPath(pathname));
+  const name = photoForPath(pathname);
+  const bg = { '--bg': `url(${photo(name)})`, '--bg-m': `url(${photoMobile(name)})` } as React.CSSProperties;
 
   useEffect(() => {
     const onScroll = () => {
@@ -42,7 +43,7 @@ export const BackgroundFX: React.FC = () => {
     <div className="bgfx" aria-hidden="true">
       <div className="bgfx-parallax">
         {/* Keyed by image so each page's photo fades in fresh */}
-        <div key={src} className="bgfx-photo" style={{ backgroundImage: `url(${src})` }} />
+        <div key={name} className="bgfx-photo" style={bg} />
       </div>
       <div className="bgfx-tint" />
       <div className="bgfx-shade" />
