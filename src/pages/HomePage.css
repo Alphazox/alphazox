@@ -79,11 +79,11 @@
 .hero-photo {
   /* Matches the photo's 3:2 shape so nobody's head gets cropped */
   position: absolute;
-  top: 50%;
+  /* Top edge level with the "Build the" headline (76px below the top of this column), at every width */
+  top: 76px;
   left: 30px;
   right: 0;
   aspect-ratio: 3 / 2;
-  translate: 0 -50%;
   border-radius: 28px;
   overflow: hidden;
   border: 1px solid var(--border-strong);
