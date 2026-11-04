@@ -144,8 +144,8 @@ export const PLATFORM_CAPABILITIES: SolutionDetail[] = [
     icon: '☁️',
     name: 'Cloud, DevOps & monitoring',
     eyebrow: 'Cloud, DevOps & monitoring',
-    title: 'Release often, sleep well.',
-    highlight: 'sleep well',
+    title: 'Reliable cloud and DevOps for every app you run.',
+    highlight: 'cloud and DevOps',
     summary: 'Cloud foundations, automated pipelines and monitoring that keep apps and agents fast, reliable and cost-efficient in production.',
     outcomes: [
       'Releases that take minutes, with automatic rollback if something fails',

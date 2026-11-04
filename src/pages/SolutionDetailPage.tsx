@@ -11,7 +11,7 @@ import { GOVERNANCE } from '../data/content';
 import { INDUSTRY_DETAILS, INITIATIVE_DETAILS, WHY_US, type SolutionDetail } from '../data/solutions';
 import { PLATFORM_DETAILS } from '../data/platform';
 import { DETAIL_EXTRAS } from '../data/details-extra';
-import { photoSm } from '../data/photos';
+import { photoInline } from '../data/photos';
 import NotFoundPage from './NotFoundPage';
 import './SolutionDetailPage.css';
 
@@ -63,7 +63,7 @@ const SolutionDetailPage: React.FC<{ kind: Kind }> = ({ kind }) => {
               {x.intro.map(p => <p key={p}>{p}</p>)}
             </Reveal>
             <Reveal delay={0.1} className="glass sd-stack">
-              <div className="sd-photo"><img src={photoSm(d.slug)} alt={d.name} loading="lazy" /></div>
+              <div className="sd-photo"><img src={photoInline(d.slug)} alt={d.name} loading="lazy" /></div>
               <span className="eyebrow">Technologies we use</span>
               <div className="sd-stack-cloud">
                 {x.stack.map((t, i) => <span key={t} style={{ '--i': i } as React.CSSProperties}>{t}</span>)}
