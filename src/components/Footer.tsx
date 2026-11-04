@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { INDUSTRIES, OFFICES, SITE } from '../data/content';
+import { INDUSTRIES, SITE } from '../data/content';
 import { Logo } from './Logo';
 import './Footer.css';
 
@@ -62,24 +62,6 @@ export const Footer: React.FC = () => (
               ))}
             </ul>
           </div>
-        ))}
-      </div>
-
-      <div className="footer-offices">
-        {OFFICES.map(o => (
-          <address key={o.city} className="footer-office">
-            <span className="footer-office-pin" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z" />
-                <circle cx="12" cy="10" r="2.5" />
-              </svg>
-            </span>
-            <div>
-              <h4>{o.label}</h4>
-              <p>{o.address}</p>
-              <a href={o.phoneHref}>{o.phone}</a>
-            </div>
-          </address>
         ))}
       </div>
 
