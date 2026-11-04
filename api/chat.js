@@ -1,16 +1,17 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { KNOWLEDGE } from './_knowledge.js';
 import { answerFromSite } from './_answer.js';
+import { askGemini } from './_gemini.js';
 import { rateLimit } from './_lib.js';
 
 /**
  * POST /api/chat
  * Body: { messages: [{ role: 'user' | 'assistant', content: string }, ...] }
  * Answers website visitors from the site's own content (api/_knowledge.js).
- * With ANTHROPIC_API_KEY set, Claude writes the answers; without it (or if the API is unavailable)
+ * Claude answers when ANTHROPIC_API_KEY is set, otherwise Gemini when GEMINI_API_KEY is set; without either (or if both fail)
  * the built-in search over the website content answers instead (api/_answer.js).
  *
- * Env: ANTHROPIC_API_KEY (optional), CHAT_MODEL (optional, defaults to claude-opus-5-5).
+ * Env: ANTHROPIC_API_KEY + CHAT_MODEL (optional, Claude), GEMINI_API_KEY + GEMINI_MODEL (optional, Gemini free tier).
  */
 
 const MODEL = process.env.CHAT_MODEL || 'claude-opus-5-5';
@@ -63,11 +64,19 @@ export default async function handler(req, res) {
   const messages = cleanHistory(req.body?.messages);
   if (!messages) return res.status(400).json({ success: false, error: 'Please type a question.' });
 
-  if (!process.env.ANTHROPIC_API_KEY && !process.env.ANTHROPIC_AUTH_TOKEN) {
-    // No Claude key: answer from the website content instead.
-    return res.status(200).json({ success: true, reply: answerFromSite(messages), source: 'site' });
+  // Order: Claude (if a key is set) → Gemini free tier (if a key is set) → search over the website content.
+  if (process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_AUTH_TOKEN) {
+    const reply = await askClaude(messages);
+    if (reply) return res.status(200).json({ success: true, reply, source: 'claude' });
   }
+  const gemini = await askGemini(SYSTEM[0].text, messages);
+  if (gemini) return res.status(200).json({ success: true, reply: gemini, source: 'gemini' });
 
+  return res.status(200).json({ success: true, reply: answerFromSite(messages), source: 'site' });
+}
+
+/** Returns Claude's reply, or null if Claude is unavailable (the caller then tries the next option). */
+async function askClaude(messages) {
   try {
     const response = await getClient().beta.messages.create({
       model: MODEL,
@@ -81,10 +90,7 @@ export default async function handler(req, res) {
     });
 
     if (response.stop_reason === 'refusal') {
-      return res.status(200).json({
-        success: true,
-        reply: "Sorry, I can't help with that. I'm happy to answer questions about ALPHAZOX's services, careers or how to contact us.",
-      });
+      return "Sorry, I can't help with that. I'm happy to answer other questions, or tell you about ALPHAZOX's services, careers and how to contact us.";
     }
 
     const reply = response.content
@@ -94,21 +100,17 @@ export default async function handler(req, res) {
       .trim();
 
     if (!reply) throw new Error(`Empty reply (stop_reason: ${response.stop_reason})`);
-    return res.status(200).json({ success: true, reply });
+    return reply;
   } catch (err) {
     if (err instanceof Anthropic.RateLimitError) {
       console.error('[Chat] Anthropic rate limit:', err.message);
-      return res.status(200).json({ success: true, reply: answerFromSite(messages), source: 'site' });
-    }
-    if (err instanceof Anthropic.AuthenticationError) {
+    } else if (err instanceof Anthropic.AuthenticationError) {
       console.error('[Chat] Invalid ANTHROPIC_API_KEY.');
-      return res.status(200).json({ success: true, reply: answerFromSite(messages), source: 'site' });
-    }
-    if (err instanceof Anthropic.APIError) {
+    } else if (err instanceof Anthropic.APIError) {
       console.error(`[Chat] API error ${err.status}:`, err.message);
     } else {
       console.error('[Chat] Error:', err);
     }
-    return res.status(200).json({ success: true, reply: answerFromSite(messages), source: 'site' });
+    return null;
   }
 }

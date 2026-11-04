@@ -118,11 +118,12 @@ PORT=8080
 |---|---|---|
 | `SMTP_USER`, `SMTP_PASS` | Yes | Sending the Careers, Contact and Book-a-demo forms by email (Gmail address + Gmail App Password). Without them the forms show "Email service is not configured". |
 | `SMTP_HOST`, `SMTP_PORT` | No | Defaults: `smtp.gmail.com`, `587`. |
-| `ANTHROPIC_API_KEY` | Yes, for the chatbot | The "Alpha" assistant (`/api/chat`, Claude). Without it the widget falls back to a few built-in answers. |
-| `CHAT_MODEL` | No | Claude model for the chatbot. Default `claude-opus-5-5`. |
+| `GEMINI_API_KEY` | Recommended | Free AI answers for the chatbot (Google AI Studio key). |
+| `ANTHROPIC_API_KEY` | Optional | Paid alternative: Claude answers the chatbot when set (used before Gemini). |
+| `CHAT_MODEL`, `GEMINI_MODEL` | No | Override the Claude / Gemini model. |
 | `ADMIN_TOKEN` | Only for `server/server.js` | Protects `/api/admin/*` (send `Authorization: Bearer <token>`). |
 
-The chatbot answers from the site's own copy in `src/data`. `npm run build` regenerates its knowledge
+Without any AI key, the chatbot still answers from a search over the site copy. The chatbot answers from the site's own copy in `src/data`. `npm run build` regenerates its knowledge
 file (`api/_knowledge.js`); run `npm run knowledge` after editing site copy if you deploy without a build.
 
 Form endpoints are rate-limited per IP in code (best effort per server instance). For a hard limit across
