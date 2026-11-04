@@ -139,7 +139,7 @@ export default async function handler(req, res) {
     console.log(`[Careers] Email sent to ${MAIL_TO.join(', ')} from ${raw.email}`);
     return res.status(200).json({
       success: true,
-      message: `Application for ${raw.position} submitted successfully! Thank you, ${raw.name}. Our HR team will review your profile.`,
+      message: `Application for ${raw.position} submitted successfully! Our HR team will review your profile and get in touch.`,
     });
   } catch (err) {
     console.error('[Careers] Email error:', err.message);

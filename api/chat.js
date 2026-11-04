@@ -1,13 +1,16 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { KNOWLEDGE } from './_knowledge.js';
+import { answerFromSite } from './_answer.js';
 import { rateLimit } from './_lib.js';
 
 /**
  * POST /api/chat
  * Body: { messages: [{ role: 'user' | 'assistant', content: string }, ...] }
- * Answers website visitors with Claude, grounded in the site's own content (api/_knowledge.js).
+ * Answers website visitors from the site's own content (api/_knowledge.js).
+ * With ANTHROPIC_API_KEY set, Claude writes the answers; without it (or if the API is unavailable)
+ * the built-in search over the website content answers instead (api/_answer.js).
  *
- * Env: ANTHROPIC_API_KEY (required), CHAT_MODEL (optional, defaults to claude-opus-5-5).
+ * Env: ANTHROPIC_API_KEY (optional), CHAT_MODEL (optional, defaults to claude-opus-5-5).
  */
 
 const MODEL = process.env.CHAT_MODEL || 'claude-opus-5-5';
@@ -61,8 +64,8 @@ export default async function handler(req, res) {
   if (!messages) return res.status(400).json({ success: false, error: 'Please type a question.' });
 
   if (!process.env.ANTHROPIC_API_KEY && !process.env.ANTHROPIC_AUTH_TOKEN) {
-    console.error('[Chat] ANTHROPIC_API_KEY is not set.');
-    return res.status(503).json({ success: false, fallback: true, error: 'The assistant is not configured.' });
+    // No Claude key: answer from the website content instead.
+    return res.status(200).json({ success: true, reply: answerFromSite(messages), source: 'site' });
   }
 
   try {
@@ -95,17 +98,17 @@ export default async function handler(req, res) {
   } catch (err) {
     if (err instanceof Anthropic.RateLimitError) {
       console.error('[Chat] Anthropic rate limit:', err.message);
-      return res.status(429).json({ success: false, error: 'The assistant is busy right now. Please try again in a moment.' });
+      return res.status(200).json({ success: true, reply: answerFromSite(messages), source: 'site' });
     }
     if (err instanceof Anthropic.AuthenticationError) {
       console.error('[Chat] Invalid ANTHROPIC_API_KEY.');
-      return res.status(503).json({ success: false, fallback: true, error: 'The assistant is not configured.' });
+      return res.status(200).json({ success: true, reply: answerFromSite(messages), source: 'site' });
     }
     if (err instanceof Anthropic.APIError) {
       console.error(`[Chat] API error ${err.status}:`, err.message);
     } else {
       console.error('[Chat] Error:', err);
     }
-    return res.status(502).json({ success: false, fallback: true, error: 'The assistant could not answer just now.' });
+    return res.status(200).json({ success: true, reply: answerFromSite(messages), source: 'site' });
   }
 }
