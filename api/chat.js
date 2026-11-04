@@ -1,17 +1,18 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { KNOWLEDGE } from './_knowledge.js';
-import { answerFromSite } from './_answer.js';
+import { answerFromSite, relevantContext } from './_answer.js';
 import { askGemini } from './_gemini.js';
+import { askGroq } from './_groq.js';
 import { rateLimit } from './_lib.js';
 
 /**
  * POST /api/chat
  * Body: { messages: [{ role: 'user' | 'assistant', content: string }, ...] }
  * Answers website visitors from the site's own content (api/_knowledge.js).
- * Claude answers when ANTHROPIC_API_KEY is set, otherwise Gemini when GEMINI_API_KEY is set; without either (or if both fail)
+ * Tries, in order, whichever is configured: Claude (ANTHROPIC_API_KEY), Gemini (GEMINI_API_KEY), Groq (GROQ_API_KEY). If none answers,
  * the built-in search over the website content answers instead (api/_answer.js).
  *
- * Env: ANTHROPIC_API_KEY + CHAT_MODEL (optional, Claude), GEMINI_API_KEY + GEMINI_MODEL (optional, Gemini free tier).
+ * Env (all optional): ANTHROPIC_API_KEY + CHAT_MODEL, GEMINI_API_KEY + GEMINI_MODEL, GROQ_API_KEY + GROQ_MODEL.
  */
 
 const MODEL = process.env.CHAT_MODEL || 'claude-opus-5-5';
@@ -71,6 +72,10 @@ export default async function handler(req, res) {
   }
   const gemini = await askGemini(SYSTEM[0].text, messages);
   if (gemini) return res.status(200).json({ success: true, reply: gemini, source: 'gemini' });
+
+  // Groq's free tier has small per-minute token limits, so it gets only the relevant website content.
+  const groq = await askGroq(`${INSTRUCTIONS}\n\n<website_knowledge>\n${relevantContext(messages)}\n</website_knowledge>`, messages);
+  if (groq) return res.status(200).json({ success: true, reply: groq, source: 'groq' });
 
   return res.status(200).json({ success: true, reply: answerFromSite(messages), source: 'site' });
 }

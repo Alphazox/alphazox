@@ -118,9 +118,10 @@ PORT=8080
 |---|---|---|
 | `SMTP_USER`, `SMTP_PASS` | Yes | Sending the Careers, Contact and Book-a-demo forms by email (Gmail address + Gmail App Password). Without them the forms show "Email service is not configured". |
 | `SMTP_HOST`, `SMTP_PORT` | No | Defaults: `smtp.gmail.com`, `587`. |
-| `GEMINI_API_KEY` | Recommended | Free AI answers for the chatbot (Google AI Studio key). |
+| `GROQ_API_KEY` | Recommended | Free AI answers for the chatbot (key from console.groq.com, no card needed). |
+| `GEMINI_API_KEY` | Optional | Google Gemini for the chatbot (only if the Google project is eligible for the free tier or has billing). |
 | `ANTHROPIC_API_KEY` | Optional | Paid alternative: Claude answers the chatbot when set (used before Gemini). |
-| `CHAT_MODEL`, `GEMINI_MODEL` | No | Override the Claude / Gemini model. |
+| `CHAT_MODEL`, `GEMINI_MODEL`, `GROQ_MODEL` | No | Override the Claude / Gemini / Groq model. |
 | `ADMIN_TOKEN` | Only for `server/server.js` | Protects `/api/admin/*` (send `Authorization: Bearer <token>`). |
 
 Without any AI key, the chatbot still answers from a search over the site copy. The chatbot answers from the site's own copy in `src/data`. `npm run build` regenerates its knowledge

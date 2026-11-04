@@ -255,3 +255,30 @@ export function answerFromSite(messages) {
   const heading = `${best.p.title.replace(/\s*\(.*\)$/, '')}\n`;
   return `${heading}${clip(best.p.text)}${pageNote(best.p.page)}${related ? `\nRelated: ${related.p.title.replace(/\s*\(.*\)$/, '')} (${related.p.page})` : ''}`;
 }
+
+/**
+ * Website content relevant to the conversation, small enough for AI models with low free-tier token
+ * limits: company basics, contact details, open roles, plus the best-matching passages.
+ */
+export function relevantContext(messages, maxPassages = 8) {
+  const userTurns = messages.filter(m => m.role === 'user');
+  const query = weighted(words(userTurns[userTurns.length - 1]?.content ?? ''));
+  const previous = userTurns[userTurns.length - 2];
+  if (previous) for (const [t, w] of weighted(words(previous.content), 0.5)) if (!query.has(t)) query.set(t, w);
+
+  const top = passages
+    .map(p => ({ p, s: score(p, query) }))
+    .filter(x => x.s > 0)
+    .sort((a, b) => b.s - a.s)
+    .slice(0, maxPassages)
+    .map(({ p }) => `## ${p.title}${p.page ? ` (page ${p.page})` : ''}\n${clip(p.text, 900)}`);
+
+  const basics = [
+    `## About ALPHAZOX\n${K.company.summary}\n${K.company.mission}`,
+    `## Contact\nEmail: ${SITE.email}. India: ${SITE.phoneIndia}. USA: ${SITE.phoneUSA}. Contact page: /contact. ${SITE.bookDemo}\nOffices: ${SITE.offices.map(o => `${o.label}: ${o.address}`).join(' | ')}`,
+    `## Open roles (${K.careers.openRoleCount}), apply on /careers\n${K.careers.openRoles.map(j => `${j.title} (${j.team}, ${j.location}, ${j.type})`).join('; ')}`,
+    `## Industries\n${K.industries.map(i => i.name).join(', ')}`,
+    `## Site pages\n${K.company.pages.map(p => `${p.label}: ${p.path}`).join(', ')}`,
+  ];
+  return [...basics, ...top].join('\n\n');
+}
