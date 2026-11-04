@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { checkHoneypot, escapeFields, isValidEmail, oneLine, isValidPhone, rateLimit, MAIL_TO } from './_lib.js';
 
 /**
  * Vercel Serverless Function – Contact Form
@@ -19,10 +20,21 @@ export default async function handler(req, res) {
     return res.status(405).json({ success: false, error: 'Method not allowed' });
   }
 
-  const { name, orgName, email, phone, message } = req.body || {};
+  // 5 messages per IP per 10 minutes.
+  if (!rateLimit(req, res, 'contact', 5, 10 * 60_000)) return;
+  if (!checkHoneypot(req, res)) return;
+
+  const raw = req.body || {};
+  const { name, orgName, email, phone, message } = escapeFields(raw);
 
   if (!name || !email || !message) {
     return res.status(400).json({ success: false, error: 'Name, Email, and Message are required.' });
+  }
+  if (!isValidEmail(raw.email)) {
+    return res.status(400).json({ success: false, error: 'Please enter a valid email address.' });
+  }
+  if (phone && !isValidPhone(raw.phone)) {
+    return res.status(400).json({ success: false, error: 'Please enter a valid phone number using digits only (7–15 digits, optional + country code).' });
   }
 
   const senderEmail = process.env.SMTP_USER;
@@ -78,14 +90,13 @@ export default async function handler(req, res) {
 
     await transporter.sendMail({
       from: `"ALPHAZOX Web Inquiries" <${senderEmail}>`,
-      to: 'support@alphazox.com',
-      cc: senderEmail,
-      replyTo: email,
-      subject: `New Inquiry from ${name}${orgName ? ' – ' + orgName : ''}`,
+      to: MAIL_TO,
+      replyTo: raw.email.trim(),
+      subject: oneLine(`New Inquiry from ${raw.name}${raw.orgName ? ' – ' + raw.orgName : ''}`),
       html: htmlContent,
     });
 
-    console.log(`[Contact] Email sent to support@alphazox.com from ${email}`);
+    console.log(`[Contact] Email sent to ${MAIL_TO.join(', ')} from ${email}`);
     return res.status(200).json({
       success: true,
       message: 'Thank you for contacting ALPHAZOX! Our team will reach out to you shortly.',

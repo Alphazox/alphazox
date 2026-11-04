@@ -1,9 +1,10 @@
 import nodemailer from 'nodemailer';
+import { escapeFields, isValidEmail, rateLimit, MAIL_TO } from './_lib.js';
 
 /**
  * Vercel Serverless Function – Newsletter Subscription Form
  * POST /api/subscribe
- * Sends subscription notification to support@alphazox.com via SMTP/Gmail
+ * Sends subscription notification to the MAIL_TO addresses via SMTP/Gmail
  */
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -15,10 +16,17 @@ export default async function handler(req, res) {
     return res.status(405).json({ success: false, error: 'Method not allowed' });
   }
 
-  const { name, email, industryRole } = req.body || {};
+  if (!rateLimit(req, res, 'subscribe', 5, 10 * 60_000)) return;
+
+  const raw = req.body || {};
+  if (raw.website) return res.status(200).json({ success: true, message: 'Thank you!' }); // honeypot
+  const { name, email, industryRole } = escapeFields(raw, 300);
 
   if (!name || !email || !industryRole) {
     return res.status(400).json({ success: false, error: 'Name, Email, and Industry/Role are required.' });
+  }
+  if (!isValidEmail(raw.email)) {
+    return res.status(400).json({ success: false, error: 'Please enter a valid email address.' });
   }
 
   const senderEmail = process.env.SMTP_USER;
@@ -58,14 +66,13 @@ export default async function handler(req, res) {
 
     await transporter.sendMail({
       from: `"ALPHAZOX Web Inquiries" <${senderEmail}>`,
-      to: 'support@alphazox.com',
-      cc: senderEmail,
+      to: MAIL_TO,
       replyTo: email,
       subject: `New Newsletter Subscription – ${name}`,
       html: htmlContent,
     });
 
-    console.log(`[Subscribe] Email sent to support@alphazox.com from ${email}`);
+    console.log(`[Subscribe] Email sent to ${MAIL_TO.join(', ')} from ${email}`);
     return res.status(200).json({
       success: true,
       message: `Welcome, ${name}! You have successfully subscribed to the ALPHAZOX newsletter.`,

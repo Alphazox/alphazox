@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import multer from 'multer';
+import { checkHoneypot, escapeHtml, isValidEmail, isValidPhone, rateLimit, MAIL_TO } from './_lib.js';
 
 /**
  * Vercel Serverless Function – Career Application Form
@@ -40,6 +41,9 @@ export default async function handler(req, res) {
     return res.status(405).json({ success: false, error: 'Method not allowed' });
   }
 
+  // 5 applications per IP per 10 minutes.
+  if (!rateLimit(req, res, 'careers', 5, 10 * 60_000)) return;
+
   try {
     await parseResume(req, res);
   } catch (err) {
@@ -50,16 +54,25 @@ export default async function handler(req, res) {
     return res.status(status).json({ success: false, error: message });
   }
 
-  const {
-    name, email, phone, location,
-    position, experienceLevel, technicalSkills,
-    githubProfile, coverLetter
-  } = req.body;
-  const resume = req.file;
+  if (!checkHoneypot(req, res)) return;
 
-  if (!name || !email || !phone || !location || !position || !experienceLevel || !technicalSkills || !coverLetter) {
+  const raw = req.body || {};
+  const resume = req.file;
+  if (!raw.name || !raw.email || !raw.phone || !raw.location || !raw.position || !raw.experienceLevel || !raw.technicalSkills || !raw.coverLetter) {
     return res.status(400).json({ success: false, error: 'All fields except GitHub profile are required.' });
   }
+  if (!isValidEmail(raw.email)) {
+    return res.status(400).json({ success: false, error: 'Please enter a valid email address.' });
+  }
+  if (!isValidPhone(raw.phone)) {
+    return res.status(400).json({ success: false, error: 'Please enter a valid phone number using digits only (7–15 digits, optional + country code).' });
+  }
+
+  // Everything below goes into an HTML email, so escape it.
+  const [name, email, phone, location, position, experienceLevel, technicalSkills, githubProfile, coverLetter] =
+    [raw.name, raw.email, raw.phone, raw.location, raw.position, raw.experienceLevel, raw.technicalSkills, raw.githubProfile, raw.coverLetter]
+      .map(v => escapeHtml(String(v ?? '').trim().slice(0, 5000)));
+
   if (!resume) {
     return res.status(400).json({ success: false, error: 'Please attach your resume.' });
   }
@@ -92,7 +105,7 @@ export default async function handler(req, res) {
         <h3 style="border-bottom: 2px solid #f1f5f9; padding-bottom: 8px; color: #1e293b;">Cover Letter</h3>
         <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px; color: #475569; white-space: pre-wrap;">${coverLetter}</div>
         <div style="margin-top: 20px; padding: 12px; background-color: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px;">
-          <strong>Resume attached:</strong> ${resume.originalname.replace(/[\\/]/g, '_').replace(/[\r\n]/g, '')}
+          <strong>Resume attached:</strong> ${escapeHtml(resume.originalname)}
         </div>
         <div style="font-size: 11px; color: #94a3b8; text-align: center; margin-top: 30px; border-top: 1px solid #f1f5f9; padding-top: 15px;">
           Submitted on ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })} IST
@@ -112,10 +125,9 @@ export default async function handler(req, res) {
 
     await transporter.sendMail({
       from: `"ALPHAZOX Web Inquiries" <${senderEmail}>`,
-      to: 'support@alphazox.com',
-      cc: senderEmail,
-      replyTo: email,
-      subject: `New Job Application: ${position} – ${name}`,
+      to: MAIL_TO,
+      replyTo: raw.email.trim(),
+      subject: `New Job Application: ${raw.position} – ${raw.name}`.replace(/[\r\n]/g, ' '),
       html: htmlContent,
       attachments: [{
         filename: resume.originalname.replace(/[\\/]/g, '_').replace(/[\r\n]/g, ''),
@@ -124,10 +136,10 @@ export default async function handler(req, res) {
       }],
     });
 
-    console.log(`[Careers] Email sent to support@alphazox.com from ${email}`);
+    console.log(`[Careers] Email sent to ${MAIL_TO.join(', ')} from ${raw.email}`);
     return res.status(200).json({
       success: true,
-      message: `Application for ${position} submitted successfully! Thank you, ${name}. Our HR team will review your profile.`,
+      message: `Application for ${raw.position} submitted successfully! Thank you, ${raw.name}. Our HR team will review your profile.`,
     });
   } catch (err) {
     console.error('[Careers] Email error:', err.message);

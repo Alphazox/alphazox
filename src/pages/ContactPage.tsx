@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { Honeypot } from '../components/Honeypot';
+import { isValidPhone, PHONE_HINT, PHONE_PATTERN, sanitizePhone } from '../utils/forms';
 import { PageHero } from '../components/PageHero';
 import { Reveal } from '../components/Reveal';
 import { useDemo } from '../context/demo';
@@ -20,19 +22,26 @@ const ContactPage: React.FC = () => {
 ` : '' }));
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null);
+  const [honeypot, setHoneypot] = useState('');
 
-  const update = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const update = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: name === 'phone' ? sanitizePhone(value) : value });
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (form.phone && !isValidPhone(form.phone)) {
+      setStatus({ ok: false, msg: `Please enter a valid phone number. ${PHONE_HINT}.` });
+      return;
+    }
     setLoading(true);
     setStatus(null);
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, website: honeypot }),
       });
       const data = await res.json().catch(() => null);
       if (data?.success) {
@@ -82,11 +91,12 @@ const ContactPage: React.FC = () => {
                 <div className="field"><label htmlFor="k-email">Email *</label><input id="k-email" className="input" type="email" name="email" value={form.email} onChange={update} required /></div>
               </div>
               <div className="form-row">
-                <div className="field"><label htmlFor="k-phone">Phone</label><input id="k-phone" className="input" name="phone" value={form.phone} onChange={update} /></div>
+                <div className="field"><label htmlFor="k-phone">Phone</label><input id="k-phone" className="input" type="tel" inputMode="tel" autoComplete="tel" name="phone" value={form.phone} onChange={update} pattern={PHONE_PATTERN} title={PHONE_HINT} placeholder="+91 98765 43210" maxLength={20} /></div>
                 <div className="field"><label htmlFor="k-org">Company</label><input id="k-org" className="input" name="orgName" value={form.orgName} onChange={update} /></div>
               </div>
               <div className="field"><label htmlFor="k-msg">How can we help? *</label><textarea id="k-msg" className="input" name="message" value={form.message} onChange={update} required /></div>
-              {status && <div className={`form-status ${status.ok ? 'ok' : 'err'}`}>{status.msg}</div>}
+              <Honeypot value={honeypot} onChange={setHoneypot} />
+              {status && <div className={`form-status ${status.ok ? 'ok' : 'err'}`} role="status">{status.msg}</div>}
               <button className="btn btn-primary" type="submit" disabled={loading}>
                 {loading ? 'Sending…' : 'Send message'} <span className="arrow">→</span>
               </button>

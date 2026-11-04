@@ -5,13 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "(node scripts/build-knowledge.mjs || echo [knowledge] skipped: using the committed api/_knowledge.js) && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "server": "node server/server.js",
-    "start": "node server/server.js"
+    "start": "node server/server.js",
+    "knowledge": "node scripts/build-knowledge.mjs"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.4.0",
     "@emailjs/browser": "^4.4.1",
     "cors": "^2.8.5",
     "dotenv": "^17.4.2",

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { INDUSTRIES, INITIATIVES, SITE } from '../data/content';
+import { Honeypot } from './Honeypot';
+import { isValidPhone, PHONE_HINT, PHONE_PATTERN, sanitizePhone } from '../utils/forms';
 import './DemoModal.css';
 
 interface DemoModalProps {
@@ -24,6 +26,7 @@ export const DemoModal: React.FC<DemoModalProps> = ({ open, onClose }) => {
   const [form, setForm] = useState(EMPTY);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null);
+  const [honeypot, setHoneypot] = useState('');
 
   useEffect(() => {
     if (!open) return;
@@ -38,18 +41,24 @@ export const DemoModal: React.FC<DemoModalProps> = ({ open, onClose }) => {
 
   if (!open) return null;
 
-  const update = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const update = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: name === 'phone' ? sanitizePhone(value) : value });
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isValidPhone(form.phone)) {
+      setStatus({ ok: false, msg: `Please enter a valid phone number. ${PHONE_HINT}.` });
+      return;
+    }
     setLoading(true);
     setStatus(null);
     try {
       const res = await fetch('/api/quote', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, formType: 'consultation' }),
+        body: JSON.stringify({ ...form, formType: 'consultation', website: honeypot }),
       });
       const data = await res.json().catch(() => null);
       if (data?.success) {
@@ -91,7 +100,7 @@ export const DemoModal: React.FC<DemoModalProps> = ({ open, onClose }) => {
             </div>
             <div className="field">
               <label htmlFor="d-phone">Phone *</label>
-              <input id="d-phone" className="input" name="phone" value={form.phone} onChange={update} required />
+              <input id="d-phone" className="input" type="tel" inputMode="tel" autoComplete="tel" name="phone" value={form.phone} onChange={update} pattern={PHONE_PATTERN} title={PHONE_HINT} placeholder="+1 555 123 4567" maxLength={20} required />
             </div>
           </div>
           <div className="form-row">
@@ -138,7 +147,8 @@ export const DemoModal: React.FC<DemoModalProps> = ({ open, onClose }) => {
             <label htmlFor="d-scope">What would you like to build? *</label>
             <textarea id="d-scope" className="input" name="projectScope" value={form.projectScope} onChange={update} required />
           </div>
-          {status && <div className={`form-status ${status.ok ? 'ok' : 'err'}`}>{status.msg}</div>}
+          <Honeypot value={honeypot} onChange={setHoneypot} />
+          {status && <div className={`form-status ${status.ok ? 'ok' : 'err'}`} role="status">{status.msg}</div>}
           <button className="btn btn-primary" type="submit" disabled={loading}>
             {loading ? 'Sending…' : 'Request my demo'} <span className="arrow">→</span>
           </button>

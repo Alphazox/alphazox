@@ -111,3 +111,19 @@ PORT=8080
 - **TypeScript**: 0 errors
 - **Vite Build**: ✅ 32 modules, 231 KB JS, 27 KB CSS
 - **Backend API**: ✅ All 3 endpoints tested and responding
+
+## Environment variables (Vercel → Project → Settings → Environment Variables)
+
+| Variable | Required | Used for |
+|---|---|---|
+| `SMTP_USER`, `SMTP_PASS` | Yes | Sending the Careers, Contact and Book-a-demo forms by email (Gmail address + Gmail App Password). Without them the forms show "Email service is not configured". |
+| `SMTP_HOST`, `SMTP_PORT` | No | Defaults: `smtp.gmail.com`, `587`. |
+| `ANTHROPIC_API_KEY` | Yes, for the chatbot | The "Alpha" assistant (`/api/chat`, Claude). Without it the widget falls back to a few built-in answers. |
+| `CHAT_MODEL` | No | Claude model for the chatbot. Default `claude-opus-5-5`. |
+| `ADMIN_TOKEN` | Only for `server/server.js` | Protects `/api/admin/*` (send `Authorization: Bearer <token>`). |
+
+The chatbot answers from the site's own copy in `src/data`. `npm run build` regenerates its knowledge
+file (`api/_knowledge.js`); run `npm run knowledge` after editing site copy if you deploy without a build.
+
+Form endpoints are rate-limited per IP in code (best effort per server instance). For a hard limit across
+all Vercel instances, also add a rate-limit rule for `/api/*` under Vercel → Firewall.

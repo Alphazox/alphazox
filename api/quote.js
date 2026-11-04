@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { checkHoneypot, escapeFields, isValidEmail, oneLine, isValidPhone, rateLimit, MAIL_TO } from './_lib.js';
 
 /**
  * Vercel Serverless Function – Quote / Consultation Request Form
@@ -15,13 +16,24 @@ export default async function handler(req, res) {
     return res.status(405).json({ success: false, error: 'Method not allowed' });
   }
 
+  // 5 demo requests per IP per 10 minutes.
+  if (!rateLimit(req, res, 'quote', 5, 10 * 60_000)) return;
+  if (!checkHoneypot(req, res)) return;
+
+  const raw = req.body || {};
   const {
     name, orgName, orgIndustry, email, phone,
     serviceInterest, projectScope, budgetRange, timeline, dateTimePreference, message
-  } = req.body || {};
+  } = escapeFields(raw);
 
   if (!name || !email || !phone || !orgName) {
     return res.status(400).json({ success: false, error: 'Name, Email, Phone and Company are required.' });
+  }
+  if (!isValidEmail(raw.email)) {
+    return res.status(400).json({ success: false, error: 'Please enter a valid email address.' });
+  }
+  if (!isValidPhone(raw.phone)) {
+    return res.status(400).json({ success: false, error: 'Please enter a valid phone number using digits only (7–15 digits, optional + country code).' });
   }
 
   const senderEmail = process.env.SMTP_USER;
@@ -72,14 +84,13 @@ export default async function handler(req, res) {
 
     await transporter.sendMail({
       from: `"ALPHAZOX Web Inquiries" <${senderEmail}>`,
-      to: 'support@alphazox.com',
-      cc: senderEmail,
-      replyTo: email,
-      subject: `New Quote Request from ${name} – ${orgName}`,
+      to: MAIL_TO,
+      replyTo: raw.email.trim(),
+      subject: oneLine(`New Quote Request from ${raw.name} – ${raw.orgName}`),
       html: htmlContent,
     });
 
-    console.log(`[Quote] Email sent to support@alphazox.com from ${email}`);
+    console.log(`[Quote] Email sent to ${MAIL_TO.join(', ')} from ${email}`);
     return res.status(200).json({
       success: true,
       message: 'Your quote request has been received. Our enterprise team will evaluate it and reach out shortly.',

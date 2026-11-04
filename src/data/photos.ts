@@ -4,7 +4,7 @@
 
 const DIR = '/images/photos';
 // Bump when photos are replaced under the same name, so browsers fetch the new file instead of a cached one.
-const V = '?v=6';
+const V = '?v=7';
 
 export const photo = (name: string) => `${DIR}/${name}.jpg${V}`;
 export const photoSm = (name: string) => `${DIR}/${name}-sm.jpg${V}`;

@@ -111,6 +111,9 @@ ul { list-style: none; }
 .btn-primary {
   color: #fff;
   background: var(--grad);
+  /* Paint the gradient under the 1px border too; otherwise it repeats there and leaves
+     mismatched violet/cyan slivers at the rounded ends (very visible on small buttons). */
+  background-origin: border-box;
   box-shadow: 0 10px 40px -10px rgba(59, 130, 246, 0.7);
 }
 .btn-primary:hover { box-shadow: 0 16px 50px -10px rgba(139, 92, 246, 0.8); }

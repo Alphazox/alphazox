@@ -8,6 +8,8 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import nodemailer from 'nodemailer';
 import mongoose from 'mongoose';
+import { MAIL_TO, checkHoneypot, escapeFields, isValidEmail, isValidPhone, rateLimit } from '../api/_lib.js';
+import chatHandler from '../api/chat.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,7 +19,27 @@ const PORT = process.env.PORT || 5000;
 
 // Enable CORS and JSON parsing
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '100kb' }));
+// Needed so req.ip / x-forwarded-for reflect the visitor when running behind Railway's proxy.
+app.set('trust proxy', 1);
+
+// Rate limit + honeypot + field validation shared by the form routes. Escapes every field because
+// the values are inserted into HTML emails.
+const guardForm = ({ name, limit = 5, phoneRequired = false }) => (req, res, next) => {
+  if (!rateLimit(req, res, name, limit, 10 * 60_000)) return;
+  if (!checkHoneypot(req, res)) return;
+  const raw = req.body || {};
+  if (raw.email && !isValidEmail(raw.email)) {
+    return res.status(400).json({ success: false, error: 'Please enter a valid email address.' });
+  }
+  if ((phoneRequired || raw.phone) && !isValidPhone(raw.phone)) {
+    return res.status(400).json({ success: false, error: 'Please enter a valid phone number using digits only (7–15 digits, optional + country code).' });
+  }
+  req.body = escapeFields(raw);
+  next();
+};
+
+app.post('/api/chat', chatHandler);
 
 // ─── File-Based Persistent Storage ──────────────────────────────────────────
 
@@ -124,8 +146,7 @@ if (!fs.existsSync(OUTBOX_FILE)) {
 }
 
 // ─── Recipient: all form submissions notify this address ─────────────────────
-const RECIPIENT_EMAIL = 'support@alphazox.com';
-const CC_EMAIL = process.env.SMTP_USER || ''; // CC as backup
+const RECIPIENT_EMAIL = MAIL_TO.join(', ');
 
 // Function to dispatch email
 async function sendEmail(subject, htmlContent, data, attachments = []) {
@@ -138,7 +159,6 @@ async function sendEmail(subject, htmlContent, data, attachments = []) {
   const mailOptions = {
     from: `"ALPHAZOX Web Inquiries" <${senderEmail}>`,
     to: RECIPIENT_EMAIL,
-    cc: CC_EMAIL && CC_EMAIL !== RECIPIENT_EMAIL ? CC_EMAIL : undefined,
     replyTo: data.email || senderEmail,
     subject,
     html: htmlContent,
@@ -388,7 +408,7 @@ const parseCareerResume = (req, res, next) => {
 
 // ─── API: Contact Submission (General) ───────────────────────────────────────
 
-app.post('/api/contact', async (req, res) => {
+app.post('/api/contact', guardForm({ name: 'contact' }), async (req, res) => {
   const { name, orgName, email, phone, message } = req.body;
 
   if (!name || !email || !message) {
@@ -414,14 +434,14 @@ app.post('/api/contact', async (req, res) => {
 
   return res.status(200).json({
     success: true,
-    message: 'Thank you for contacting Astikos! Your request has been received.',
+    message: 'Thank you for contacting ALPHAZOX! Your request has been received.',
     submissionId: submissionData.id
   });
 });
 
 // ─── API: Quote Submission (Enterprise) ──────────────────────────────────────
 
-app.post('/api/quote', async (req, res) => {
+app.post('/api/quote', guardForm({ name: 'quote', phoneRequired: true }), async (req, res) => {
   const { name, orgName, orgIndustry, email, phone, serviceInterest, projectScope, budgetRange, timeline } = req.body;
 
   if (!name || !email || !phone || !orgName || !orgIndustry || !serviceInterest || !projectScope || !budgetRange || !timeline) {
@@ -455,7 +475,7 @@ app.post('/api/quote', async (req, res) => {
 
 // ─── API: Careers Submission ─────────────────────────────────────────────────
 
-app.post('/api/careers', parseCareerResume, async (req, res) => {
+app.post('/api/careers', (req, res, next) => (rateLimit(req, res, 'careers', 5, 10 * 60_000) ? next() : undefined), parseCareerResume, guardForm({ name: 'careers-fields', limit: 1000, phoneRequired: true }), async (req, res) => {
   const { name, email, phone, location, position, experienceLevel, technicalSkills, githubProfile, coverLetter } = req.body;
   const file = req.file;
 
@@ -504,7 +524,10 @@ app.post('/api/careers', parseCareerResume, async (req, res) => {
 // ─── API: Newsletter Subscription ────────────────────────────────────────────
 
 app.post('/api/subscribe', async (req, res) => {
-  const { name, email, industryRole } = req.body;
+  if (!rateLimit(req, res, 'subscribe', 5, 10 * 60_000)) return;
+  if (req.body?.website) return res.status(200).json({ success: true, message: 'Thank you!' });
+  if (req.body?.email && !isValidEmail(req.body.email)) return res.status(400).json({ success: false, error: 'Please enter a valid email address.' });
+  const { name, email, industryRole } = escapeFields(req.body || {}, 300);
 
   if (!name || !email || !industryRole) {
     return res.status(400).json({ success: false, error: 'Name, Email and Role are required.' });
@@ -544,72 +567,17 @@ app.post('/api/subscribe', async (req, res) => {
   });
 });
 
-// ─── API: Chatbot ─────────────────────────────────────────────────────────────
+// ─── Admin Read Endpoints ───────────────────────────────────────────────────────
+// These return applicants' personal data, so they need the ADMIN_TOKEN env var, sent as
+// "Authorization: Bearer <token>". Without ADMIN_TOKEN set they are disabled.
 
-app.post('/api/chatbot', (req, res) => {
-  const { message } = req.body;
-  if (!message) return res.status(400).json({ success: false, error: 'Message query is required.' });
-
-  const query = message.toLowerCase();
-  let reply = '';
-
-  if (query.includes('platform') || query.includes('technolog') || query.includes('stack')) {
-    reply = "We build on the platform that fits your problem: **.NET** (ASP.NET Core, C#, Azure), **Java** (Spring Boot, microservices, Kafka), **Low-Code** (OutSystems, Mendix, Power Apps) and **Cloud & Data** (AWS, Azure, Google Cloud). See our Platforms page for details.";
-  } else if (query.includes('low-code') || query.includes('low code') || query.includes('lowcode') || query.includes('outsystems') || query.includes('mendix')) {
-    reply = "Our low-code teams deliver portals, workflows and internal apps fast on **OutSystems, Mendix and Microsoft Power Apps**, with a working prototype in weeks. Platform fit is confirmed during discovery.";
-  } else if (query.includes('.net') || query.includes('dotnet') || query.includes('java')) {
-    reply = "We build enterprise applications and APIs on **.NET** (ASP.NET Core, C#, Azure) and **Java** (Spring Boot, microservices, Kafka), including modernizing older .NET Framework and Java applications.";
-  } else if (query.includes('moderniz') || query.includes('modernis') || query.includes('legacy') || query.includes('migrat')) {
-    reply = "Our Legacy Modernization service re-platforms, re-architects or wraps ageing systems with new APIs and interfaces, migrating data in phases so operations never stop.";
-  } else if (query.includes('integration') || query.includes('api')) {
-    reply = "We connect ERP, CRM, core and third-party systems with secure, documented APIs and integration flows, monitored after go-live.";
-  } else if (query.includes('testing') || query.includes('qa') || query.includes('quality')) {
-    reply = "Our Testing & QA covers functional, automation, performance and security testing, built into your CI/CD pipeline so every release is verified.";
-  } else if (query.includes('training')) {
-    reply = "We offer Training & Support after go-live: end-user and developer training, SLA-based application support and continuous improvement.";
-  } else if (query.includes('hello') || query.includes('hi') || query.includes('hey')) {
-    reply = "Hello! I am ALPHAZOX's virtual assistant. How can I help you transform your business today? You can ask me about our 45 services, industries we serve, careers, global capability centers (GCC), or how to contact us.";
-  } else if (query.includes('service') || query.includes('what do you do') || query.includes('offerings') || query.includes('45')) {
-    reply = "ALPHAZOX offers 45 comprehensive services across 9 practice areas:\n\n" +
-      "1. **Core IT Services** (7): Custom App Dev, Maintenance, Digital Transformation, QA, DevOps, Cloud/Salesforce, Data Science.\n" +
-      "2. **Enterprise Solutions** (2): SAP Services, Microsoft Services.\n" +
-      "3. **Professional Services** (6): Talent Augmentation, Software Procurement, Agile Squads, On-Demand Support, RIPS, Managed Services.\n" +
-      "4. **Customer Support** (4): Customer Service, Technical Support, Virtual Assistants, Remote Surveillance.\n" +
-      "5. **Financial Management** (6): Bookkeeping, Payroll, MIS Reporting, Controller Services, Tax, E-Commerce Integrations.\n" +
-      "6. **Infrastructure** (4): IT Infrastructure, Security, GCC, Expense Management.\n" +
-      "7. **Digital Integration** (6): Digital Integration, B2B/EDI, API Management, RPA, IDP, Process Mining.\n" +
-      "8. **Digital Marketing** (4): Digital Marketing, Web Services, Solution Consulting, QA Compliance.\n" +
-      "9. **Low-Code & AI** (5): Low-Code, Generative AI, Intelligent Automation, Advanced Analytics, Cloud Engineering.";
-  } else if (query.includes('rpa') || query.includes('automation') || query.includes('uipath')) {
-    reply = "At ALPHAZOX, we drive efficiency through Robotic Process Automation (RPA) and Intelligent Document Processing (IDP). We support **UiPath, Power Automate, Blue Prism, and Automation Anywhere**. Our services range from Bot Development and Process Mining to building Centers of Excellence (COE).";
-  } else if (query.includes('gcc') || query.includes('global capability') || query.includes('india')) {
-    reply = "ALPHAZOX is a premier partner for establishing **Global Capability Centers (GCCs)**. We offer 'GCC-as-a-Service', helping global companies set up and manage high-performance centers in India. We handle regulatory compliance, legal entity establishment, office setup (access to 2M+ sq. ft. of Tier 1 workspace), talent acquisition, and operational excellence using our 'Zero Surprise Framework'.";
-  } else if (query.includes('cloud') || query.includes('devops') || query.includes('azure') || query.includes('aws')) {
-    reply = "Our Cloud & DevOps services empower enterprises with cloud-native scalability. We provide cloud strategy, architecture advisory, and migration services in partnership with AWS, Microsoft Azure, and Google Cloud. We also configure automated CI/CD pipelines, container orchestration (Docker/Kubernetes), and 24/7 SLA-driven operations.";
-  } else if (query.includes('data science') || query.includes('ai') || query.includes('generative ai') || query.includes('ml')) {
-    reply = "ALPHAZOX unlocks the value of data through Advanced Analytics, Machine Learning, and Generative AI. Through **ALPHAZOX Innovation Labs**, we offer the **Rapid60 program** to help organizations kickstart their Generative AI journey within 60 days, including custom virtual assistants, semantic search, and document intelligence.";
-  } else if (query.includes('sap')) {
-    reply = "Our SAP Services team provides end-to-end intelligent enterprise solutions including SAP S/4HANA consulting, implementation, cloud transformation, advanced analytics, and process automation. Our SAP-certified team delivers within timeline and budget.";
-  } else if (query.includes('financial') || query.includes('bookkeeping') || query.includes('accounting') || query.includes('payroll') || query.includes('tax')) {
-    reply = "ALPHAZOX provides comprehensive Financial Management services: **Bookkeeping** (50+ certified professionals, 40-50% cost savings), **Payroll Processing** (multi-state & international), **Financial & MIS Reporting**, **Controller Services**, **Tax Services** (with IRS audit defense), and **E-Commerce Integrations**.";
-  } else if (query.includes('contact') || query.includes('phone') || query.includes('email') || query.includes('office')) {
-    reply = "You can reach ALPHAZOX at:\n\n" +
-      "• **US Office**: Austin, TX | Phone: +1 (716) 939-6514 (Meet by Appointment Only)\n" +
-      "• **India Offices**: Hyderabad & Visakhapatnam | Phone: +91 81259 50099\n" +
-      "• **Email**: support@alphazox.com\n\n" +
-      "Feel free to submit a query through our Contact section!";
-  } else if (query.includes('career') || query.includes('job') || query.includes('apply') || query.includes('work')) {
-    reply = "We are always looking for talented minds to join our team at ALPHAZOX! We foster a performance-driven culture with equal growth opportunities. Please visit our **Careers** section to view open positions and submit your CV.";
-  } else if (query.includes('monitoring') || query.includes('surveillance') || query.includes('security')) {
-    reply = "Our Remote Video Monitoring & e-Surveillance solutions are powered by **VDO Intel**, using AI computer vision to automate safety. We offer 24/7 live video monitoring, solar-powered surveillance for remote sites, and service lane monitoring to eliminate false claims.";
-  } else {
-    reply = "Thank you for asking! ALPHAZOX is a trusted digital transformation partner with 45 services across 9 practice areas. We specialize in custom software development, cloud engineering, RPA automation, data science, financial management, and global operations. Please specify if you'd like details on any area, or visit our Services page to explore all 45 capabilities!";
+app.use('/api/admin', (req, res, next) => {
+  const token = process.env.ADMIN_TOKEN;
+  if (!token || req.headers.authorization !== `Bearer ${token}`) {
+    return res.status(401).json({ success: false, error: 'Unauthorized' });
   }
-
-  return res.status(200).json({ success: true, reply });
+  next();
 });
-
-// ─── Admin Read Endpoints (Protected by header in production) ─────────────────
 
 app.get('/api/admin/contacts', (req, res) => {
   const records = readDB(DB_FILES.contacts);

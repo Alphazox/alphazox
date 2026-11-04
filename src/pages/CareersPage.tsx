@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Honeypot } from '../components/Honeypot';
+import { isValidPhone, PHONE_HINT, PHONE_PATTERN, sanitizePhone } from '../utils/forms';
 import { PageHero } from '../components/PageHero';
 import { Reveal } from '../components/Reveal';
 import { JOBS, SITE } from '../data/content';
@@ -28,9 +30,12 @@ const CareersPage: React.FC = () => {
   const [resume, setResume] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null);
+  const [honeypot, setHoneypot] = useState('');
 
-  const update = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const update = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: name === 'phone' ? sanitizePhone(value) : value });
+  };
 
   const onFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null;
@@ -59,11 +64,17 @@ const CareersPage: React.FC = () => {
       setStatus({ ok: false, msg: 'Please attach your resume before submitting.' });
       return;
     }
+    if (!isValidPhone(form.phone)) {
+      setStatus({ ok: false, msg: `Please enter a valid phone number. ${PHONE_HINT}.` });
+      return;
+    }
     setLoading(true);
     setStatus(null);
     try {
       const body = new FormData();
       Object.entries(form).forEach(([k, v]) => body.append(k, v));
+      body.append('website', honeypot);
+      // The resume goes last so the server has every text field before it reads the file.
       body.append('resume', resume);
       const res = await fetch('/api/careers', { method: 'POST', body });
       const data = await res.json().catch(() => null);
@@ -142,7 +153,7 @@ const CareersPage: React.FC = () => {
                 <div className="field"><label htmlFor="c-email">Email *</label><input id="c-email" className="input" type="email" name="email" value={form.email} onChange={update} required /></div>
               </div>
               <div className="form-row">
-                <div className="field"><label htmlFor="c-phone">Phone *</label><input id="c-phone" className="input" name="phone" value={form.phone} onChange={update} required /></div>
+                <div className="field"><label htmlFor="c-phone">Phone *</label><input id="c-phone" className="input" type="tel" inputMode="tel" autoComplete="tel" name="phone" value={form.phone} onChange={update} pattern={PHONE_PATTERN} title={PHONE_HINT} placeholder="+91 98765 43210" maxLength={20} required /></div>
                 <div className="field"><label htmlFor="c-loc">Current location *</label><input id="c-loc" className="input" name="location" value={form.location} onChange={update} required /></div>
               </div>
               <div className="form-row">
@@ -169,7 +180,8 @@ const CareersPage: React.FC = () => {
               </div>
               <div className="field"><label htmlFor="c-resume">Resume (PDF/DOC, max 10 MB) *</label><input id="c-resume" className="input" type="file" accept=".pdf,.doc,.docx" onChange={onFile} required /></div>
               <div className="field"><label htmlFor="c-cover">Cover letter *</label><textarea id="c-cover" className="input" name="coverLetter" value={form.coverLetter} onChange={update} required /></div>
-              {status && <div className={`form-status ${status.ok ? 'ok' : 'err'}`}>{status.msg}</div>}
+              <Honeypot value={honeypot} onChange={setHoneypot} />
+              {status && <div className={`form-status ${status.ok ? 'ok' : 'err'}`} role="status">{status.msg}</div>}
               <button className="btn btn-primary" type="submit" disabled={loading}>
                 {loading ? 'Submitting…' : 'Submit application'} <span className="arrow">→</span>
               </button>

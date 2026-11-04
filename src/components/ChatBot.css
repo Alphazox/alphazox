@@ -97,6 +97,10 @@
 }
 .chat-input input:focus { outline: none; border-color: var(--cyan); }
 .chat-input button { width: 40px; border-radius: 50%; border: none; background: var(--grad); color: #fff; font-weight: 700; }
+.chat-input button:disabled { opacity: 0.45; cursor: default; }
+
+.chat-msg.bot a { color: var(--cyan); text-decoration: underline; text-underline-offset: 2px; word-break: break-word; }
+.chat-note { margin: 0; padding: 0 14px 10px; font-size: 0.7rem; color: var(--muted); text-align: center; }
 
 @media (max-width: 520px) {
   .chat { right: 16px; bottom: 16px; }
