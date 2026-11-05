@@ -118,7 +118,8 @@ export const INDUSTRIES: Industry[] = [
   { slug: 'manufacturing', icon: '🏭', name: 'Manufacturing', desc: 'Connected operations from the shop floor to the supply chain.', builds: ['Quality & inspection apps', 'Maintenance scheduling', 'Supplier portals'] },
   { slug: 'healthcare', icon: '🏥', name: 'Healthcare', desc: 'Better patient journeys and less admin for clinical staff.', builds: ['Patient portals', 'Appointment scheduling', 'Clinical documentation AI'] },
   { slug: 'energy-utilities', icon: '⚡', name: 'Energy & Utilities', desc: 'Field-ready apps and customer self-service for critical infrastructure.', builds: ['Field service apps', 'Outage communication', 'Asset inspections'] },
-  { slug: 'retail', icon: '🛒', name: 'Retail', desc: 'Unified commerce, loyalty and store operations.', builds: ['Order & returns portals', 'Loyalty apps', 'Store operations tools'] },
+  // Retail hidden for now — uncomment to restore.
+  // { slug: 'retail', icon: '🛒', name: 'Retail', desc: 'Unified commerce, loyalty and store operations.', builds: ['Order & returns portals', 'Loyalty apps', 'Store operations tools'] },
   { slug: 'education', icon: '🎓', name: 'Education', desc: 'Digital campuses for students, faculty and administration.', builds: ['Student portals', 'Admissions workflows', 'AI learning assistants'] },
 ];
 

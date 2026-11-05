@@ -96,7 +96,6 @@ const HomePage: React.FC = () => {
       {/* ── Marquee ── */}
       <section className="marquee" aria-label="Capabilities">
         <Marquee items={MARQUEE.slice(0, 10)} solid />
-        <Marquee items={MARQUEE.slice(10)} reverse />
       </section>
 
       {/* ── Pillars ── */}

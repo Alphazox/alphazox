@@ -25,7 +25,7 @@ const renderTitle = (title: string, highlight: string) => {
 type Kind = SolutionDetail['kind'];
 
 const KINDS: Record<Kind, { list: SolutionDetail[]; base: string; more: string; extra?: { label: string; to: string } }> = {
-  industry: { list: INDUSTRY_DETAILS, base: '/industries', more: 'Other industries' },
+  industry: { list: INDUSTRY_DETAILS.filter(d => d.slug !== 'retail'), base: '/industries', more: 'Other industries' },
   initiative: { list: INITIATIVE_DETAILS, base: '/solutions', more: 'Other business goals', extra: { label: '🤖 AI Agents at Work', to: '/agentic-ai' } },
   platform: { list: PLATFORM_DETAILS, base: '/platform', more: 'More of the platform', extra: { label: '🤖 AI agents & orchestration', to: '/agentic-ai' } },
 };
