@@ -17,7 +17,7 @@ export interface SolutionDetail {
 }
 
 export const WHY_US = [
-  { icon: '🚀', title: 'Speed to value', desc: 'A working prototype in weeks and a production release in months, not multi-year programmes.' },
+  { icon: '🚀', title: 'Speed to value', desc: 'A working design in weeks and a production release in months, not multi-year programmes.' },
   { icon: '🔌', title: 'Works with what you run', desc: 'We build on top of your core systems through APIs, events and data, so nothing has to be ripped out first.' },
   { icon: '🛡️', title: 'Governed by default', desc: 'Role-based access, audit trails, change control and human approval are designed in from day one.' },
   { icon: '🔓', title: 'No lock-in', desc: 'Standards-based architecture, model-neutral AI and full documentation. You own what we build.' },
@@ -260,7 +260,7 @@ export const INDUSTRY_DETAILS: SolutionDetail[] = [
     ],
     faq: [
       { q: 'Can you integrate with our commerce platform and POS?', a: 'Yes. We connect to common commerce platforms, POS and ERP systems through their APIs.' },
-      { q: 'How fast can we launch a loyalty app?', a: 'A first release typically ships within a few months, starting from a working prototype in weeks.' },
+      { q: 'How fast can we launch a loyalty app?', a: 'A first release typically ships within a few months, starting from a working design in weeks.' },
     ],
   },
   {
@@ -317,7 +317,7 @@ export const INITIATIVE_DETAILS: SolutionDetail[] = [
       'Get maintainable, documented systems your teams can own',
     ],
     areas: [
-      { icon: '🪄', title: 'AI-generated foundations', desc: 'Turn requirements and process descriptions into data models, screens and workflows as a starting point engineers refine.', builds: ['Requirements to prototype', 'Data model generation', 'UI scaffolding'] },
+      { icon: '🪄', title: 'AI-generated foundations', desc: 'Turn requirements and process descriptions into data models, screens and workflows as a starting point engineers refine.', builds: ['Requirements to design', 'Data model generation', 'UI scaffolding'] },
       { icon: '🧪', title: 'Automated quality', desc: 'AI-assisted test generation, code review and security checks on every change.', builds: ['Test generation', 'Code review automation', 'Security scanning'] },
       { icon: '🧱', title: 'Reusable components', desc: 'A shared library of screens, integrations and patterns that speeds up every project.', builds: ['Component libraries', 'Integration connectors', 'Design systems'] },
       { icon: '🔁', title: 'CI/CD & DevOps', desc: 'Automated pipelines that move changes safely from development to production.', builds: ['Build pipelines', 'Environment promotion', 'Release automation'] },
@@ -325,7 +325,7 @@ export const INITIATIVE_DETAILS: SolutionDetail[] = [
       { icon: '🎓', title: 'Team enablement', desc: 'We train your developers on AI-assisted workflows so the speed stays after we leave.', builds: ['Pairing & coaching', 'Playbooks', 'Governance guidelines'] },
     ],
     start: [
-      { title: 'Prototype sprint', desc: 'A working app for one process in a few weeks.' },
+      { title: 'Design sprint', desc: 'A working app for one process in a few weeks.' },
       { title: 'Delivery assessment', desc: 'Find where AI can speed up your current pipeline.' },
       { title: 'Component library', desc: 'Build the shared foundations for future apps.' },
     ],
@@ -432,7 +432,7 @@ export const INITIATIVE_DETAILS: SolutionDetail[] = [
       { title: 'Website assistant', desc: 'Answer common questions around the clock.' },
     ],
     faq: [
-      { q: 'Do you design as well as build?', a: 'Yes. Our designers run research, prototype and test with real users before we build.' },
+      { q: 'Do you design as well as build?', a: 'Yes. Our designers run research, design and test with real users before we build.' },
       { q: 'Can the assistant take actions, not just answer questions?', a: 'Yes. With the right permissions it can update records, start workflows and hand off to people when needed.' },
     ],
   },

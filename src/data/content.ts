@@ -26,7 +26,7 @@ export const NAV = [
 export const MARQUEE = [
   'AI Agents', 'Agent Orchestration', 'Enterprise Apps', 'Legacy Modernization', 'Workflow Automation',
   'Customer Portals', 'Mobile Apps', 'Data Integration', 'Governed AI', 'Cloud Native', 'DevOps',
-  '.NET', 'Java', 'Python', 'React', 'Azure', 'AWS', 'LLMs', 'RAG', 'APIs',
+  'OutSystems', '.NET', 'Java', 'Python', 'React', 'Azure', 'AWS', 'LLMs', 'RAG', 'APIs',
 ];
 
 export const PILLARS = [
@@ -134,7 +134,7 @@ export const GOVERNANCE = [
 
 export const DELIVERY = [
   { step: '01', title: 'Discover', desc: 'Map goals, users, data and constraints. Pick one high-value use case.' },
-  { step: '02', title: 'Prototype', desc: 'A working prototype of the riskiest journey, in front of users within weeks.' },
+  { step: '02', title: 'Design', desc: 'A working design of the riskiest journey, in front of users within weeks.' },
   { step: '03', title: 'Build', desc: 'Iterative releases with automated testing, security reviews and feedback.' },
   { step: '04', title: 'Scale', desc: 'Operate, monitor and extend. Reuse components across the next use cases.' },
 ];
@@ -151,7 +151,7 @@ export const CAPABILITIES = [
 ];
 
 export const TECH_STACK = [
-  { group: 'Engineering', to: '/platform/dotnet', items: ['.NET', 'Java', 'Python', 'Node.js', 'React', 'Flutter'] },
+  { group: 'Engineering', to: '/platform/outsystems', items: ['OutSystems', '.NET', 'Java', 'Python', 'Node.js', 'React', 'Flutter'] },
   { group: 'AI & Data', to: '/platform/python-ai', items: ['LLMs', 'RAG', 'Vector DBs', 'ML Models', 'Power BI'] },
   { group: 'Cloud & DevOps', to: '/platform/cloud-devops', items: ['Azure', 'AWS', 'Google Cloud', 'Kubernetes', 'Terraform'] },
   { group: 'Enterprise', to: '/platform/data-integration', items: ['SAP', 'Salesforce', 'Dynamics 365', 'ServiceNow', 'REST & GraphQL'] },
@@ -162,7 +162,7 @@ export const FAQ = [
   { q: 'What is an AI agent, in practical terms?', a: 'An AI agent is software that can understand a request, plan the steps, and act across your systems, for example reading a claim, checking policy rules and drafting a decision for a person to approve.' },
   { q: 'Is agentic AI safe for regulated industries?', a: 'Yes, when it is governed. We build agents with role-based access, audit trails, guardrails and human approval for high-impact actions, aligned with requirements such as HIPAA, GDPR and PCI DSS.' },
   { q: 'Can you modernize our legacy systems?', a: 'Yes. We modernize step by step, wrapping legacy cores with APIs and new interfaces or replacing them module by module, so the business keeps running throughout.' },
-  { q: 'How fast can we see results?', a: 'Most engagements start with a discovery call and a working prototype of one high-value use case within weeks. We then scale what works.' },
+  { q: 'How fast can we see results?', a: 'Most engagements start with a discovery call and a working design of one high-value use case within weeks. We then scale what works.' },
   { q: 'Do you work with large enterprises?', a: 'Yes. Our delivery model, security practices and support are designed for enterprise scale, with teams in the USA and India.' },
 ];
 
@@ -302,5 +302,5 @@ export const AGENT_FAQ = [
   { q: 'Can agents work with our existing systems?', a: 'Yes. We connect agents to ERP, CRM, core and legacy systems through APIs, standard connectors and protocols such as MCP, without moving your data.' },
   { q: 'How do multiple agents work together?', a: 'Specialized agents are orchestrated through defined workflows. Hand-offs between agents follow permissions and routing rules, and every interaction is traceable.' },
   { q: 'Which AI models do you use?', a: 'We are model-agnostic. We choose the best model for each task and can swap models later for cost, quality or data-residency reasons without rewriting agent logic.' },
-  { q: 'How do we get started?', a: 'Start with an Agent Opportunity Assessment: we review your processes, pick one high-value use case and deliver a working, governed agent prototype within weeks.' },
+  { q: 'How do we get started?', a: 'Start with an Agent Opportunity Assessment: we review your processes, pick one high-value use case and deliver a working, governed agent design within weeks.' },
 ];

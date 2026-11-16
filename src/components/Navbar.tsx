@@ -100,7 +100,7 @@ export const Navbar: React.FC = () => {
 
         <div className="nav-actions">
           <button className="btn btn-primary btn-sm nav-cta" onClick={openDemo}>
-            Book a demo <span className="arrow">→</span>
+            Get a quote <span className="arrow">→</span>
           </button>
           <button className="nav-burger" onClick={() => setOpen(!open)} aria-label="Toggle menu" aria-expanded={open}>
             <span /><span />
@@ -153,7 +153,7 @@ export const Navbar: React.FC = () => {
           );
         })}
         <button className="btn btn-primary drawer-cta" onClick={() => { close(); openDemo(); }}>
-          Book a demo <span className="arrow">→</span>
+          Get a quote <span className="arrow">→</span>
         </button>
       </div>
     </header>

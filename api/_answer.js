@@ -193,7 +193,7 @@ function intent(q) {
     return contactAnswer();
   }
   if (has(text, /\b(price|pricing|cost|costs|charge|charges|fee|fees|budget|quote|quotation|rate|rates)\b/)) {
-    return 'Pricing depends on scope, so we don\'t publish fixed prices. Every engagement starts with a free 30-minute discovery call where we scope one high-value use case and give you an estimate. Use the "Book a demo" button at the top of the page, or write to us on /contact.';
+    return 'Pricing depends on scope, so we don\'t publish fixed prices. Every engagement starts with a free 30-minute discovery call where we scope one high-value use case and give you an estimate. Use the "Get a quote" button at the top of the page, or write to us on /contact.';
   }
   if (has(text, /\b(what('s| is| are)( an?)? (ai )?agents?|what('s| is) agentic( ai)?|define (an? )?(ai )?agent)\b/) && tokens.length <= 3) {
     const agent = passages.find(p => p.title === 'What is an AI agent?');
@@ -205,11 +205,11 @@ function intent(q) {
     return `${faq ? faq.a : K.company.summary}\n\nOur main areas:\n${bullets(K.initiatives.map(i => `${i.title}: ${i.desc}`))}\n\nSee /solutions, or ask me about any of these.`;
   }
   if (has(text, /\b(demo|meeting|consult|consultation|appointment|book)\b/)) {
-    return `Click "Book a demo" at the top of any page and fill in the short form. We'll set up a free 30-minute discovery call within one business day. You can also email ${SITE.email}.`;
+    return `Click "Get a quote" at the top of any page and fill in the short form. We'll set up a free 30-minute discovery call within one business day. You can also email ${SITE.email}.`;
   }
   if (has(text, /\b(why (should|would|choose|pick|hire|you|alphazox)|choose (you|alphazox)|advantages?|different from|better than)\b/)) {
     const why = passages.find(p => p.title === 'Why choose ALPHAZOX');
-    return `${why.text}\n\nThe best way to see it is a free 30-minute discovery call: use "Book a demo" at the top of the page.`;
+    return `${why.text}\n\nThe best way to see it is a free 30-minute discovery call: use "Get a quote" at the top of the page.`;
   }
   if (has(text, /\b(who are you|what (is|are) (alphazox|you)|about (alphazox|you|your company|the company|company)|explain (about )?(the )?alphazox|tell me about (alphazox|your company|yourself)|your company|alphazox)\b/) &&
       tokens.length <= 3) {

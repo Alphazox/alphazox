@@ -62,7 +62,7 @@ export const AreaModal: React.FC<AreaModalProps> = ({ page, steps, index, onSele
             <Link to={`/contact?topic=${encodeURIComponent(topic)}`} className="btn btn-primary" onClick={close}>
               Talk to us about this <span className="arrow">→</span>
             </Link>
-            <button className="btn btn-ghost" onClick={() => { close(); openDemo(); }}>Book a demo</button>
+            <button className="btn btn-ghost" onClick={() => { close(); openDemo(); }}>Get a quote</button>
           </div>
 
           <h4 className="area-modal-h">Also on this page</h4>

@@ -10,7 +10,7 @@ interface CtaBandProps {
 
 export const CtaBand: React.FC<CtaBandProps> = ({
   title,
-  text = 'Book a 30-minute discovery call. We pick one high-value use case together and show you a working prototype in weeks.',
+  text = 'Book a 30-minute discovery call. We pick one high-value use case together and show you a working design in weeks.',
 }) => {
   const { openDemo } = useDemo();
   return (
@@ -21,7 +21,7 @@ export const CtaBand: React.FC<CtaBandProps> = ({
           <h2>{title}</h2>
           <p>{text}</p>
           <div className="cta-actions">
-            <button className="btn btn-primary" onClick={openDemo}>Book a demo <span className="arrow">→</span></button>
+            <button className="btn btn-primary" onClick={openDemo}>Get a quote <span className="arrow">→</span></button>
             <Link to="/contact" className="btn btn-ghost">Contact us</Link>
           </div>
         </Reveal>

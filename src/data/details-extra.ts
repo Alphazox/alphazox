@@ -33,7 +33,7 @@ export const DETAIL_EXTRAS: Record<string, DetailExtra> = {
     ],
     faq: [
       { q: 'How do you handle sensitive financial data?', a: 'Data stays in your approved environments, access is role-based, and AI models are used through private endpoints with logging and no training on your data.' },
-      { q: 'How long does a first journey take?', a: 'A working prototype usually takes a few weeks; a production release for one journey typically follows within a few months, depending on integration needs.' },
+      { q: 'How long does a first journey take?', a: 'A working design usually takes a few weeks; a production release for one journey typically follows within a few months, depending on integration needs.' },
     ],
   },
   insurance: {
@@ -70,7 +70,7 @@ export const DETAIL_EXTRAS: Record<string, DetailExtra> = {
     stack: ['Accessible web (WCAG)', 'Digital identity', 'Case management', 'Payments', 'Document AI', 'On-prem & gov cloud', 'Audit trails'],
     process: [
       { title: 'Understand users', desc: 'Research with citizens and staff, including people with accessibility needs.' },
-      { title: 'Design the service', desc: 'Prototype the end-to-end service and test it with real users before building.' },
+      { title: 'Design the service', desc: 'Design the end-to-end service and test it with real users before building.' },
       { title: 'Build and integrate', desc: 'Connect to existing registers, payment and identity systems.' },
       { title: 'Launch in phases', desc: 'Start with a private beta, then open to the public once it is proven.' },
       { title: 'Improve continuously', desc: 'Use feedback and analytics to keep improving after launch.' },
@@ -95,7 +95,7 @@ export const DETAIL_EXTRAS: Record<string, DetailExtra> = {
     stack: ['SAP / Dynamics / Oracle', 'MES integration', 'Offline mobile', 'IoT data', 'Computer vision', 'Power BI', 'Azure / AWS'],
     process: [
       { title: 'Walk the floor', desc: 'Observe how inspections, maintenance and handovers happen today.' },
-      { title: 'Prototype on a tablet', desc: 'Put a working app in operators’ hands within weeks and collect feedback.' },
+      { title: 'Design on a tablet', desc: 'Put a working app in operators’ hands within weeks and collect feedback.' },
       { title: 'Connect ERP and MES', desc: 'Sync work orders, assets and quality data with your core systems.' },
       { title: 'Roll out by line or plant', desc: 'Start with one line or plant, train teams and measure results.' },
       { title: 'Add intelligence', desc: 'Layer in predictive alerts, vision checks and AI summaries.' },
@@ -170,7 +170,7 @@ export const DETAIL_EXTRAS: Record<string, DetailExtra> = {
     stack: ['Commerce platforms', 'POS integration', 'Loyalty engines', 'Mobile apps', 'Product search AI', 'ERP integration', 'Analytics'],
     process: [
       { title: 'Map the customer journey', desc: 'Follow shoppers across channels to find friction.' },
-      { title: 'Prototype the experience', desc: 'Test new app or store flows with real customers and staff.' },
+      { title: 'Design the experience', desc: 'Test new app or store flows with real customers and staff.' },
       { title: 'Connect commerce data', desc: 'Integrate products, stock, orders and loyalty.' },
       { title: 'Launch in pilot stores', desc: 'Roll out to a few stores or a customer segment first.' },
       { title: 'Grow with data', desc: 'Use analytics and testing to keep improving conversion.' },
@@ -195,7 +195,7 @@ export const DETAIL_EXTRAS: Record<string, DetailExtra> = {
     stack: ['SIS integration', 'LMS integration', 'Student portals', 'Payments', 'Knowledge AI', 'SSO', 'Mobile apps'],
     process: [
       { title: 'Listen to students and staff', desc: 'Find the most common pain points in campus services.' },
-      { title: 'Design the portal', desc: 'Prototype one front door for key services and test it.' },
+      { title: 'Design the portal', desc: 'Design one front door for key services and test it.' },
       { title: 'Connect campus systems', desc: 'Integrate SIS, LMS, finance and identity.' },
       { title: 'Launch for a cohort', desc: 'Start with one intake or faculty, then expand.' },
       { title: 'Add AI support', desc: 'Introduce assistants for common student questions.' },
@@ -228,7 +228,7 @@ export const DETAIL_EXTRAS: Record<string, DetailExtra> = {
       { title: 'Release often', desc: 'Small, frequent releases keep feedback loops short.' },
     ],
     examples: [
-      { icon: '⚡', title: 'Prototype in two weeks', desc: 'A clickable, data-backed prototype of a new internal tool for user testing.' },
+      { icon: '⚡', title: 'Design in two weeks', desc: 'A clickable, data-backed design of a new internal tool for user testing.' },
       { icon: '🧪', title: 'Test coverage boost', desc: 'AI-generated tests that raise coverage on a legacy codebase before changes.' },
       { icon: '📘', title: 'Living documentation', desc: 'Documentation generated and kept up to date from the code itself.' },
       { icon: '🧱', title: 'Shared component kit', desc: 'A reusable library that speeds up every new app in the portfolio.' },
@@ -297,7 +297,7 @@ export const DETAIL_EXTRAS: Record<string, DetailExtra> = {
     stack: ['UX research', 'Design systems', 'React / mobile', 'Conversational AI', 'CRM integration', 'Analytics', 'A/B testing'],
     process: [
       { title: 'Research', desc: 'Interviews, analytics and complaint data reveal where customers struggle.' },
-      { title: 'Design', desc: 'Prototype the new journey and test it with real customers.' },
+      { title: 'Design', desc: 'Design the new journey and test it with real customers.' },
       { title: 'Build', desc: 'Develop the journey and connect it to core systems.' },
       { title: 'Launch', desc: 'Release gradually and watch the data closely.' },
       { title: 'Optimise', desc: 'Test improvements and keep raising completion rates.' },
@@ -344,12 +344,12 @@ export const DETAIL_EXTRAS: Record<string, DetailExtra> = {
     introTitle: 'Great apps start with understanding users.',
     intro: [
       'Most failed apps were built to a feature list, not to how people actually work. They end up unused, worked around or rebuilt within a few years.',
-      'We start with research and prototypes, then build responsive web and mobile apps on a shared design system, connected to your systems and ready to grow.',
+      'We start with research and designs, then build responsive web and mobile apps on a shared design system, connected to your systems and ready to grow.',
     ],
     stack: ['React', 'Next.js', 'Flutter', 'React Native', 'Swift / Kotlin', 'Low-code', 'Figma', 'REST & GraphQL'],
     process: [
       { title: 'Discover', desc: 'Interviews and workshops to understand users, goals and constraints.' },
-      { title: 'Design', desc: 'Wireframes, visual design and a clickable prototype tested with users.' },
+      { title: 'Design', desc: 'Wireframes, visual design and a clickable design tested with users.' },
       { title: 'Build', desc: 'Short sprints with demos every two weeks.' },
       { title: 'Test', desc: 'Automated, manual, accessibility and performance testing.' },
       { title: 'Launch & grow', desc: 'App store release, analytics and a roadmap for what comes next.' },
@@ -467,6 +467,33 @@ export const DETAIL_EXTRAS: Record<string, DetailExtra> = {
   },
 
   // ── Technologies ────────────────────────────────────────────────────────────
+  outsystems: {
+    introTitle: 'OutSystems lets enterprises ship critical apps far faster, without losing control.',
+    intro: [
+      'OutSystems is an enterprise low-code platform, founded in 2001, used by banks, insurers, healthcare providers, governments and manufacturers to build customer portals, mobile apps and core business systems. Developers model screens, logic and data visually in Service Studio; the platform generates standard code, checks every change in real time with TrueChange and deploys with one click.',
+      'It comes in two editions. OutSystems 11 (O11) is the established platform and runs in OutSystems Cloud or on your own infrastructure. OutSystems Developer Cloud (ODC) is the cloud-native edition, built on containers and Kubernetes on AWS. Both now include AI: Mentor generates apps from requirements, and AI Agent Builder adds governed AI agents to your applications.',
+      'Our OutSystems developers, tech leads and architects build new applications, stabilise and extend existing factories, connect OutSystems to SAP, Salesforce and core systems, and plan migrations from O11 to ODC.',
+    ],
+    stack: ['Service Studio', 'OutSystems 11', 'OutSystems Developer Cloud', 'Mentor', 'AI Agent Builder', 'Integration Studio', 'Integration Builder', 'LifeTime', 'Forge', 'AI Mentor System'],
+    process: [
+      { title: 'Discover', desc: 'Workshops to map users, data, integrations and the right edition for you: O11 or ODC.' },
+      { title: 'Architect', desc: 'Module design with the 4-Layer Canvas, reusable libraries and a clear integration plan.' },
+      { title: 'Build', desc: 'Two-week sprints in Service Studio, with TrueChange validation and peer code reviews.' },
+      { title: 'Test & deploy', desc: 'Automated tests with the BDD Framework and staged releases through LifeTime or the ODC Portal.' },
+      { title: 'Support', desc: 'Monitoring, performance tuning, platform upgrades and continuous enhancements.' },
+    ],
+    examples: [
+      { icon: '🧾', title: 'Customer self-service portal', desc: 'A Reactive Web portal where customers apply, upload documents and track requests, connected to the core system through REST APIs.' },
+      { icon: '📱', title: 'Field inspection mobile app', desc: 'An offline-first OutSystems mobile app with camera, GPS and barcode scanning that syncs when back online.' },
+      { icon: '🤖', title: 'AI case assistant', desc: 'An agent built with AI Agent Builder that summarises cases and drafts replies for staff to approve.' },
+      { icon: '☁️', title: 'O11 to ODC migration', desc: 'An O11 app portfolio assessed, refactored into ODC apps and libraries, and moved in waves.' },
+    ],
+    faq: [
+      { q: 'What is the difference between OutSystems 11 and ODC?', a: 'O11 is the long-established edition and can run in OutSystems Cloud or self-managed on your own servers. ODC is cloud-native: each app runs in its own containers, scales automatically and is deployed independently. Many organisations run both while they migrate.' },
+      { q: 'Can OutSystems handle complex, high-volume systems?', a: 'Yes, with good architecture. OutSystems generates standard code, connects to external databases and can be extended with custom C# code. We design modules so the portfolio stays maintainable as it grows.' },
+      { q: 'Can you train our own developers?', a: 'Yes. We run hands-on bootcamps and pair programming, and help developers prepare for official OutSystems certifications such as Associate Reactive Developer and Associate Mobile Developer.' },
+    ],
+  },
   dotnet: {
     introTitle: '.NET powers a huge share of enterprise systems.',
     intro: [

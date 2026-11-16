@@ -21,7 +21,7 @@ const EMPTY = {
   budgetRange: '',
 };
 
-// "Book a demo" request. Posts to the existing /api/quote endpoint.
+// "Get a quote" request. Posts to the existing /api/quote endpoint.
 export const DemoModal: React.FC<DemoModalProps> = ({ open, onClose }) => {
   const [form, setForm] = useState(EMPTY);
   const [loading, setLoading] = useState(false);
@@ -76,9 +76,9 @@ export const DemoModal: React.FC<DemoModalProps> = ({ open, onClose }) => {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal glass" role="dialog" aria-modal="true" aria-label="Book a demo" onClick={e => e.stopPropagation()}>
+      <div className="modal glass" role="dialog" aria-modal="true" aria-label="Get a quote" onClick={e => e.stopPropagation()}>
         <button className="modal-close" onClick={onClose} aria-label="Close">✕</button>
-        <span className="eyebrow">Book a demo</span>
+        <span className="eyebrow">Get a quote</span>
         <h2>See what we can build for you</h2>
         <p className="modal-sub">A 30-minute discovery call. We'll pick one high-value use case and show you how fast it can be live.</p>
 
@@ -150,7 +150,7 @@ export const DemoModal: React.FC<DemoModalProps> = ({ open, onClose }) => {
           <Honeypot value={honeypot} onChange={setHoneypot} />
           {status && <div className={`form-status ${status.ok ? 'ok' : 'err'}`} role="status">{status.msg}</div>}
           <button className="btn btn-primary" type="submit" disabled={loading}>
-            {loading ? 'Sending…' : 'Request my demo'} <span className="arrow">→</span>
+            {loading ? 'Sending…' : 'Request my quote'} <span className="arrow">→</span>
           </button>
         </form>
       </div>

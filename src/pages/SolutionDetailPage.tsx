@@ -49,7 +49,7 @@ const SolutionDetailPage: React.FC<{ kind: Kind }> = ({ kind }) => {
   return (
     <React.Fragment key={d.slug}>
       <PageHero eyebrow={`${d.icon} ${d.eyebrow}`} title={renderTitle(d.title, d.highlight)} text={d.summary}>
-        <button className="btn btn-primary" onClick={openDemo}>Book a demo <span className="arrow">→</span></button>
+        <button className="btn btn-primary" onClick={openDemo}>Get a quote <span className="arrow">→</span></button>
         <a href="#areas" className="btn btn-ghost">See what we build</a>
       </PageHero>
 
@@ -190,7 +190,7 @@ const SolutionDetailPage: React.FC<{ kind: Kind }> = ({ kind }) => {
             <div>
               <span className="eyebrow">Where to start</span>
               <h2>Pick one process. Prove it. Then expand.</h2>
-              <p>Pick one high-value process. We'll have a working prototype in front of real users within weeks.</p>
+              <p>Pick one high-value process. We'll have a working design in front of real users within weeks.</p>
               <button className="btn btn-primary" onClick={openDemo}>Plan your first project <span className="arrow">→</span></button>
             </div>
             <ul className="sd-start-list">

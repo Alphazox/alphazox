@@ -10,7 +10,7 @@ import './InnerPages.css';
 
 const EMPTY = { name: '', email: '', phone: '', orgName: '', message: '' };
 
-const STEPS = ['30-minute discovery call', 'Choose one high-value use case', 'See a working prototype in weeks'];
+const STEPS = ['30-minute discovery call', 'Choose one high-value use case', 'See a working design in weeks'];
 
 const ContactPage: React.FC = () => {
   const { openDemo } = useDemo();
@@ -74,7 +74,7 @@ const ContactPage: React.FC = () => {
                 <li key={s}><span>{i + 1}</span>{s}</li>
               ))}
             </ol>
-            <button className="btn btn-primary" onClick={openDemo}>Book a demo <span className="arrow">→</span></button>
+            <button className="btn btn-primary" onClick={openDemo}>Get a quote <span className="arrow">→</span></button>
 
             <div className="contact-direct">
               <a href={`mailto:${SITE.email}`}><span>Email</span>{SITE.email}</a>

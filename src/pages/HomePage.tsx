@@ -70,13 +70,13 @@ const HomePage: React.FC = () => {
             </Reveal>
             <Reveal delay={0.24}>
               <div className="hero-actions">
-                <button className="btn btn-primary" onClick={openDemo}>Book a demo <span className="arrow">→</span></button>
+                <button className="btn btn-primary" onClick={openDemo}>Get a quote <span className="arrow">→</span></button>
                 <Link to="/platform" className="btn btn-ghost">Explore the platform</Link>
               </div>
             </Reveal>
             <Reveal delay={0.32}>
               <ul className="hero-meta">
-                <li><strong>Weeks</strong><span>to a working prototype</span></li>
+                <li><strong>Weeks</strong><span>to a working design</span></li>
                 <li><strong>Governed</strong><span>by design, audit-ready</span></li>
                 <li><strong>USA + India</strong><span>delivery teams</span></li>
               </ul>

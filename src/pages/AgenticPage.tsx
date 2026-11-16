@@ -188,14 +188,14 @@ const AgenticPage: React.FC = () => {
               <h2>Not sure where to start? We'll find your first agent.</h2>
               <p>
                 We review your existing applications and processes, map where agents would save the most time or risk,
-                and recommend one high-value use case with a clear business case, then build a working prototype in weeks.
+                and recommend one high-value use case with a clear business case, then build a working design in weeks.
               </p>
               <button className="btn btn-primary" onClick={openDemo}>Request an assessment <span className="arrow">→</span></button>
             </div>
             <ol className="assessment-steps">
               <li><span>1</span><div><strong>Scan</strong>Apps, processes and data sources reviewed with your team.</div></li>
               <li><span>2</span><div><strong>Score</strong>Opportunities ranked by value, feasibility and risk.</div></li>
-              <li><span>3</span><div><strong>Prototype</strong>One governed agent, live with real users, in weeks.</div></li>
+              <li><span>3</span><div><strong>Design</strong>One governed agent, live with real users, in weeks.</div></li>
             </ol>
           </Reveal>
         </div>

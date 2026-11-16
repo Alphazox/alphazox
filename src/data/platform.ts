@@ -12,14 +12,14 @@ export const PLATFORM_CAPABILITIES: SolutionDetail[] = [
     highlight: 'built to last',
     summary: 'Responsive web apps, native-quality mobile apps and portals, designed with your users and connected to the systems behind them.',
     outcomes: [
-      'A clickable prototype in front of users within the first few weeks',
+      'A clickable design in front of users within the first few weeks',
       'One design system shared across web, iOS and Android',
       'Offline support, push notifications and biometric sign-in where they matter',
       'Accessible interfaces tested against WCAG guidelines',
       'Clean, documented code your own team can extend',
     ],
     areas: [
-      { icon: '🎨', title: 'UX research & design', desc: 'Interviews, journey maps and usability tests shape every screen before code is written.', builds: ['User interviews', 'Clickable prototypes', 'Usability testing'] },
+      { icon: '🎨', title: 'UX research & design', desc: 'Interviews, journey maps and usability tests shape every screen before code is written.', builds: ['User interviews', 'Clickable designs', 'Usability testing'] },
       { icon: '🖥️', title: 'Web applications', desc: 'Fast, responsive apps for customers, partners and staff, from portals to complex back-office tools.', builds: ['Customer portals', 'Partner extranets', 'Admin consoles'] },
       { icon: '📲', title: 'Mobile apps', desc: 'Cross-platform or native apps with offline mode, camera, GPS and secure sign-in.', builds: ['iOS & Android apps', 'Offline sync', 'Push notifications'] },
       { icon: '🧱', title: 'Design systems', desc: 'Reusable components and visual standards that keep every new screen consistent.', builds: ['Component libraries', 'Brand theming', 'Accessibility patterns'] },
@@ -27,7 +27,7 @@ export const PLATFORM_CAPABILITIES: SolutionDetail[] = [
       { icon: '📊', title: 'Analytics & feedback', desc: 'Usage analytics and in-app feedback show what to improve next.', builds: ['Product analytics', 'Feedback widgets', 'A/B tests'] },
     ],
     start: [
-      { title: 'Design sprint', desc: 'Two weeks from idea to a tested prototype.' },
+      { title: 'Design sprint', desc: 'Two weeks from idea to a tested design.' },
       { title: 'MVP release', desc: 'The smallest version real users can rely on.' },
       { title: 'App refresh', desc: 'A new front end on top of an existing system.' },
     ],
@@ -175,6 +175,40 @@ export const PLATFORM_CAPABILITIES: SolutionDetail[] = [
 ];
 
 export const PLATFORM_TECH: SolutionDetail[] = [
+  {
+    slug: 'outsystems',
+    kind: 'platform',
+    icon: '🔴',
+    name: 'OutSystems',
+    eyebrow: 'OutSystems development',
+    title: 'Enterprise apps and AI agents, built on OutSystems.',
+    highlight: 'built on OutSystems',
+    summary: 'Our OutSystems team designs, builds and modernises web apps, mobile apps and AI agents on OutSystems 11 and OutSystems Developer Cloud (ODC), with the architecture, testing and governance that large app portfolios need.',
+    outcomes: [
+      'Reactive web and mobile apps live in weeks, built visually in Service Studio and extended with custom code where needed',
+      'Modules organised with the 4-Layer Canvas so components stay reusable as your portfolio grows',
+      'Reliable integrations with SAP, Salesforce, SQL databases and REST or SOAP services',
+      'Technical debt kept visible and under control with AI Mentor System reviews',
+      'A phased, low-risk path from OutSystems 11 to ODC when you are ready to move',
+    ],
+    areas: [
+      { icon: '📱', title: 'Reactive web & mobile apps', desc: 'Reactive Web apps, progressive web apps and native iOS and Android builds through the Mobile Apps Build Service, with offline sync and device plugins.', builds: ['Reactive Web apps', 'iOS & Android builds', 'Offline data sync'] },
+      { icon: '☁️', title: 'OutSystems Developer Cloud', desc: 'Cloud-native apps on ODC, where each app runs in its own containers, scales automatically and deploys independently.', builds: ['ODC Portal setup', 'Stage-based deployments', 'C# external libraries'] },
+      { icon: '🔄', title: 'O11 to ODC migration', desc: 'Assess your OutSystems 11 factory, refactor it into ODC apps and libraries and move applications in planned waves.', builds: ['Migration assessment', 'Architecture refactoring', 'Wave planning'] },
+      { icon: '🔌', title: 'Integration & extensions', desc: 'REST and SOAP services, SAP and Salesforce connections, external databases and custom C# code where visual logic is not enough.', builds: ['REST & SOAP APIs', 'Integration Studio / Builder', 'External databases'] },
+      { icon: '🤖', title: 'AI agents & Mentor', desc: 'Agents built with AI Agent Builder on models such as Azure OpenAI or Amazon Bedrock, and Mentor used to generate app foundations from requirements.', builds: ['AI Agent Builder', 'Mentor app generation', 'LLM connections'] },
+      { icon: '🏛️', title: 'Architecture, CoE & support', desc: 'Reference architecture, code standards, LifeTime deployment pipelines and managed support after go-live.', builds: ['4-Layer Canvas', 'AI Mentor System reviews', 'LifeTime & CI/CD'] },
+    ],
+    start: [
+      { title: 'Pilot app', desc: 'One real process delivered on OutSystems in a few weeks.' },
+      { title: 'Factory health check', desc: 'Architecture, performance and technical-debt review of your existing OutSystems apps.' },
+      { title: 'ODC readiness assessment', desc: 'Find out what it takes to move your O11 apps to ODC.' },
+    ],
+    faq: [
+      { q: 'Do you work on OutSystems 11 or ODC?', a: 'Both. We maintain and extend O11 factories, in OutSystems Cloud or self-managed, and build new cloud-native apps on ODC. If you are choosing between them, we compare both against your hosting, integration and compliance needs.' },
+      { q: 'Can you take over an existing OutSystems application?', a: 'Yes. We start with an architecture and code review using the 4-Layer Canvas and AI Mentor System, fix the critical issues, then continue delivery with your team.' },
+    ],
+  },
   {
     slug: 'dotnet',
     kind: 'platform',

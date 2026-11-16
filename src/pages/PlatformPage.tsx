@@ -17,7 +17,7 @@ const PlatformPage: React.FC = () => {
         title={<>One stack for <span className="grad-text">agents and apps</span>.</>}
         text="Everything we need to design, build, govern and run AI agents and enterprise applications, engineered as one connected system."
       >
-        <button className="btn btn-primary" onClick={openDemo}>Book a demo <span className="arrow">→</span></button>
+        <button className="btn btn-primary" onClick={openDemo}>Get a quote <span className="arrow">→</span></button>
       </PageHero>
 
       <section className="marquee" aria-label="Technologies">
