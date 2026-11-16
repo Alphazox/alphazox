@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { addIndiaHighlight, VIZAG } from './india-highlight';
 
 // Rotating globe for the Agentic AI page. It is drawn in the coordinate space of the 1600×900
 // background image (orthographic camera) so it sits exactly over the globe in that image; a
@@ -24,7 +25,16 @@ export function createScene(canvas: HTMLCanvasElement): () => void {
   world.position.set(GLOBE.cx, -GLOBE.cy, 0);
   scene.add(world);
   const globe = new THREE.Group();
-  globe.rotation.set(0.3, -1.25, 0.08); // Americas facing the viewer, like the image
+  // Turn Visakhapatnam to face the viewer (a point at longitude L faces +z when rotation.y = 90° − (L + 180°)),
+  // then tilt so it sits about 50° up the globe: above the hero heading and clear of the skyline mask.
+  const FACE_VIZAG_Y = Math.PI / 2 - ((VIZAG.lon + 180) * Math.PI) / 180;
+  const TILT_X = (VIZAG.lat - 50) * (Math.PI / 180);
+  // Where India rests, as a turn east (+) or west (−) of facing the viewer. On desktop it sits right of
+  // centre so the label clears the centred hero heading; phones show only part of the globe (see
+  // BackgroundFX.css), so there it turns left to stay on screen.
+  let restY = 0.34;
+  let swayY = 0.2;
+  globe.rotation.set(TILT_X, FACE_VIZAG_Y + restY, 0);
   world.add(globe);
 
   // Ocean: navy body, lighter towards the rim for a lit, 3D look (view direction is +z in ortho).
@@ -66,8 +76,17 @@ export function createScene(canvas: HTMLCanvasElement): () => void {
   globe.add(new THREE.Mesh(track(new THREE.SphereGeometry(R * 1.004, 96, 96)),
     feathered(lightsTex, 'gl_FragColor = vec4(t.rgb * vec3(1.0, 0.86, 0.63) * edge, 1.0);', true)));
 
+  // Blinking star on our Visakhapatnam delivery center.
+  const india = addIndiaHighlight(globe, R, track);
+
   const resize = () => {
-    renderer.setSize(canvas.clientWidth || window.innerWidth, canvas.clientHeight || window.innerHeight, false);
+    const w = canvas.clientWidth || window.innerWidth;
+    const h = canvas.clientHeight || window.innerHeight;
+    renderer.setSize(w, h, false);
+    const phone = window.innerWidth <= 768;
+    restY = phone ? -0.36 : 0.34;
+    swayY = phone ? 0.1 : 0.2;
+    india.setCompact(phone);
   };
   resize();
   window.addEventListener('resize', resize);
@@ -78,7 +97,9 @@ export function createScene(canvas: HTMLCanvasElement): () => void {
 
   const frame = () => {
     const t = clock.getElapsedTime();
-    globe.rotation.y = -1.25 + t * 0.06; // keeps turning, west to east
+    // Sways gently around its resting point so the highlight never leaves the visible face.
+    globe.rotation.y = FACE_VIZAG_Y + restY + swayY * Math.sin(t * 0.09);
+    india.update(t);
     renderer.render(scene, camera);
   };
 
