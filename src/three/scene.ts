@@ -30,7 +30,7 @@ export function createScene(canvas: HTMLCanvasElement): () => void {
   const FACE_VIZAG_Y = Math.PI / 2 - ((VIZAG.lon + 180) * Math.PI) / 180;
   const TILT_X = (VIZAG.lat - 50) * (Math.PI / 180);
   // Where India rests, as a turn east (+) or west (−) of facing the viewer. On desktop it sits right of
-  // centre so the label clears the centred hero heading; phones show only part of the globe (see
+  // centre, clear of the centred hero heading; phones show only part of the globe (see
   // BackgroundFX.css), so there it turns left to stay on screen.
   let restY = 0.34;
   let swayY = 0.2;
@@ -86,7 +86,6 @@ export function createScene(canvas: HTMLCanvasElement): () => void {
     const phone = window.innerWidth <= 768;
     restY = phone ? -0.36 : 0.34;
     swayY = phone ? 0.1 : 0.2;
-    india.setCompact(phone);
   };
   resize();
   window.addEventListener('resize', resize);

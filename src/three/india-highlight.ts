@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
-// Marks our Visakhapatnam delivery center on the globe with a small blinking star and a label.
-// Both are parented to the globe so they turn with it.
+// Marks our Visakhapatnam delivery center on the globe with a small blinking star,
+// parented to the globe so it turns with it.
 
 export const VIZAG = { lat: 17.6868, lon: 83.2185 };
 
@@ -59,31 +59,6 @@ const drawStar = (ctx: CanvasRenderingContext2D, s: number) => {
   spike(-Math.PI / 4, c * 0.5, s * 0.014);
 };
 
-// Two-line label, redrawn once the site's web fonts have loaded.
-const makeLabel = (track: Track) => {
-  const canvas = document.createElement('canvas');
-  canvas.width = 640;
-  canvas.height = 160;
-  const tex = track(new THREE.CanvasTexture(canvas));
-  tex.colorSpace = THREE.SRGBColorSpace;
-  const draw = () => {
-    const ctx = canvas.getContext('2d')!;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.shadowColor = 'rgba(4,6,13,0.9)';
-    ctx.shadowBlur = 14;
-    ctx.fillStyle = '#ffffff';
-    ctx.font = "600 54px 'Space Grotesk', 'Inter', sans-serif";
-    ctx.fillText('Visakhapatnam', 12, 66);
-    ctx.fillStyle = '#ffd68c';
-    ctx.font = "500 34px 'Inter', system-ui, sans-serif";
-    ctx.fillText('Andhra Pradesh, India', 14, 122);
-    tex.needsUpdate = true;
-  };
-  draw();
-  document.fonts?.ready.then(draw).catch(() => {});
-  return tex;
-};
-
 const STAR_SIZE = 46;
 
 export function addIndiaHighlight(globe: THREE.Object3D, R: number, track: Track) {
@@ -100,19 +75,9 @@ export function addIndiaHighlight(globe: THREE.Object3D, R: number, track: Track
   star.position.copy(at);
   star.scale.set(STAR_SIZE, STAR_SIZE, 1);
   star.renderOrder = 20;
-
-  const label = new THREE.Sprite(track(new THREE.SpriteMaterial({ map: makeLabel(track), transparent: true, depthTest: false, depthWrite: false })));
-  label.center.set(-0.06, 0.35); // to the right of the star and slightly above it, over the Bay of Bengal
-  label.position.copy(at);
-  label.scale.set(200, 50, 1);
-  label.renderOrder = 21;
-  globe.add(star, label);
+  globe.add(star);
 
   return {
-    // Phones have no room for the label beside the star without covering the hero text.
-    setCompact(compact: boolean) {
-      label.visible = !compact;
-    },
     // Twinkle: mostly bright, with a quick dim-and-flare every couple of seconds.
     update(t: number) {
       const wave = 0.5 + 0.5 * Math.sin(t * 2.8);
