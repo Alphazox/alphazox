@@ -19,7 +19,7 @@ function localReply(q: string): string {
     return `We currently have ${JOBS.length} open roles:\n${JOBS.map(j => `• ${j.title} (${j.location})`).join('\n')}\nApply on the Careers page (/careers).`;
   }
   if (has(q, 'contact', 'phone', 'email', 'office', 'address', 'call')) {
-    return `Email: ${SITE.email}\nIndia: ${SITE.phoneIndia}\nUSA: ${SITE.phoneUS}\nOur delivery center is near Siripuram, Visakhapatnam. Austin and Hyderabad advisors meet by appointment. See /contact.`;
+    return `Email: ${SITE.email}\nIndia: ${SITE.phoneIndia}\nUSA: ${SITE.phoneUS}\nOur Vizag delivery center is at 101, 10-28-2/1/1, Waltair Main Road, Siripuram, Visakhapatnam – 530003, Andhra Pradesh, India. Austin and Hyderabad advisors meet by appointment. See /contact.`;
   }
   if (has(q, 'agent', 'agentic', 'ai', 'llm', 'copilot')) {
     return 'An AI agent understands a request, plans the steps and acts across your systems, like triaging a claim or routing an approval. We build agents with role-based access, audit trails, guardrails and human approval for high-impact actions. See /agentic-ai.';

@@ -169,7 +169,7 @@ export const FAQ = [
 export const OFFICES = [
   { flag: '🇺🇸', city: 'Austin, Texas', label: 'USA Advisory Office', address: 'Austin, Texas, USA. Meet the advisor by appointment only.', phone: SITE.phoneUS, phoneHref: SITE.phoneUSHref, image: '/images/photos/city-austin-sm.jpg', imageAlt: 'Downtown Austin skyline across Lady Bird Lake' },
   { flag: '🇮🇳', city: 'Hyderabad', label: 'India Advisory Office', address: 'Hyderabad, Telangana, India. Meet the advisor by appointment only.', phone: SITE.phoneIndia, phoneHref: SITE.phoneIndiaHref, image: '/images/photos/city-hyderabad-sm.jpg', imageAlt: 'The Charminar in Hyderabad' },
-  { flag: '🇮🇳', city: 'Visakhapatnam', label: 'India Delivery Center', address: 'Near Siripuram, Visakhapatnam, Andhra Pradesh 530003', phone: SITE.phoneIndia, phoneHref: SITE.phoneIndiaHref, image: '/images/photos/city-vizag-sm.jpg', imageAlt: 'Visakhapatnam coastline' },
+  { flag: '🇮🇳', city: 'Visakhapatnam', label: 'India Delivery Center', address: '101, 10-28-2/1/1, Waltair Main Road, Siripuram, Visakhapatnam – 530003, Andhra Pradesh, India', phone: SITE.phoneIndia, phoneHref: SITE.phoneIndiaHref, image: '/images/photos/city-vizag-sm.jpg', imageAlt: 'Visakhapatnam coastline' },
 ];
 
 export const VALUES = [
